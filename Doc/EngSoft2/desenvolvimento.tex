@@ -81,8 +81,8 @@
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\linewidth]{imagens/ModelodeClasses.drawio.png}
-    \caption{Modelo de classes}
+    \includegraphics[width=1\linewidth]{imagens/ModeloDominio_v2.png}
+    \caption{Modelo de domínio}
     \label{fig:2}
 \end{figure}
 
@@ -136,3 +136,87 @@ Micael costa & Criar Modelo de Base de Dados & 2 \\
 \end{center}
 
 
+\subsection{Base de dados}
+\subsubsection{Diagrama DER da base de dados}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{imagens/derbd.png}
+    \caption{Diagrama da base de dados}
+    \label{fig:}
+\end{figure}
+
+\subsubsection{Script para criação da base de dados}
+\begin{lstlisting}[language=SQL]
+-- Table: Utilizador
+CREATE TABLE Utilizador (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    "palavra-passe" VARCHAR(255) NOT NULL,
+    dataNascimento DATE NOT NULL
+);
+
+-- Table: Cliente
+CREATE TABLE Cliente (
+    id SERIAL PRIMARY KEY,
+    empresa VARCHAR(255) NOT NULL,
+    numeroTelefone VARCHAR(20) NOT NULL,
+    idUtilizador INT NOT NULL REFERENCES Utilizador(id)
+);
+
+-- Table: CategoriaTalento
+CREATE TABLE CategoriaTalento (
+    cod SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL
+);
+
+-- Table: Talento
+CREATE TABLE Talento (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    pais VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    precoHora DECIMAL(10, 2) NOT NULL,
+    codCategoriaTalento INT REFERENCES CategoriaTalento(cod),
+    idUtilizador INT NOT NULL REFERENCES Utilizador(id)
+);
+
+-- Table: Experiência
+CREATE TABLE Experiencia (
+    id SERIAL PRIMARY KEY,
+    titulo VARCHAR(255) NOT NULL,
+    nomeEmpresa VARCHAR(255) NOT NULL,
+    anoComeco INT NOT NULL,
+    anoFim INT,
+    idTalento INT NOT NULL REFERENCES Talento(id)
+);
+
+-- Table: Skill
+CREATE TABLE Skill (
+    cod SERIAL PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    area VARCHAR(255),
+    idUtilizador INT REFERENCES Utilizador(id)
+);
+
+-- Table: Talento_Skill (junction table for Talento and Skill)
+CREATE TABLE Talento_Skill (
+    codSkill INT NOT NULL REFERENCES Skill(cod),
+    idTalento INT NOT NULL REFERENCES Talento(id),
+    anosExperiencia INT NOT NULL,
+    PRIMARY KEY (codSkill, idTalento)
+);
+
+-- Table: PropostaTrabalho
+CREATE TABLE PropostaTrabalho (
+    cod SERIAL PRIMARY KEY,
+    codSkill INT NOT NULL REFERENCES Skill(cod),
+    codTalento INT NOT NULL REFERENCES Talento(id),
+    nome VARCHAR(255) NOT NULL,
+    numTotalHoras INT NOT NULL,
+    descricao TEXT,
+    idUtilizador INT REFERENCES Utilizador(id),
+    UNIQUE (codSkill, codTalento)
+);
+\end{lstlisting}
