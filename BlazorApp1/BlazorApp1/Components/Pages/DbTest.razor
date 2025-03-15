@@ -1,0 +1,159 @@
+@page "/dbtest"
+@using BlazorApp1.Data
+@using ApplicationUserModel = BlazorApp1.Models.ApplicationUser
+@using Microsoft.EntityFrameworkCore
+@inject ApplicationDbContext DbContext
+
+<PageTitle>Database Test</PageTitle>
+
+<h3>Database Test</h3>
+
+<div class="mb-3">
+    <button class="btn btn-primary" @onclick="LoadUsers">Load Users</button>
+    <button class="btn btn-secondary" @onclick="CheckConnection">Check Connection</button>
+    <button class="btn btn-success" @onclick="CreateTestUser">Create Test User</button>
+</div>
+
+<div class="alert alert-info">
+    <p><strong>Status:</strong> @status</p>
+    <p><strong>User Count:</strong> @userCount</p>
+    <p><strong>Connection:</strong> @connectionStatus</p>
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p><strong>Error:</strong> @errorMessage</p>
+    }
+</div>
+
+@if (users != null && users.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in users)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No users found in database.</p>
+}
+
+@code {
+    private List<ApplicationUserModel> users = new();
+    private int userCount = 0;
+    private string status = "Idle";
+    private string connectionStatus = "Unknown";
+    private string errorMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckConnection();
+    }
+
+    private async Task LoadUsers()
+    {
+        try
+        {
+            status = "Loading...";
+            errorMessage = "";
+
+            // Use AsNoTracking for better read performance
+            users = await DbContext.Users.AsNoTracking().ToListAsync();
+            userCount = users.Count;
+            status = $"Loaded {userCount} users";
+        }
+        catch (Exception ex)
+        {
+            status = "Error loading users";
+            errorMessage = ex.Message;
+        }
+    }
+
+    private async Task CheckConnection()
+    {
+        try
+        {
+            connectionStatus = "Checking...";
+            errorMessage = "";
+
+            bool canConnect = await DbContext.Database.CanConnectAsync();
+            connectionStatus = canConnect ? "Connected" : "Cannot connect";
+
+            if (canConnect)
+            {
+                // Check if the AspNetUsers table exists and has data
+                var userTableExists = await DbContext.Database.ExecuteSqlRawAsync(
+                "SELECT 1 FROM information_schema.tables WHERE table_name = 'AspNetUsers'") > 0;
+
+                connectionStatus += $" | Table exists: {userTableExists}";
+
+                if (userTableExists)
+                {
+                    var count = await DbContext.Users.CountAsync();
+                    connectionStatus += $" | User count: {count}";
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            connectionStatus = "Error checking connection";
+            errorMessage = ex.Message;
+        }
+    }
+
+    private async Task CreateTestUser()
+    {
+        try
+        {
+            status = "Creating test user...";
+            errorMessage = "";
+
+            // Check if test user already exists
+            var existingUser = await DbContext.Users
+            .FirstOrDefaultAsync(u => u.UserName == "testuser@example.com");
+
+            if (existingUser != null)
+            {
+                status = "Test user already exists";
+                await LoadUsers();
+                return;
+            }
+
+            // Create a new test user
+            var testUser = new ApplicationUserModel
+            {
+                UserName = "testuser@example.com",
+                Email = "testuser@example.com",
+                FirstName = "Test",
+                LastName = "User",
+                EmailConfirmed = true
+            };
+
+            DbContext.Users.Add(testUser);
+            await DbContext.SaveChangesAsync();
+
+            status = "Test user created successfully";
+            await LoadUsers();
+        }
+        catch (Exception ex)
+        {
+            status = "Error creating test user";
+            errorMessage = ex.Message;
+        }
+    }
+}

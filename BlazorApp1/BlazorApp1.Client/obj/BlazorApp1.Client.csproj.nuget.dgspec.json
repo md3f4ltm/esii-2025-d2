@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/micaelc/Documents/BlazorApp1/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj": {}
+    "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj": {}
   },
   "projects": {
-    "/home/micaelc/Documents/BlazorApp1/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj": {
+    "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/micaelc/Documents/BlazorApp1/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj",
+        "projectUniqueName": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj",
         "projectName": "BlazorApp1.Client",
-        "projectPath": "/home/micaelc/Documents/BlazorApp1/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj",
+        "projectPath": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj",
         "packagesPath": "/home/micaelc/.nuget/packages/",
-        "outputPath": "/home/micaelc/Documents/BlazorApp1/BlazorApp1/BlazorApp1.Client/obj/",
+        "outputPath": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/micaelc/.nuget/NuGet/NuGet.Config"
