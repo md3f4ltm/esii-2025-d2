@@ -7,11 +7,11 @@
 <PageTitle>Database Test</PageTitle>
 
 <h3>Database Test</h3>
-
 <div class="mb-3">
     <button class="btn btn-primary" @onclick="LoadUsers">Load Users</button>
     <button class="btn btn-secondary" @onclick="CheckConnection">Check Connection</button>
     <button class="btn btn-success" @onclick="CreateTestUser">Create Test User</button>
+    <button class="btn btn-info" @onclick="DebugConnectionDetails">Debug Connection</button>
 </div>
 
 <div class="alert alert-info">
@@ -62,20 +62,23 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        Console.WriteLine("Component initialized. Checking connection...");
         await CheckConnection();
+        // Call LoadUsers after checking connection
+        await LoadUsers();
     }
 
     private async Task LoadUsers()
     {
         try
         {
-            status = "Loading...";
-            errorMessage = "";
-
-            // Use AsNoTracking for better read performance
+            users.Clear();
             users = await DbContext.Users.AsNoTracking().ToListAsync();
             userCount = users.Count;
             status = $"Loaded {userCount} users";
+
+            // Force UI to refresh
+            await InvokeAsync(StateHasChanged);
         }
         catch (Exception ex)
         {
@@ -90,22 +93,35 @@ else
         {
             connectionStatus = "Checking...";
             errorMessage = "";
+            Console.WriteLine("Checking database connection...");
 
             bool canConnect = await DbContext.Database.CanConnectAsync();
             connectionStatus = canConnect ? "Connected" : "Cannot connect";
+            Console.WriteLine($"Connection status: {connectionStatus}");
 
             if (canConnect)
             {
-                // Check if the AspNetUsers table exists and has data
-                var userTableExists = await DbContext.Database.ExecuteSqlRawAsync(
-                "SELECT 1 FROM information_schema.tables WHERE table_name = 'AspNetUsers'") > 0;
-
-                connectionStatus += $" | Table exists: {userTableExists}";
-
-                if (userTableExists)
-                {
+                var sql = @"SELECT EXISTS(
+                    SELECT 1 FROM pg_tables 
+                    WHERE schemaname = 'public' 
+                    AND tablename = 'AspNetUsers'
+                )";
+                
+                var tableExists = await DbContext.Database
+                    .ExecuteSqlRawAsync(sql);
+                
+                Console.WriteLine($"Table check via SQL: {tableExists > 0}");
+                
+                // Original code...
+                try {
                     var count = await DbContext.Users.CountAsync();
                     connectionStatus += $" | User count: {count}";
+                    Console.WriteLine($"User count: {count}");
+                    userCount = count; // Update the user count field
+                }
+                catch (Exception ex) {
+                    Console.WriteLine($"Error counting users: {ex.Message}");
+                    connectionStatus += " | Error accessing users table";
                 }
             }
         }
@@ -113,6 +129,7 @@ else
         {
             connectionStatus = "Error checking connection";
             errorMessage = ex.Message;
+            Console.WriteLine($"Exception: {ex.Message}");
         }
     }
 
@@ -122,6 +139,7 @@ else
         {
             status = "Creating test user...";
             errorMessage = "";
+            Console.WriteLine("Creating test user...");
 
             // Check if test user already exists
             var existingUser = await DbContext.Users
@@ -130,6 +148,7 @@ else
             if (existingUser != null)
             {
                 status = "Test user already exists";
+                Console.WriteLine("Test user already exists.");
                 await LoadUsers();
                 return;
             }
@@ -148,12 +167,38 @@ else
             await DbContext.SaveChangesAsync();
 
             status = "Test user created successfully";
+            Console.WriteLine("Test user created successfully.");
             await LoadUsers();
         }
         catch (Exception ex)
         {
             status = "Error creating test user";
             errorMessage = ex.Message;
+            Console.WriteLine($"Exception: {ex.Message}");
+        }
+    }
+
+    // Add this method for debugging
+    private async Task DebugConnectionDetails()
+    {
+        try {
+            var connectionString = DbContext.Database.GetConnectionString();
+            // Mask password for security
+            var maskedConnString = connectionString?.Contains("Password=") == true ? 
+                connectionString.Replace(connectionString.Split("Password=")[1].Split(";")[0], "***MASKED***") : 
+                connectionString;
+            
+            Console.WriteLine($"Connection string: {maskedConnString}");
+            Console.WriteLine($"DbContext type: {DbContext.GetType().FullName}");
+            Console.WriteLine($"DbContext instance: {DbContext.GetHashCode()}");
+            
+            // Test direct SQL query
+            var result = await DbContext.Database
+                .ExecuteSqlRawAsync("SELECT COUNT(*) FROM \"AspNetUsers\"");
+            Console.WriteLine($"Direct SQL query returned: {result}");
+        }
+        catch (Exception ex) {
+            Console.WriteLine($"Debug error: {ex.Message}");
         }
     }
 }
