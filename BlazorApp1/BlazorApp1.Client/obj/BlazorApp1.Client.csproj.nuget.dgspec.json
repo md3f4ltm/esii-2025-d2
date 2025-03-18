@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj": {}
+    "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj": {}
   },
   "projects": {
-    "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj": {
+    "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj",
+        "projectUniqueName": "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj",
         "projectName": "BlazorApp1.Client",
-        "projectPath": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj",
-        "packagesPath": "/home/micaelc/.nuget/packages/",
-        "outputPath": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/",
+        "projectPath": "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj",
+        "packagesPath": "/Users/danielgoncalves/.nuget/packages/",
+        "outputPath": "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/micaelc/.nuget/NuGet/NuGet.Config"
+          "/Users/danielgoncalves/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -38,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net9.0": {
@@ -48,16 +48,20 @@
               "target": "Package",
               "version": "[9.0.3, )"
             },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            },
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.3, )",
+              "version": "[9.0.2, )",
               "autoReferenced": true
             },
             "Microsoft.NET.Sdk.WebAssembly.Pack": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.3, )",
+              "version": "[9.0.2, )",
               "autoReferenced": true
             }
           },
@@ -74,12 +78,8 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[9.0.3, 9.0.3]"
-            },
-            {
               "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
-              "version": "[9.0.3, 9.0.3]"
+              "version": "[9.0.2, 9.0.2]"
             }
           ],
           "frameworkReferences": {
@@ -87,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.104/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/Users/danielgoncalves/.dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {

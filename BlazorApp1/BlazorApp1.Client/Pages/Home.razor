@@ -1,0 +1,36 @@
+@page "/"
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@inject NavigationManager Navigation
+
+<PageTitle>Login</PageTitle>
+
+<h1 class="header">Plataforma de Gestão de Talentos IT</h1>
+
+<div class="container">
+    <input type="email" id="email" @bind="Email" placeholder="Digite o seu e-mail" />
+    <p></p>
+    <input type="password" id="password" @bind="Password" placeholder="Palavra-passe" />
+    <p></p>
+    <input type="button" id="login" @onclick="Login" value="Iniciar Sessão" class="btn-login" />
+    <p></p>
+    <hr class="divider"/>
+    <p></p>
+    <input type="button" id="register" @onclick="createAccount" value="Criar nova conta" class="btn-register" />
+</div>
+
+@code {
+
+    private string Email { get; set; } = "";
+    private string Password { get; set; } = "";
+    
+    private void Login()
+    {
+        Console.WriteLine("Login clicado");
+    }
+
+    private void createAccount()
+    {
+        Console.WriteLine("Registo iniciado");
+        Navigation.NavigateTo("/register");
+    }
+}

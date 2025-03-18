@@ -9,40 +9,975 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8417a73a-958f-4214-9bbd-6d36f9cddc38" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Pages/Register.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/Pages/Home.razor" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net9.0/esii-2025-d2.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net9.0/esii-2025-d2.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net9.0/esii-2025-d2.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net9.0/esii-2025-d2.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net9.0/esii-2025-d2.staticwebassets.endpoints.json" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net9.0/esii-2025-d2.staticwebassets.endpoints.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net9.0/esii-2025-d2.staticwebassets.runtime.json" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net9.0/esii-2025-d2.staticwebassets.runtime.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net9.0/wwwroot/_framework/blazor.boot.json" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net9.0/wwwroot/_framework/blazor.boot.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net9.0/wwwroot/_framework/blazor.boot.json.gz" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net9.0/wwwroot/_framework/blazor.boot.json.gz" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net9.0/wwwroot/_framework/esii-2025-d2.jzusz96pd4.pdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net9.0/wwwroot/_framework/esii-2025-d2.jzusz96pd4.pdb.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net9.0/wwwroot/_framework/esii-2025-d2.xz1yqrvp5q.wasm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net9.0/wwwroot/_framework/esii-2025-d2.xz1yqrvp5q.wasm.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/blazor.boot.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/blazor.boot.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/compressed/23yeckjxms-xd83rnx73q.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/compressed/dfwq6inp45-jzusz96pd4.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/compressed/mzkgvjebtu-ziqcxyfqsu.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/compressed/un83ptn55c-xz1yqrvp5q.gz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.AssemblyInfo.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.csproj.FileListAbsolute.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.sourcelink.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/ref/esii-2025-d2.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/ref/esii-2025-d2.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/refint/esii-2025-d2.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/refint/esii-2025-d2.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/staticwebassets.build.endpoints.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/staticwebassets.build.endpoints.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/staticwebassets.build.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/staticwebassets.build.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/staticwebassets.development.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/staticwebassets.development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/staticwebassets/msbuild.esii-2025-d2.Microsoft.AspNetCore.StaticWebAssetEndpoints.props" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/staticwebassets/msbuild.esii-2025-d2.Microsoft.AspNetCore.StaticWebAssetEndpoints.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/staticwebassets/msbuild.esii-2025-d2.Microsoft.AspNetCore.StaticWebAssets.props" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/staticwebassets/msbuild.esii-2025-d2.Microsoft.AspNetCore.StaticWebAssets.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/tmp-webcil/esii-2025-d2.wasm" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/tmp-webcil/esii-2025-d2.wasm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/webcil/esii-2025-d2.wasm" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net9.0/webcil/esii-2025-d2.wasm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wwwroot/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/wwwroot/css/app.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.esii-2025-d2.dir/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.esii-2025-d2.dir/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.esii-2025-d2.dir/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/BlazorApp1.Client.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/BlazorApp1.Client.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/BlazorApp1.Client.staticwebassets.endpoints.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/BlazorApp1.Client.staticwebassets.runtime.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.AspNetCore.Authorization.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.AspNetCore.Components.Forms.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.AspNetCore.Components.Web.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.AspNetCore.Components.WebAssembly.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.AspNetCore.Components.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.AspNetCore.Metadata.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.CSharp.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Binder.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.Configuration.FileExtensions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Json.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.Configuration.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.FileProviders.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.FileProviders.Physical.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.FileSystemGlobbing.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.Logging.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.Logging.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.Options.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.JSInterop.WebAssembly.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.JSInterop.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.VisualBasic.Core.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.VisualBasic.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Win32.Primitives.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/Microsoft.Win32.Registry.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.AppContext.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Buffers.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Collections.Concurrent.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Collections.Immutable.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Collections.NonGeneric.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Collections.Specialized.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Collections.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.ComponentModel.Annotations.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.ComponentModel.DataAnnotations.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.ComponentModel.EventBasedAsync.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.ComponentModel.Primitives.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.ComponentModel.TypeConverter.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.ComponentModel.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Configuration.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Console.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Core.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Data.Common.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Data.DataSetExtensions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Data.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Diagnostics.Contracts.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Diagnostics.Debug.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Diagnostics.DiagnosticSource.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Diagnostics.FileVersionInfo.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Diagnostics.Process.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Diagnostics.StackTrace.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Diagnostics.TextWriterTraceListener.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Diagnostics.Tools.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Diagnostics.TraceSource.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Diagnostics.Tracing.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Drawing.Primitives.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Drawing.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Dynamic.Runtime.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Formats.Asn1.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Formats.Tar.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Globalization.Calendars.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Globalization.Extensions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Globalization.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.Compression.Brotli.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.Compression.FileSystem.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.Compression.ZipFile.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.Compression.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.FileSystem.AccessControl.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.FileSystem.DriveInfo.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.FileSystem.Primitives.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.FileSystem.Watcher.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.FileSystem.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.IsolatedStorage.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.MemoryMappedFiles.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.Pipelines.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.Pipes.AccessControl.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.Pipes.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.UnmanagedMemoryStream.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.IO.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Linq.Expressions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Linq.Parallel.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Linq.Queryable.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Linq.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Memory.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.Http.Json.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.Http.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.HttpListener.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.Mail.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.NameResolution.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.NetworkInformation.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.Ping.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.Primitives.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.Quic.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.Requests.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.Security.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.ServicePoint.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.Sockets.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.WebClient.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.WebHeaderCollection.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.WebProxy.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.WebSockets.Client.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.WebSockets.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Net.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Numerics.Vectors.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Numerics.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.ObjectModel.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Private.CoreLib.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Private.DataContractSerialization.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Private.Uri.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Private.Xml.Linq.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Private.Xml.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Reflection.DispatchProxy.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Reflection.Emit.ILGeneration.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Reflection.Emit.Lightweight.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Reflection.Emit.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Reflection.Extensions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Reflection.Metadata.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Reflection.Primitives.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Reflection.TypeExtensions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Reflection.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Resources.Reader.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Resources.ResourceManager.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Resources.Writer.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.CompilerServices.Unsafe.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.CompilerServices.VisualC.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.Extensions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.Handles.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.InteropServices.JavaScript.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.InteropServices.RuntimeInformation.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.InteropServices.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.Intrinsics.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.Loader.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.Numerics.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.Serialization.Formatters.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.Serialization.Json.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.Serialization.Primitives.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.Serialization.Xml.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.Serialization.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Runtime.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.AccessControl.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.Claims.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.Cryptography.Algorithms.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.Cryptography.Cng.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.Cryptography.Csp.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.Cryptography.Encoding.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.Cryptography.OpenSsl.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.Cryptography.Primitives.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.Cryptography.X509Certificates.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.Cryptography.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.Principal.Windows.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.Principal.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.SecureString.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Security.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.ServiceModel.Web.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.ServiceProcess.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Text.Encoding.CodePages.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Text.Encoding.Extensions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Text.Encoding.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Text.Encodings.Web.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Text.Json.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Text.RegularExpressions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Threading.Channels.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Threading.Overlapped.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Threading.Tasks.Dataflow.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Threading.Tasks.Extensions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Threading.Tasks.Parallel.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Threading.Tasks.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Threading.Thread.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Threading.ThreadPool.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Threading.Timer.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Threading.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Transactions.Local.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Transactions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.ValueTuple.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Web.HttpUtility.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Web.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Windows.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Xml.Linq.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Xml.ReaderWriter.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Xml.Serialization.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Xml.XDocument.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Xml.XPath.XDocument.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Xml.XPath.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Xml.XmlDocument.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Xml.XmlSerializer.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.Xml.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/System.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/WindowsBase.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/dotnet.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/dotnet.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/dotnet.native.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/dotnet.native.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/dotnet.runtime.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/dotnet.runtime.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/icudt_CJK.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/icudt_EFIGS.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/icudt_no_CJK.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/mscorlib.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/netstandard.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.ebkyfs6bmy.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.ebkyfs6bmy.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.h6ehv6jnch.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.h6ehv6jnch.pdb.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.AspNetCore.Authorization.da83xzpz5r.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.AspNetCore.Authorization.da83xzpz5r.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.AspNetCore.Components.Forms.qji3ksdopo.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.AspNetCore.Components.Forms.qji3ksdopo.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.AspNetCore.Components.Web.ns1lctei4w.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.AspNetCore.Components.Web.ns1lctei4w.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.AspNetCore.Components.WebAssembly.soaj85mrfq.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.AspNetCore.Components.WebAssembly.soaj85mrfq.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.AspNetCore.Components.vmzb2angnn.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.AspNetCore.Components.vmzb2angnn.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.AspNetCore.Metadata.1xd6vo83cv.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.AspNetCore.Metadata.1xd6vo83cv.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.CSharp.qzjvm9hz38.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.CSharp.qzjvm9hz38.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Configuration.Abstractions.kw6zdn2hre.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Configuration.Abstractions.kw6zdn2hre.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Configuration.Binder.ved8dbz2is.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Configuration.Binder.ved8dbz2is.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Configuration.FileExtensions.t8hgoms9l8.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Configuration.FileExtensions.t8hgoms9l8.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Configuration.Json.d1nka2rlr8.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Configuration.Json.d1nka2rlr8.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Configuration.u53zhhc46z.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Configuration.u53zhhc46z.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.DependencyInjection.Abstractions.auqecwqpl6.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.DependencyInjection.Abstractions.auqecwqpl6.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.DependencyInjection.b4d8qm7pau.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.DependencyInjection.b4d8qm7pau.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.FileProviders.Abstractions.kqqw7ug7ce.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.FileProviders.Abstractions.kqqw7ug7ce.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.FileProviders.Physical.mh53tttw45.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.FileProviders.Physical.mh53tttw45.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.FileSystemGlobbing.0i562wdyma.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.FileSystemGlobbing.0i562wdyma.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Logging.96umgmlbmk.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Logging.96umgmlbmk.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Logging.Abstractions.l8y69abh7s.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Logging.Abstractions.l8y69abh7s.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Options.83qdyvwc4v.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Options.83qdyvwc4v.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Primitives.j8wpr8jzql.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Primitives.j8wpr8jzql.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.JSInterop.WebAssembly.lao5cp8gqq.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.JSInterop.WebAssembly.lao5cp8gqq.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.JSInterop.fehvqxd8e9.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.JSInterop.fehvqxd8e9.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.VisualBasic.Core.790ssxljcz.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.VisualBasic.Core.790ssxljcz.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.VisualBasic.o05ci7346e.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.VisualBasic.o05ci7346e.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Win32.Primitives.iclgtmwg3j.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Win32.Primitives.iclgtmwg3j.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Win32.Registry.ozmyxl3pzt.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Win32.Registry.ozmyxl3pzt.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.AppContext.69xw87cqtg.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.AppContext.69xw87cqtg.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Buffers.m3enj6d62j.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Buffers.m3enj6d62j.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Collections.Concurrent.7xcnvnvfe7.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Collections.Concurrent.7xcnvnvfe7.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Collections.Immutable.3gjnwcmszy.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Collections.Immutable.3gjnwcmszy.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Collections.NonGeneric.wor57912gd.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Collections.NonGeneric.wor57912gd.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Collections.Specialized.6wmcrebyv4.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Collections.Specialized.6wmcrebyv4.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Collections.k7eocx66k5.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Collections.k7eocx66k5.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.1er4s7iwhi.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.1er4s7iwhi.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.Annotations.w9cu337rh7.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.Annotations.w9cu337rh7.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.DataAnnotations.q4j9ve32z8.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.DataAnnotations.q4j9ve32z8.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.EventBasedAsync.6j6cjcru2p.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.EventBasedAsync.6j6cjcru2p.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.Primitives.nl2ixrxcp7.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.Primitives.nl2ixrxcp7.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.TypeConverter.yl273bvsmt.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.TypeConverter.yl273bvsmt.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Configuration.zc0ilizti4.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Configuration.zc0ilizti4.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Console.c87d7usqgw.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Console.c87d7usqgw.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Core.eovbtmx9ej.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Core.eovbtmx9ej.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Data.Common.i3ihuk6o50.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Data.Common.i3ihuk6o50.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Data.DataSetExtensions.drrqo6rbpu.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Data.DataSetExtensions.drrqo6rbpu.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Data.rwg7jt2c7s.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Data.rwg7jt2c7s.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.Contracts.8nb2a3iwdt.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.Contracts.8nb2a3iwdt.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.Debug.shhvs5h51d.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.Debug.shhvs5h51d.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.DiagnosticSource.v6xqrblgfp.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.DiagnosticSource.v6xqrblgfp.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.FileVersionInfo.4f475qbfex.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.FileVersionInfo.4f475qbfex.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.Process.6bewsddwg5.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.Process.6bewsddwg5.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.StackTrace.ailofr3xg4.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.StackTrace.ailofr3xg4.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.TextWriterTraceListener.y0i2x9wcx8.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.TextWriterTraceListener.y0i2x9wcx8.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.Tools.xv4owfjv5r.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.Tools.xv4owfjv5r.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.TraceSource.qvejter5tv.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.TraceSource.qvejter5tv.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.Tracing.vjwiyy6ngo.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.Tracing.vjwiyy6ngo.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Drawing.Primitives.1qn7cohx2f.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Drawing.Primitives.1qn7cohx2f.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Drawing.rccadbk353.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Drawing.rccadbk353.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Dynamic.Runtime.ck56btm7q7.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Dynamic.Runtime.ck56btm7q7.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Formats.Asn1.y2x54k0om0.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Formats.Asn1.y2x54k0om0.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Formats.Tar.twtiqgxl95.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Formats.Tar.twtiqgxl95.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Globalization.Calendars.toi3bgped5.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Globalization.Calendars.toi3bgped5.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Globalization.Extensions.tmi9prr4h8.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Globalization.Extensions.tmi9prr4h8.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Globalization.adywr1r9bu.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Globalization.adywr1r9bu.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Compression.Brotli.xqt090n7fe.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Compression.Brotli.xqt090n7fe.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Compression.FileSystem.8a6edcjpz8.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Compression.FileSystem.8a6edcjpz8.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Compression.ZipFile.0h0gr0lp29.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Compression.ZipFile.0h0gr0lp29.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Compression.r2vc7bedoc.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Compression.r2vc7bedoc.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.FileSystem.AccessControl.q8w04p4lkj.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.FileSystem.AccessControl.q8w04p4lkj.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.FileSystem.DriveInfo.21bnaui2ta.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.FileSystem.DriveInfo.21bnaui2ta.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.FileSystem.Primitives.uai8nn8fsl.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.FileSystem.Primitives.uai8nn8fsl.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.FileSystem.Watcher.lohvs8m8cz.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.FileSystem.Watcher.lohvs8m8cz.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.FileSystem.ci93a4roia.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.FileSystem.ci93a4roia.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.IsolatedStorage.z0ha6lo11a.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.IsolatedStorage.z0ha6lo11a.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.MemoryMappedFiles.2kvmbxu1mj.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.MemoryMappedFiles.2kvmbxu1mj.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Pipelines.frsl2omn10.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Pipelines.frsl2omn10.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Pipes.AccessControl.mrms2eewly.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Pipes.AccessControl.mrms2eewly.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Pipes.wadz9p1757.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Pipes.wadz9p1757.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.UnmanagedMemoryStream.5nttvixer4.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.UnmanagedMemoryStream.5nttvixer4.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.ujr9p4dm3m.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.ujr9p4dm3m.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Linq.Expressions.n4kp8xrm7p.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Linq.Expressions.n4kp8xrm7p.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Linq.Parallel.fk2xwub03l.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Linq.Parallel.fk2xwub03l.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Linq.Queryable.npjr4r7hxc.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Linq.Queryable.npjr4r7hxc.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Linq.bi0wcqo6qy.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Linq.bi0wcqo6qy.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Memory.80u0qc3eyv.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Memory.80u0qc3eyv.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Http.Json.0slem1275q.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Http.Json.0slem1275q.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Http.md1bswe7tc.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Http.md1bswe7tc.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.HttpListener.o3q2lkyykw.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.HttpListener.o3q2lkyykw.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Mail.r12nqubh1e.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Mail.r12nqubh1e.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.NameResolution.wd9u3p7alm.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.NameResolution.wd9u3p7alm.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.NetworkInformation.wadfcrb4ng.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.NetworkInformation.wadfcrb4ng.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Ping.j6du5khfyp.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Ping.j6du5khfyp.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Primitives.rog0rqelo4.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Primitives.rog0rqelo4.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Quic.bk3iyzagtw.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Quic.bk3iyzagtw.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Requests.yh0vmblcre.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Requests.yh0vmblcre.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Security.sr0ifz1ms7.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Security.sr0ifz1ms7.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.ServicePoint.ii3nejp2xq.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.ServicePoint.ii3nejp2xq.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Sockets.2qi573rk74.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Sockets.2qi573rk74.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.WebClient.6zl2dfdj87.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.WebClient.6zl2dfdj87.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.WebHeaderCollection.6toxm9clu5.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.WebHeaderCollection.6toxm9clu5.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.WebProxy.zg8yqia6rm.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.WebProxy.zg8yqia6rm.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.WebSockets.9v4eqey3ns.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.WebSockets.9v4eqey3ns.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.WebSockets.Client.5ujv6fwlc7.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.WebSockets.Client.5ujv6fwlc7.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.j0rb8fmqum.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.j0rb8fmqum.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Numerics.90814qnc69.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Numerics.90814qnc69.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Numerics.Vectors.zkzeaq78be.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Numerics.Vectors.zkzeaq78be.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ObjectModel.dpibji9kbk.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ObjectModel.dpibji9kbk.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Private.CoreLib.gdne0axslz.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Private.CoreLib.gdne0axslz.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Private.DataContractSerialization.s7udpkt4m4.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Private.DataContractSerialization.s7udpkt4m4.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Private.Uri.akbheibrxy.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Private.Uri.akbheibrxy.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Private.Xml.2mep7n6yu4.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Private.Xml.2mep7n6yu4.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Private.Xml.Linq.pznij1v87w.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Private.Xml.Linq.pznij1v87w.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.DispatchProxy.rz2l0yjrdh.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.DispatchProxy.rz2l0yjrdh.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.Emit.ILGeneration.ul9zb0sw6s.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.Emit.ILGeneration.ul9zb0sw6s.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.Emit.Lightweight.h81142zbp5.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.Emit.Lightweight.h81142zbp5.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.Emit.r3y2j8tf69.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.Emit.r3y2j8tf69.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.Extensions.q3j8knzs2x.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.Extensions.q3j8knzs2x.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.Metadata.act044hy0s.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.Metadata.act044hy0s.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.Primitives.5os0vainak.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.Primitives.5os0vainak.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.TypeExtensions.5p21krjfml.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.TypeExtensions.5p21krjfml.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.vmr4sf3lia.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Reflection.vmr4sf3lia.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Resources.Reader.6dewscbl2z.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Resources.Reader.6dewscbl2z.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Resources.ResourceManager.kvuwqbbhvv.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Resources.ResourceManager.kvuwqbbhvv.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Resources.Writer.dpk7abvmmf.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Resources.Writer.dpk7abvmmf.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.CompilerServices.Unsafe.ja2wapc8ts.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.CompilerServices.Unsafe.ja2wapc8ts.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.CompilerServices.VisualC.b05mwug83r.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.CompilerServices.VisualC.b05mwug83r.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Extensions.wmorg0bfhl.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Extensions.wmorg0bfhl.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Handles.wry3x7xspd.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Handles.wry3x7xspd.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.InteropServices.JavaScript.gm4fhld22q.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.InteropServices.JavaScript.gm4fhld22q.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.InteropServices.RuntimeInformation.u8mdnzb9vy.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.InteropServices.RuntimeInformation.u8mdnzb9vy.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.InteropServices.wtgp5mxw1c.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.InteropServices.wtgp5mxw1c.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Intrinsics.gi0f477zy4.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Intrinsics.gi0f477zy4.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Loader.cot9lfqma4.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Loader.cot9lfqma4.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Numerics.g9u8d42zol.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Numerics.g9u8d42zol.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Serialization.5wmrv335ba.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Serialization.5wmrv335ba.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Serialization.Formatters.8lhd6xdb7k.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Serialization.Formatters.8lhd6xdb7k.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Serialization.Json.z0nxu35yve.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Serialization.Json.z0nxu35yve.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Serialization.Primitives.fqg5015ygf.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Serialization.Primitives.fqg5015ygf.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Serialization.Xml.u3xtkxm1k9.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.Serialization.Xml.u3xtkxm1k9.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.grclbqoc80.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Runtime.grclbqoc80.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.88p4kjqbas.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.88p4kjqbas.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.AccessControl.pe5x2sidyv.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.AccessControl.pe5x2sidyv.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Claims.l7kx3xked0.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Claims.l7kx3xked0.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.Algorithms.8lolrkmttk.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.Algorithms.8lolrkmttk.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.Cng.xy0ipfnjac.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.Cng.xy0ipfnjac.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.Csp.tqrnaro11n.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.Csp.tqrnaro11n.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.Encoding.dxlnja37bj.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.Encoding.dxlnja37bj.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.OpenSsl.uk9h1gfypt.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.OpenSsl.uk9h1gfypt.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.Primitives.wxqgbuw71m.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.Primitives.wxqgbuw71m.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.X509Certificates.m2ilqf86hj.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.X509Certificates.m2ilqf86hj.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.qo6wt0x95a.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Cryptography.qo6wt0x95a.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Principal.Windows.ldo9869o7b.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Principal.Windows.ldo9869o7b.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Principal.l5y65m8m2t.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.Principal.l5y65m8m2t.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.SecureString.c87gsi9tp6.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Security.SecureString.c87gsi9tp6.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ServiceModel.Web.64psc55341.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ServiceModel.Web.64psc55341.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ServiceProcess.j0wagton1u.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ServiceProcess.j0wagton1u.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Text.Encoding.CodePages.17ak399x9u.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Text.Encoding.CodePages.17ak399x9u.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Text.Encoding.Extensions.31quu9rg9b.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Text.Encoding.Extensions.31quu9rg9b.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Text.Encoding.ruq9wa2av8.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Text.Encoding.ruq9wa2av8.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Text.Encodings.Web.ktp7ll9vtg.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Text.Encodings.Web.ktp7ll9vtg.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Text.Json.spqbvbiy0p.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Text.Json.spqbvbiy0p.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Text.RegularExpressions.j6wzkfckdc.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Text.RegularExpressions.j6wzkfckdc.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Channels.eotefikzu6.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Channels.eotefikzu6.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Overlapped.qsv3dgk98d.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Overlapped.qsv3dgk98d.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Tasks.Dataflow.qux3elp3sq.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Tasks.Dataflow.qux3elp3sq.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Tasks.Extensions.bz6v4y1bgr.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Tasks.Extensions.bz6v4y1bgr.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Tasks.Parallel.pia6qfjdvy.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Tasks.Parallel.pia6qfjdvy.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Tasks.zmf0gmcpmv.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Tasks.zmf0gmcpmv.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Thread.k53q2qtn4x.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Thread.k53q2qtn4x.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.ThreadPool.vtcexxwpo3.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.ThreadPool.vtcexxwpo3.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Timer.5bvshcz8rs.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.Timer.5bvshcz8rs.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.mghm3mgo9q.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Threading.mghm3mgo9q.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Transactions.0vkshbqlor.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Transactions.0vkshbqlor.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Transactions.Local.upfcz2s4al.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Transactions.Local.upfcz2s4al.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ValueTuple.96vy1hi31v.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ValueTuple.96vy1hi31v.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Web.HttpUtility.crconwjg8e.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Web.HttpUtility.crconwjg8e.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Web.i52kdwx1wz.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Web.i52kdwx1wz.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Windows.pxvni61c5f.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Windows.pxvni61c5f.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.Linq.qe9nkopg6h.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.Linq.qe9nkopg6h.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.ReaderWriter.7tqo9y1j7t.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.ReaderWriter.7tqo9y1j7t.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.Serialization.m25ww1xmlb.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.Serialization.m25ww1xmlb.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.XDocument.b3qpy0ywdq.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.XDocument.b3qpy0ywdq.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.XPath.6zhyzqh2n6.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.XPath.6zhyzqh2n6.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.XPath.XDocument.7m1x4rd2b8.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.XPath.XDocument.7m1x4rd2b8.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.XmlDocument.q8ihts3lf6.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.XmlDocument.q8ihts3lf6.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.XmlSerializer.0sc0ourwbb.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.XmlSerializer.0sc0ourwbb.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.ev8p5vqcxx.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Xml.ev8p5vqcxx.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.uey7cwmupp.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.uey7cwmupp.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/WindowsBase.ag32297siy.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/WindowsBase.ag32297siy.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/blazor.boot.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/blazor.boot.json.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/blazor.webassembly.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/blazor.webassembly.js.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/dotnet.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/dotnet.js.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/dotnet.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/dotnet.js.map.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/dotnet.native.1p93gcv9fh.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/dotnet.native.1p93gcv9fh.js.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/dotnet.native.9msu8ucn2h.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/dotnet.native.9msu8ucn2h.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/dotnet.runtime.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/dotnet.runtime.js.map.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/dotnet.runtime.qrl1fuqt3c.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/dotnet.runtime.qrl1fuqt3c.js.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/icudt_CJK.tjcz0u77k5.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/icudt_CJK.tjcz0u77k5.dat.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/icudt_EFIGS.tptq2av103.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/icudt_EFIGS.tptq2av103.dat.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/icudt_no_CJK.lfu7j35m59.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/icudt_no_CJK.lfu7j35m59.dat.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/mscorlib.vt9pwshhot.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/mscorlib.vt9pwshhot.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/netstandard.or41gtprh3.wasm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/netstandard.or41gtprh3.wasm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/project.nuget.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/wwwroot/appsettings.Development.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/wwwroot/appsettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.sln" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/BlazorApp1.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Components/App.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Components/Pages/DbTest.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Components/Pages/Error.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Components/Pages/Weather.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Components/Routes.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Components/_Imports.razor" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Controllers/DbTestController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Controllers/UserController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Controllers/UserTestController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Data/ApplicationDbContext.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Data/ApplicationDbContextFactory.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Migrations/20250315110112_InitialCreate.Designer.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Migrations/20250315110112_InitialCreate.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Migrations/ApplicationDbContextModelSnapshot.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Models/ApplicationUser.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/appsettings.Development.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/appsettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorApp1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorApp1.Client.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorApp1.Client.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorApp1.Client.staticwebassets.endpoints.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorApp1.Client.staticwebassets.runtime.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorApp1.deps.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorApp1.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorApp1.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorApp1.runtimeconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorApp1.staticwebassets.endpoints.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorApp1.staticwebassets.runtime.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorDebugProxy/BrowserDebugHost.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorDebugProxy/BrowserDebugHost.runtimeconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorDebugProxy/BrowserDebugProxy.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorDebugProxy/Microsoft.CodeAnalysis.CSharp.Scripting.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorDebugProxy/Microsoft.CodeAnalysis.CSharp.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorDebugProxy/Microsoft.CodeAnalysis.Scripting.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorDebugProxy/Microsoft.CodeAnalysis.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorDebugProxy/Microsoft.FileFormats.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorDebugProxy/Microsoft.NET.WebAssembly.Webcil.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorDebugProxy/Microsoft.SymbolStore.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/BlazorDebugProxy/Newtonsoft.Json.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Humanizer.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.AspNetCore.Authorization.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.AspNetCore.Components.Forms.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.AspNetCore.Components.Web.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.AspNetCore.Components.WebAssembly.Server.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.AspNetCore.Components.WebAssembly.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.AspNetCore.Components.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.AspNetCore.Cryptography.Internal.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.AspNetCore.Cryptography.KeyDerivation.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.AspNetCore.Metadata.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Bcl.AsyncInterfaces.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Build.Locator.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.CodeAnalysis.CSharp.Workspaces.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.CodeAnalysis.CSharp.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.CodeAnalysis.Workspaces.MSBuild.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.CodeAnalysis.Workspaces.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.CodeAnalysis.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.Design.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.Relational.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.EntityFrameworkCore.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Caching.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Caching.Memory.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Binder.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Configuration.FileExtensions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Json.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Configuration.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.DependencyModel.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.FileProviders.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.FileProviders.Physical.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.FileSystemGlobbing.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Identity.Core.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Identity.Stores.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Logging.Abstractions.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Logging.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Options.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.JSInterop.WebAssembly.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.JSInterop.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Mono.TextTemplating.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Npgsql.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/System.CodeDom.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/System.Composition.AttributedModel.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/System.Composition.Convention.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/System.Composition.Hosting.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/System.Composition.Runtime.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/System.Composition.TypedParts.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/appsettings.Development.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/appsettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/cs/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/cs/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/cs/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/cs/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/cs/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/de/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/de/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/de/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/de/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/de/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/es/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/es/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/es/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/es/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/es/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/fr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/fr/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/fr/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/fr/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/fr/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/it/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/it/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/it/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/it/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/it/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ja/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ja/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ja/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ja/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ja/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ko/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ko/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ko/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ko/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ko/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/pl/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/pl/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/pl/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/pl/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/pl/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/pt-BR/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/pt-BR/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/pt-BR/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ru/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ru/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ru/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ru/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/ru/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/tr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/tr/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/tr/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/tr/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/tr/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/zh-Hans/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/bin/Debug/net9.0/zh-Hant/Microsoft.CodeAnalysis.resources.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/BlazorApp1.csproj.EntityFrameworkCore.targets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/BlazorApp1.csproj.nuget.dgspec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/BlazorApp1.csproj.nuget.g.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/BlazorApp1.csproj.nuget.g.targets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.AssemblyInfoInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.MvcApplicationPartsAssemblyInfo.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.assets.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.csproj.AssemblyReference.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.csproj.Up2Date" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.genruntimeconfig.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.sourcelink.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/apphost" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/0ld9cxilw0-493y06b0oq.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/37adgtcius-6cfz1n2cew.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/3zeemfu9tl-notf2xhcfb.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/4rhaqkfept-b7pk76d08c.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/6ebo9pkv4m-c2oey78nd0.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/6oxp0jmi7q-0j3bgjxly4.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/6uwr1lrhsh-jd9uben2k1.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/7j37oyi5ij-d7shbmvgxk.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/8n9nldalc6-06098lyss8.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/a413awwuph-c2jlpeoesf.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/at7xjpj9gt-dxx9fxp4il.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/ctg7dl1s7r-pk9g2wxc8p.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/ef1z40owrk-pj5nd1wqec.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/hbq4d3qinw-erw9l3u2r3.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/hdfgvirz4s-fsbi9cje9m.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/jhesw8hzx7-cosvhxvwiu.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/job3ywuat9-v0zj4ognzu.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/krue8ll0om-hrwsygsryq.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/kxqu1raqd7-y7v9cxd14o.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/lak9eq6uf2-h1s4sie4z3.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/mzn848jz2f-vr1egmr9el.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/n6o7eave8d-63fj8s7r0e.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/o4ql4nobfg-lcd1t2u6c8.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/ouh3edm5j1-46ein0sx1k.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/psnyflj9j1-w7mf952350.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/qq4suq7mpa-j5mq2jizvt.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/rjjfn46fww-ft3s53vfgj.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/s7ytc2ojxm-aexeepp0ev.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/skb6k1bb5n-s35ty4nyc5.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/sworogiqmv-jj8uyg4cgr.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/tcjg565vl2-ee0r1s7dh0.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/tqkptlkdfv-nvvlpmu67g.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/ufrk2wvpar-r4e9w2rdcm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/ulacyztq1x-fvhpjtyr6v.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/uxxncn5hnr-cdwwge0x8m.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/v0hz2658p4-37tfw0ft22.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/v9exl6fbet-ausgxo2sd3.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/vaxdz7b0x1-k8d9w2qqmf.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/veh915wgoz-rzd6atqjts.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/vg2lnnyrpw-ub07r2b239.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/vrn14uixyy-khv3u5hwcm.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/wlph242bm8-iovd86k7lj.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/xscm68l0ox-bqjiyaj88i.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/xvgt4pxslg-6pdc2jztkx.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/ypqhfc2jq7-tdbxkamptv.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/ysu4imbah3-cdwwge0x8m.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/z1a2s78e24-kbrnm935zg.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/ref/BlazorApp1.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/refint/BlazorApp1.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/scopedcss/Components/Layout/MainLayout.razor.rz.scp.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/scopedcss/Components/Layout/NavMenu.razor.rz.scp.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/scopedcss/bundle/BlazorApp1.styles.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/scopedcss/projectbundle/BlazorApp1.bundle.scp.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/staticwebassets.build.endpoints.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/staticwebassets.build.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/staticwebassets.development.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/staticwebassets.pack.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/staticwebassets/msbuild.BlazorApp1.Microsoft.AspNetCore.StaticWebAssetEndpoints.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/staticwebassets/msbuild.BlazorApp1.Microsoft.AspNetCore.StaticWebAssets.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/staticwebassets/msbuild.build.BlazorApp1.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/staticwebassets/msbuild.buildMultiTargeting.BlazorApp1.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/staticwebassets/msbuild.buildTransitive.BlazorApp1.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/project.assets.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/project.nuget.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/project.packagespec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/rider.project.restore.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Doc/PreSprint1/PreSprint1.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Doc/PreSprint1/Tex/desenvolvimento.tex" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Doc/PreSprint1/Tex/imagens/ModeloDominio_v2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Doc/PreSprint1/Tex/imagens/ModelodeClasses.drawio.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Doc/PreSprint1/Tex/imagens/casosdeuso.drawio.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Doc/PreSprint1/Tex/imagens/derbd.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Doc/PreSprint1/Tex/imagens/estg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Doc/PreSprint1/Tex/introdução.tex" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Doc/PreSprint1/Tex/main.tex" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Doc/PreSprint1/Velhos/EngSoft2.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Doc/PreSprint1/Velhos/Pre-Srint1.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.esii-2025-d2.dir/.idea/dataSources.local.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.esii-2025-d2.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.esii-2025-d2.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/BlazorApp1.Client.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/BlazorApp1.Client.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/BlazorApp1.Client.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/BlazorApp1.Client.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/esii-2025-d2.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/esii-2025-d2.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/esii-2025-d2.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/esii-2025-d2.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/esii-2025-d2.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/esii-2025-d2.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/esii-2025-d2.GlobalUsings.g.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/esii-2025-d2.GlobalUsings.g.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/esii-2025-d2.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/esii-2025-d2.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/esii-2025-d2.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/esii-2025-d2.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Layout/MainLayout.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Components/Layout/MainLayout.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Layout/MainLayout.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Components/Layout/MainLayout.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Layout/NavMenu.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Components/Layout/NavMenu.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Layout/NavMenu.razor.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Components/Layout/NavMenu.razor.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/Counter.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/Pages/Counter.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/Home.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Components/Pages/Home.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pages/Weather.razor" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/Properties/launchSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/_Imports.razor" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/_Imports.razor" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/esii-2025-d2.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.AssemblyInfoInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.GlobalUsings.g.cs" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.GlobalUsings.g.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.assets.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net9.0/esii-2025-d2.csproj.AssemblyReference.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/esii-2025-d2.csproj.nuget.dgspec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/esii-2025-d2.csproj.nuget.g.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/esii-2025-d2.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1.Client/obj/BlazorApp1.Client.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.assets.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.packagespec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/rider.project.restore.info" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/favicon.png" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/favicon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/icon-192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/js/bootstrap.js" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/js/bootstrap.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/BlazorApp1/BlazorApp1/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wwwroot/sample-data/weather.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,26 +1005,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.esii-2025-d2: http.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;registerlogin&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;HotReloadSettingsPage&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.esii-2025-d2: http.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Merging main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.environmentSetup",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.esii-2025-d2: http">
     <configuration name="esii-2025-d2: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/esii-2025-d2.csproj" />
