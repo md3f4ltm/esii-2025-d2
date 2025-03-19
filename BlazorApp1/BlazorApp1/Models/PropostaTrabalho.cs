@@ -1,9 +1,10 @@
-using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorApp1.Models
 {
     public class PropostaTrabalho
     {
+        [Key]
         public int Cod { get; set; }
         public int CodSkill { get; set; }
         public int CodTalento { get; set; }

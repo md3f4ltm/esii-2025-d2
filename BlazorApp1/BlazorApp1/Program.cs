@@ -5,6 +5,7 @@ using BlazorApp1.Services;
 using ApplicationUser = BlazorApp1.Models.ApplicationUser;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,11 +38,20 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-// Register UserService
-builder.Services.AddScoped<IUserService, UserService>();
 
 // Register DatabaseService
 builder.Services.AddScoped<IDatabaseService, DatabaseService>();
+
+// Add these lines to register HttpClient
+builder.Services.AddHttpClient();
+builder.Services.AddScoped(sp => new HttpClient
+{
+    BaseAddress = new Uri(builder.Configuration["BaseUrl"] ?? builder.Configuration["ASPNETCORE_URLS"]?.Split(';').FirstOrDefault() ?? "https://localhost:5001")
+});
+
+// Adicione estas linhas antes de builder.Build()
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

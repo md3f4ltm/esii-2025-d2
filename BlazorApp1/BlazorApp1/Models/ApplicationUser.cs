@@ -6,12 +6,12 @@ namespace BlazorApp1.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        // Existing properties
         public string FirstName { get; set; } = "";
         public string LastName { get; set; } = "";
 
         // New properties from Utilizador that might be useful
-        public DateTime DataNascimento { get; set; }
+        // Adicione este código se precisar do campo na classe, mas marcando-o como opcional
+        public DateTime? DataNascimento { get; set; }
 
         // Navigation properties
         public Cliente? Cliente { get; set; }

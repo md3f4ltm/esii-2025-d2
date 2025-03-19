@@ -2,29 +2,17 @@
 @using BlazorApp1.Models
 @using BlazorApp1.Services
 @inject IUserService UserService
-@inject IDatabaseService DatabaseService
 
-<PageTitle>Database Test</PageTitle>
+<PageTitle>User List</PageTitle>
 
-<h3>Database Test</h3>
+<h3>User List</h3>
 <div class="mb-3">
-  <button class="btn btn-primary" @onclick="LoadUsers">Load Users</button>
-  <button class="btn btn-secondary" @onclick="CheckConnection">
-    Check Connection
-  </button>
-  <button class="btn btn-success" @onclick="CreateTestUser">
-    Create Test User
-  </button>
-  <button class="btn btn-info" @onclick="DebugConnectionDetails">
-    Debug Connection
-  </button>
-  <button class="btn btn-warning" @onclick="LoadTalentos">Load Talentos</button>
+  <button class="btn btn-primary" @onclick="LoadUsers">Refresh Users</button>
 </div>
 
 <div class="alert alert-info">
   <p><strong>Status:</strong> @status</p>
   <p><strong>User Count:</strong> @userCount</p>
-  <p><strong>Connection:</strong> @connectionStatus</p>
   @if (!string.IsNullOrEmpty(errorMessage))
   {
     <p><strong>Error:</strong> @errorMessage</p>
@@ -60,46 +48,14 @@ else
   <p>No users found in database.</p>
 }
 
-@if (talentos != null && talentos.Any())
-{
-  <h4>Talentos</h4>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Nome</th>
-        <th>Pais</th>
-        <th>Email</th>
-        <th>Preço/Hora</th>
-        <th>Categoria</th>
-      </tr>
-    </thead>
-    <tbody>
-      @foreach (var talento in talentos)
-      {
-        <tr>
-          <td>@talento.Nome</td>
-          <td>@talento.Pais</td>
-          <td>@talento.Email</td>
-          <td>@talento.PrecoHora.ToString("C")</td>
-          <td>@(talento.CategoriaTalento?.Nome ?? "Sem categoria")</td>
-        </tr>
-      }
-    </tbody>
-  </table>
-}
-
 @code {
   private List<ApplicationUser> users = new();
-  private List<Talento> talentos = new();
   private int userCount = 0;
   private string status = "Idle";
-  private string connectionStatus = "Unknown";
   private string errorMessage = "";
 
   protected override async Task OnInitializedAsync()
   {
-    Console.WriteLine("Component initialized. Checking connection...");
-    await CheckConnection();
     await LoadUsers();
   }
 
@@ -107,90 +63,23 @@ else
   {
     try
     {
+      status = "Loading users...";
+      errorMessage = "";
+      await InvokeAsync(StateHasChanged);
+
       users.Clear();
       users = await UserService.GetAllUsersAsync();
       userCount = users.Count;
       status = $"Loaded {userCount} users";
-      await InvokeAsync(StateHasChanged);
     }
     catch (Exception ex)
     {
       status = "Error loading users";
       errorMessage = ex.Message;
     }
-  }
-
-  private async Task LoadTalentos()
-  {
-    try
+    finally
     {
-      talentos = await DatabaseService.GetTalentos();
-      status = $"Loaded {talentos.Count} talents";
       await InvokeAsync(StateHasChanged);
-    }
-    catch (Exception ex)
-    {
-      status = "Error loading talentos";
-      errorMessage = ex.Message;
-    }
-  }
-
-  private async Task CheckConnection()
-  {
-    try
-    {
-      connectionStatus = "Checking...";
-      errorMessage = "";
-      Console.WriteLine("Checking database connection...");
-      bool canConnect = await UserService.CheckConnectionAsync();
-      connectionStatus = canConnect ? "Connected" : "Cannot connect";
-      Console.WriteLine($"Connection status: {connectionStatus}");
-
-      if (canConnect)
-      {
-        var count = await UserService.GetUserCountAsync();
-        connectionStatus += $" | User count: {count}";
-        Console.WriteLine($"User count: {count}");
-        userCount = count;
-      }
-    }
-    catch (Exception ex)
-    {
-      connectionStatus = "Error checking connection";
-      errorMessage = ex.Message;
-      Console.WriteLine($"Exception: {ex.Message}");
-    }
-  }
-
-  private async Task CreateTestUser()
-  {
-    try
-    {
-      errorMessage = "";
-      Console.WriteLine("Creating test user...");
-      bool created = await UserService.CreateTestUserAsync();
-      status = created ? "Test user created successfully" : "Test user already exists";
-      Console.WriteLine(status);
-      await LoadUsers();
-    }
-    catch (Exception ex)
-    {
-      status = "Error creating test user";
-      errorMessage = ex.Message;
-      Console.WriteLine($"Exception: {ex.Message}");
-    }
-  }
-
-  private async Task DebugConnectionDetails()
-  {
-    try
-    {
-      var details = await UserService.GetConnectionDetailsAsync();
-      Console.WriteLine($"Connection string: {details.ConnectionString}");
-    }
-    catch (Exception ex)
-    {
-      Console.WriteLine($"Debug error: {ex.Message}");
     }
   }
 }

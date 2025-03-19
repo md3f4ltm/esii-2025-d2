@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorApp1.Models
 {
     public class Skill
     {
+        [Key]
         public int Cod { get; set; }
         public string Nome { get; set; } = "";
         public string? Area { get; set; }

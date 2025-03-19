@@ -1,5 +1,6 @@
 using BlazorApp1.Data;
 using BlazorApp1.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,15 +11,28 @@ namespace BlazorApp1.Services
     public class UserService : IUserService
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserService(ApplicationDbContext dbContext)
+        public UserService(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
         }
 
         public async Task<List<ApplicationUser>> GetAllUsersAsync()
         {
-            return await _dbContext.Users.AsNoTracking().ToListAsync();
+            return await _dbContext.Users
+                .AsNoTracking()
+                .Select(u => new ApplicationUser
+                {
+                    Id = u.Id,
+                    UserName = u.UserName,
+                    Email = u.Email,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    EmailConfirmed = u.EmailConfirmed
+                })
+                .ToListAsync();
         }
 
         public async Task<int> GetUserCountAsync()
@@ -119,6 +133,33 @@ namespace BlazorApp1.Services
                     ErrorMessage = ex.Message
                 };
             }
+        }
+
+        public async Task<bool> CreateRandomUserAsync()
+        {
+            // Gere dados aleatórios para o usuário
+            var random = new Random();
+            var id = Guid.NewGuid().ToString()[..8];
+
+            var firstNames = new[] { "Ana", "João", "Maria", "Pedro", "Sofia", "Lucas", "Beatriz", "Gustavo" };
+            var lastNames = new[] { "Silva", "Santos", "Oliveira", "Souza", "Pereira", "Ferreira", "Costa", "Rodrigues" };
+
+            var firstName = firstNames[random.Next(firstNames.Length)];
+            var lastName = lastNames[random.Next(lastNames.Length)];
+
+            var user = new ApplicationUser
+            {
+                UserName = $"user_{id}",
+                Email = $"user_{id}@example.com",
+                FirstName = firstName,
+                LastName = lastName,
+                EmailConfirmed = true
+            };
+
+            // Crie o usuário no banco de dados
+            var result = await _userManager.CreateAsync(user, "Password123!");
+
+            return result.Succeeded;
         }
     }
 

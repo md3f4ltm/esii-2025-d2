@@ -1085,8 +1085,6 @@
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.JSInterop.fehvqxd8e9.wasm
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.JSInterop.WebAssembly.lao5cp8gqq.wasm
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/blazor.boot.json
-/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.bt0sny8gdm.pdb
-/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.7bwlz5rlmx.wasm
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.CSharp.zovhsua4hq.wasm
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.EntityFrameworkCore.Abstractions.owom3jbuvh.wasm
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.EntityFrameworkCore.yg32fui4sc.wasm
@@ -1427,7 +1425,6 @@
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Compression.o6ju5pwdpc.wasm.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Collections.Specialized.7r96r3kwk1.wasm.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.ComponentModel.4qr1uf2xo0.wasm.gz
-/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.bt0sny8gdm.pdb.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Numerics.Vectors.zqmzbv142i.wasm.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.FileProviders.Physical.mh53tttw45.wasm.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/WindowsBase.tuf34ieu7y.wasm.gz
@@ -1463,7 +1460,6 @@
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Diagnostics.DiagnosticSource.zdk8f4csh4.wasm.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.Net.Http.Json.l3uod96fpn.wasm.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Caching.Memory.hnxnm81l0e.wasm.gz
-/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.7bwlz5rlmx.wasm.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/System.IO.Compression.Brotli.f76uea1xvc.wasm.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Primitives.j8wpr8jzql.wasm.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/Microsoft.Extensions.Configuration.Abstractions.kw6zdn2hre.wasm.gz
@@ -2089,9 +2085,6 @@
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/hhhe2m2p7p-tjcz0u77k5.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/0egcw37vq2-tptq2av103.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/1ujpc7z65c-lfu7j35m59.gz
-/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/ze2qwtpi57-7bwlz5rlmx.gz
-/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/rud6kqy1tt-bt0sny8gdm.gz
-/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/o99o0iv4dq-i4qkogcbwj.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/staticwebassets.build.json
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/staticwebassets.development.json
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/staticwebassets.build.endpoints.json
@@ -2106,3 +2099,10 @@
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/refint/BlazorApp1.Client.dll
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/BlazorApp1.Client.pdb
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/ref/BlazorApp1.Client.dll
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.f5h8kxpp19.pdb
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.8yt0o4yq10.wasm
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.f5h8kxpp19.pdb.gz
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/bin/Debug/net9.0/wwwroot/_framework/BlazorApp1.Client.8yt0o4yq10.wasm.gz
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/ze2qwtpi57-8yt0o4yq10.gz
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/rud6kqy1tt-f5h8kxpp19.gz
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/Debug/net9.0/compressed/o99o0iv4dq-0iu2zw9r9r.gz

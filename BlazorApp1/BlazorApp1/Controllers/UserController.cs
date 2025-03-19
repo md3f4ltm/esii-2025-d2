@@ -51,3 +51,4 @@ namespace BlazorApp1.Controllers
         }
     }
 }
+

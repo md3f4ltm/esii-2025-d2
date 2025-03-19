@@ -1,9 +1,10 @@
-using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorApp1.Models
 {
     public class Cliente
     {
+        [Key]
         public int Id { get; set; }
         public string Empresa { get; set; } = "";
         public string NumeroTelefone { get; set; } = "";
