@@ -56,7 +56,6 @@
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/obj/Debug/net9.0/scopedcss/Components/Layout/NavMenu.razor.rz.scp.css
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/obj/Debug/net9.0/scopedcss/bundle/BlazorApp1.styles.css
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/obj/Debug/net9.0/scopedcss/projectbundle/BlazorApp1.bundle.scp.css
-/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/psnyflj9j1-w7mf952350.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/xscm68l0ox-bqjiyaj88i.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/a413awwuph-c2jlpeoesf.gz
 /home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/hbq4d3qinw-erw9l3u2r3.gz
@@ -429,3 +428,9 @@
 /Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.genruntimeconfig.cache
 /Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1/obj/Debug/net9.0/ref/BlazorApp1.dll
 /Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/psnyflj9j1-7r8zh6nx8d.gz
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/obj/Debug/net9.0/compressed/psnyflj9j1-7r8zh6nx8d.gz
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Microsoft.OpenApi.dll
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Swashbuckle.AspNetCore.Swagger.dll
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/bin/Debug/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll
+/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/obj/Debug/net9.0/BlazorApp1.MvcApplicationPartsAssemblyInfo.cs

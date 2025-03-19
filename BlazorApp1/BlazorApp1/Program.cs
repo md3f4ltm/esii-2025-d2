@@ -1,7 +1,7 @@
 using BlazorApp1.Client.Pages;
 using BlazorApp1.Components;
 using BlazorApp1.Data;
-// Use fully qualified name to avoid conflicts
+using BlazorApp1.Services;
 using ApplicationUser = BlazorApp1.Models.ApplicationUser;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -13,8 +13,11 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-// Add this after AddRazorComponents() section
 builder.Services.AddControllers();
+
+// Add Swagger services
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Add CORS services
 builder.Services.AddCors(options =>
@@ -34,9 +37,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+// Register UserService
+builder.Services.AddScoped<IUserService, UserService>();
+
+// Register DatabaseService
+builder.Services.AddScoped<IDatabaseService, DatabaseService>();
+
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateAsyncScope())
 {
     var services = scope.ServiceProvider;
     try
@@ -44,7 +53,6 @@ using (var scope = app.Services.CreateScope())
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-        // Update the user creation section to add more logging
         Console.WriteLine("Attempting to seed test users...");
 
         var testUsers = new List<ApplicationUser>
@@ -57,7 +65,7 @@ using (var scope = app.Services.CreateScope())
 
         foreach (var testUser in testUsers)
         {
-            if (testUser.Email != null) // Fix null reference warning
+            if (testUser.Email != null)
             {
                 var existingUser = await userManager.FindByEmailAsync(testUser.Email);
                 Console.WriteLine($"Existing user check for {testUser.Email}: {(existingUser == null ? "Not found" : "Found")}");
@@ -83,9 +91,8 @@ using (var scope = app.Services.CreateScope())
             }
         }
 
-        // Add this section to retrieve and print all users after seeding
         Console.WriteLine("\n--- Retrieving all users from database ---");
-        var allUsers = userManager.Users.ToList();
+        var allUsers = await userManager.Users.ToListAsync();
         Console.WriteLine($"Found {allUsers.Count} users in the database:");
 
         foreach (var user in allUsers)
@@ -104,19 +111,18 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+    // Enable Swagger in development
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-
-// Use CORS before routing
 app.UseCors("AllowAll");
-
 app.UseAntiforgery();
 
 app.MapStaticAssets();
@@ -125,7 +131,6 @@ app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(BlazorApp1.Client._Imports).Assembly);
 
-// Add this before app.Run()
 app.MapControllers();
 
 app.Run();

@@ -1,9 +1,11 @@
 using BlazorApp1.Data;
-// Be explicit about which ApplicationUser we're using
-using ApplicationUser = BlazorApp1.Models.ApplicationUser;
+using BlazorApp1.Models;
+using BlazorApp1.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BlazorApp1.Controllers
 {
@@ -11,31 +13,41 @@ namespace BlazorApp1.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationDbContext _context;
+        private readonly UserService _userService;
 
-        public UserController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        public UserController(UserService userService)
         {
-            _userManager = userManager;
-            _context = context;
+            _userService = userService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsers()
+        public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetUsers()
         {
-            var users = await _userManager.Users.ToListAsync();
-            return Ok(users);
+            return await _userService.GetAllUsersAsync();
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(string id)
+        [HttpGet("count")]
+        public async Task<ActionResult<int>> GetUserCount()
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return Ok(user);
+            return await _userService.GetUserCountAsync();
+        }
+
+        [HttpPost("test-user")]
+        public async Task<ActionResult<bool>> CreateTestUser()
+        {
+            return await _userService.CreateTestUserAsync();
+        }
+
+        [HttpGet("connection-status")]
+        public async Task<ActionResult<bool>> CheckConnection()
+        {
+            return await _userService.CheckConnectionAsync();
+        }
+
+        [HttpGet("debug-connection")]
+        public async Task<ActionResult<DatabaseConnectionInfo>> GetConnectionDetails()
+        {
+            return await _userService.GetConnectionDetailsAsync();
         }
     }
 }

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1/BlazorApp1.csproj": {}
+    "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/BlazorApp1.csproj": {}
   },
   "projects": {
-    "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj": {
+    "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj",
+        "projectUniqueName": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj",
         "projectName": "BlazorApp1.Client",
-        "projectPath": "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj",
-        "packagesPath": "/Users/danielgoncalves/.nuget/packages/",
-        "outputPath": "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/",
+        "projectPath": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj",
+        "packagesPath": "/home/micaelc/.nuget/packages/",
+        "outputPath": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/danielgoncalves/.nuget/NuGet/NuGet.Config"
+          "/home/micaelc/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -38,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net9.0": {
@@ -55,13 +55,13 @@
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.2, )",
+              "version": "[9.0.3, )",
               "autoReferenced": true
             },
             "Microsoft.NET.Sdk.WebAssembly.Pack": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.2, )",
+              "version": "[9.0.3, )",
               "autoReferenced": true
             }
           },
@@ -78,8 +78,12 @@
           "warn": true,
           "downloadDependencies": [
             {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[9.0.3, 9.0.3]"
+            },
+            {
               "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
-              "version": "[9.0.2, 9.0.2]"
+              "version": "[9.0.3, 9.0.3]"
             }
           ],
           "frameworkReferences": {
@@ -87,7 +91,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/danielgoncalves/.dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.104/PortableRuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
@@ -96,17 +100,17 @@
         }
       }
     },
-    "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1/BlazorApp1.csproj": {
+    "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/BlazorApp1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1/BlazorApp1.csproj",
+        "projectUniqueName": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/BlazorApp1.csproj",
         "projectName": "BlazorApp1",
-        "projectPath": "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1/BlazorApp1.csproj",
-        "packagesPath": "/Users/danielgoncalves/.nuget/packages/",
-        "outputPath": "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1/obj/",
+        "projectPath": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/BlazorApp1.csproj",
+        "packagesPath": "/home/micaelc/.nuget/packages/",
+        "outputPath": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/danielgoncalves/.nuget/NuGet/NuGet.Config"
+          "/home/micaelc/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -118,8 +122,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj": {
-                "projectPath": "/Users/danielgoncalves/RiderProjects/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj"
+              "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj": {
+                "projectPath": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1.Client/BlazorApp1.Client.csproj"
               }
             }
           }
@@ -134,7 +138,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net9.0": {
@@ -163,6 +167,10 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[9.0.4, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             }
           },
           "imports": [
@@ -176,6 +184,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[9.0.3, 9.0.3]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -184,7 +198,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/Users/danielgoncalves/.dotnet/sdk/9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.104/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
