@@ -1,16 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BlazorApp1.Models
+namespace ESII2025d2.Models;
+
+[Table("TalentoSkill")]
+public partial class TalentoSkill
 {
-    public class TalentoSkill
-    {
-        [Key]
-        public int Id { get; set; }
-        public int CodSkill { get; set; }
-        public int IdTalento { get; set; }
-        public int AnosExperiencia { get; set; }
+    [Key]
+    public int codskill { get; set; }
 
-        public Skill? Skill { get; set; }
-        public Talento? Talento { get; set; }
-    }
+    public int idtalento { get; set; }
+
+    public int anosexperiencia { get; set; }
+
+    [ForeignKey("codskill")]
+    public virtual Skill codskillNavigation { get; set; } = null!;
+    
+    [ForeignKey("idtalento")]
+    public virtual Talento idtalentoNavigation { get; set; } = null!;
 }

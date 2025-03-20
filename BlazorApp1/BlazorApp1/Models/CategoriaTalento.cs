@@ -1,14 +1,19 @@
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BlazorApp1.Models
+namespace ESII2025d2.Models;
+
+[Table("CategoriaTalento")]
+public partial class CategoriaTalento
 {
-    public class CategoriaTalento
-    {
-        [Key]
-        public int Id { get; set; } // Primary key
-        public int Cod { get; set; }
-        public string Nome { get; set; } = "";
-        public List<Talento> Talentos { get; set; } = new List<Talento>();
-    }
+    [Key]
+    public int cod { get; set; }
+
+    public string nome { get; set; } = null!;
+
+    public virtual ICollection<PropostaTrabalho> PropostaTrabalhos { get; set; } = new List<PropostaTrabalho>();
+
+    public virtual ICollection<Talento> Talentos { get; set; } = new List<Talento>();
 }

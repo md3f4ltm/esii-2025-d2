@@ -1,17 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BlazorApp1.Models
+namespace ESII2025d2.Models;
+
+[Table("Experiencia")]
+public partial class Experiencia
 {
-    public class Experiencia
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Titulo { get; set; } = "";
-        public string NomeEmpresa { get; set; } = "";
-        public int AnoComeco { get; set; }
-        public int? AnoFim { get; set; }
-        public int IdTalento { get; set; }
+    [Key]
+    public int id { get; set; }
 
-        public Talento? Talento { get; set; }
-    }
+    public string titulo { get; set; } = null!;
+
+    public string nomeempresa { get; set; } = null!;
+
+    public int anocomeco { get; set; }
+
+    public int? anofim { get; set; }
+
+    public int idtalento { get; set; }
+
+    [ForeignKey("idtalento")]
+    public virtual Talento idtalentoNavigation { get; set; } = null!;
 }

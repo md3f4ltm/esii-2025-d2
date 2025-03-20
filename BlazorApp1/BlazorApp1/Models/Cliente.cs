@@ -1,17 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
-namespace BlazorApp1.Models
+namespace ESII2025d2.Models;
+
+[Table("Cliente")]
+public partial class Cliente
 {
-    public class Cliente
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Empresa { get; set; } = "";
-        public string NumeroTelefone { get; set; } = "";
-        // Foreign key property
-        public string UserId { get; set; } = "";
+    [Key]
+    public int id { get; set; }
 
-        // Navigation property for related ApplicationUser
-        public ApplicationUser? User { get; set; }
-    }
+    public string empresa { get; set; } = null!;
+
+    public string numerotelefone { get; set; } = null!;
+
+    public int idutilizador { get; set; }
+
+    public virtual ICollection<PropostaTrabalho> PropostaTrabalhos { get; set; } = new List<PropostaTrabalho>();
+
+    [JsonIgnore]
+    [ForeignKey("idutilizador")]
+    public virtual Utilizador? idutilizadorNavigation { get; set; }
 }

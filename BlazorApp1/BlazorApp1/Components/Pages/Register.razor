@@ -1,0 +1,74 @@
+@page "/register"
+@using ESII2025d2.Models
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<PageTitle>Criar Conta</PageTitle>
+
+<div class="container">
+    <h1>Criar uma Conta Nova</h1>
+
+    <div class="input-row">
+        <input type="text" id="nome" @bind="Nome" placeholder="Nome"/>
+        <input type="text" id="apelido" @bind="Apelido" placeholder="Apelido"/>
+    </div>
+
+    <input type="email" id="email" @bind="Email" placeholder="E-mail"/>
+    <input type="password" id="password" @bind="Password" placeholder="Palavra-passe"/>
+
+    <button id="register" @onclick="Registar">Criar Conta</button>
+
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <p style="color:red">@ErrorMessage</p>
+    }
+</div>
+
+@code {
+    private string Nome { get; set; }
+    private string Apelido { get; set; }
+    private string Email { get; set; }
+    private string Password { get; set; }
+    private string ErrorMessage { get; set; }
+
+    private async Task Registar()
+    {
+        ErrorMessage = ""; // Limpar mensagens de erro
+
+        if (string.IsNullOrWhiteSpace(Nome) || string.IsNullOrWhiteSpace(Apelido) || 
+            string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+        {
+            ErrorMessage = "Todos os campos são obrigatórios!";
+            return;
+        }
+
+        // Criar o objeto de utilizador para envio
+        var novoUtilizador = new Utilizador
+        {
+            nome = Nome,
+            //apelido = Apelido,
+            email = Email,
+            palavra_passe = Password
+        };
+
+        try
+        {
+            // Enviar o novo utilizador para a API
+            var response = await Http.PostAsJsonAsync("api/Utilizador", novoUtilizador);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Navegar para a página de login após registo bem-sucedido
+                Navigation.NavigateTo("/login");
+            }
+            else
+            {
+                ErrorMessage = "Erro ao registar utilizador. Tente novamente.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Erro: {ex.Message}";
+        }
+    }
+}
