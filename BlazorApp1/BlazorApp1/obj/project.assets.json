@@ -3348,19 +3348,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/danielgoncalves/.nuget/packages/": {}
+    "/home/micael/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/danielgoncalves/Desktop/EI/ESII/esii2025d2test/ESII2025d2.csproj",
+      "projectUniqueName": "/home/micael/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/ESII2025d2.csproj",
       "projectName": "ESII2025d2",
-      "projectPath": "/Users/danielgoncalves/Desktop/EI/ESII/esii2025d2test/ESII2025d2.csproj",
-      "packagesPath": "/Users/danielgoncalves/.nuget/packages/",
-      "outputPath": "/Users/danielgoncalves/Desktop/EI/ESII/esii2025d2test/obj/",
+      "projectPath": "/home/micael/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/ESII2025d2.csproj",
+      "packagesPath": "/home/micael/.nuget/packages/",
+      "outputPath": "/home/micael/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/danielgoncalves/.nuget/NuGet/NuGet.Config"
+        "/home/micael/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3425,6 +3425,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.14, 8.0.14]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -3433,7 +3439,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.406/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.407/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
