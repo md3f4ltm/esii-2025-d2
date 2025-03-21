@@ -3348,19 +3348,19 @@
     ]
   },
   "packageFolders": {
-    "/home/micaelc/.nuget/packages/": {}
+    "/Users/danielgoncalves/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/ESII2025d2.csproj",
+      "projectUniqueName": "/Users/danielgoncalves/Desktop/EI/ESII/esii2025d2test/ESII2025d2.csproj",
       "projectName": "ESII2025d2",
-      "projectPath": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/ESII2025d2.csproj",
-      "packagesPath": "/home/micaelc/.nuget/packages/",
-      "outputPath": "/home/micaelc/Documents/esii-2025-d2/BlazorApp1/BlazorApp1/obj/",
+      "projectPath": "/Users/danielgoncalves/Desktop/EI/ESII/esii2025d2test/ESII2025d2.csproj",
+      "packagesPath": "/Users/danielgoncalves/.nuget/packages/",
+      "outputPath": "/Users/danielgoncalves/Desktop/EI/ESII/esii2025d2test/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/micaelc/.nuget/NuGet/NuGet.Config"
+        "/Users/danielgoncalves/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3378,6 +3378,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -3420,12 +3425,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.14, 8.0.14]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -3434,7 +3433,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.114/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.406/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

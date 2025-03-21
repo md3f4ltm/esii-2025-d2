@@ -1,0 +1,30 @@
+@page "/login"
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@inject NavigationManager Navigation
+
+<PageTitle>Login</PageTitle>
+
+<h1 class="header">Plataforma de Gestão de Talentos IT</h1>
+
+<div class="container">
+    <input type="email" id="email" @bind="Email" placeholder="Digite o seu e-mail" />
+    <p></p>
+    <input type="password" id="password" @bind="Password" placeholder="Palavra-passe" />
+    <p></p>
+    <a id="login" class="btn btn-secondary" href="/">Iniciar Sessão</a>
+    <p></p>
+    <hr class="divider"/>
+    <p></p>
+    <a id="register" class="btn btn-secondary register" href="/register">Criar Nova Conta</a>
+    
+</div>
+
+@code {
+
+    private string Email { get; set; } = "";
+    private string Password { get; set; } = "";
+
+    
+}

@@ -1,74 +1,83 @@
 @page "/register"
-@using ESII2025d2.Models
-@inject HttpClient Http
-@inject NavigationManager Navigation
 
-<PageTitle>Criar Conta</PageTitle>
+<PageTitle>Register</PageTitle>
 
 <div class="container">
-    <h1>Criar uma Conta Nova</h1>
-
+    <h1 class="custom-text">Criar uma conta nova</h1>
+    <p></p>
+    <hr class="divider"/>
+    
     <div class="input-row">
-        <input type="text" id="nome" @bind="Nome" placeholder="Nome"/>
+        <input type="text" id="nome" @bind="Nome" placeholder="Nome Próprio"/>
         <input type="text" id="apelido" @bind="Apelido" placeholder="Apelido"/>
     </div>
+    
+    <p></p>
+    <h3 class="custom-text">Data de nascimento</h3>
+    <p></p>
+    <div class="dob">
+        <label for="day">Dia:</label>
+        <select id="day" @bind="Dia" class="select-style">
+            @for (int i = 1; i <= 31; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
 
-    <input type="email" id="email" @bind="Email" placeholder="E-mail"/>
+        <label for="month">Mês:</label>
+        <select id="month" @bind="Mes" class="select-style">
+            @foreach (var month in Months)
+            {
+                <option value="@month">@month</option>
+            }
+        </select>
+
+        <label for="year">Ano:</label>
+        <select id="year" @bind="Ano" class="select-style">
+            @for (int i = 1900; i <= DateTime.Now.Year; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </div>
+    <p></p>
+    <input type="text" id="username" @bind="Username" placeholder="Nome de Utilizador"/>
+    
+    <input type="email" id="email" @bind="Email" placeholder="Digite o seu e-mail"/>
+    <p></p>
     <input type="password" id="password" @bind="Password" placeholder="Palavra-passe"/>
+    <p></p>
+    
+    <button id="login" @onclick="Login" class="btn-login">Criar conta</button>
 
-    <button id="register" @onclick="Registar">Criar Conta</button>
-
-    @if (!string.IsNullOrEmpty(ErrorMessage))
-    {
-        <p style="color:red">@ErrorMessage</p>
-    }
+    <hr class="divider"/>
 </div>
 
 @code {
-    private string Nome { get; set; }
-    private string Apelido { get; set; }
-    private string Email { get; set; }
-    private string Password { get; set; }
-    private string ErrorMessage { get; set; }
+    private string Nome { get; set; } = "";
+    private string Apelido { get; set; } = "";
+    private string Username { get; set; } = "";
+    private string Email { get; set; } = "";
+    private string Password { get; set; } = "";
+    private string Dia { get; set; } = DateTime.Now.Day.ToString();
+    private string Mes { get; set; } = DateTime.Now.Month.ToString();
+    private string Ano { get; set; } = DateTime.Now.Year.ToString(); // Inicializa com o ano atual
+    private string ErrorMessage { get; set; } = "";
 
-    private async Task Registar()
+    // Lista de meses abreviados
+    private List<string> Months = new List<string>
     {
-        ErrorMessage = ""; // Limpar mensagens de erro
+        "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", 
+        "Jul", "Ago", "Set", "Out", "Nov", "Dez"
+    };
 
-        if (string.IsNullOrWhiteSpace(Nome) || string.IsNullOrWhiteSpace(Apelido) || 
-            string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+    private void Login()
+    {
+        if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
         {
-            ErrorMessage = "Todos os campos são obrigatórios!";
+            ErrorMessage = "Por favor, preencha ambos os campos!";
             return;
         }
-
-        // Criar o objeto de utilizador para envio
-        var novoUtilizador = new Utilizador
-        {
-            nome = Nome,
-            //apelido = Apelido,
-            email = Email,
-            palavra_passe = Password
-        };
-
-        try
-        {
-            // Enviar o novo utilizador para a API
-            var response = await Http.PostAsJsonAsync("api/Utilizador", novoUtilizador);
-
-            if (response.IsSuccessStatusCode)
-            {
-                // Navegar para a página de login após registo bem-sucedido
-                Navigation.NavigateTo("/login");
-            }
-            else
-            {
-                ErrorMessage = "Erro ao registar utilizador. Tente novamente.";
-            }
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = $"Erro: {ex.Message}";
-        }
+        Console.WriteLine("Login registado");
     }
 }
