@@ -1,102 +1,142 @@
 using ESII2025d2.Models;
+using ESII2025d2.Models.Dtos;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ESII2025d2.Controllers;
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class UtilizadorController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly UserManager<Utilizador> _userManager;
 
-    public UtilizadorController(ApplicationDbContext context)
+    public UtilizadorController(ApplicationDbContext context, UserManager<Utilizador> userManager)
     {
         _context = context;
+        _userManager = userManager;
     }
 
+    // GET: api/Utilizador
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Utilizador>>> GetUtilizador()
+    [AllowAnonymous]
+    public async Task<ActionResult<IEnumerable<UserInfoDto>>> GetUtilizadores()
     {
-        return await _context.Utilizadores.ToListAsync();
-    }
-    
-    [HttpPost]
-    public async Task<ActionResult<Utilizador>> CreateUtilizador(Utilizador novoUtilizador)
-    {
-        if (await _context.Utilizadores.AnyAsync(u => u.email == novoUtilizador.email))
-        {
-            return Conflict("Já existe um utilizador com este e-mail.");
-        }
-
-        _context.Utilizadores.Add(novoUtilizador);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetUtilizador), new { id = novoUtilizador.id }, novoUtilizador);
-    }
-    
-    private bool UtilizadorExists(int id)
-    {
-        return _context.Utilizadores.Any(u => u.id == id);
+        return await _context.Users
+            .Select(u => new UserInfoDto {
+                Id = u.Id,
+                Email = u.Email,
+                Username = u.UserName,
+                Nome = u.nome
+            })
+            .ToListAsync();
     }
 
-    
-    // PUT: api/Utilizador/5
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUtilizador(int id, Utilizador utilizadorAtualizado)
+    // GET: api/Utilizador/{id}
+    [HttpGet("{id}")]
+    [AllowAnonymous]
+    public async Task<ActionResult<UserInfoDto>> GetUtilizador(string id)
     {
-        if (id != utilizadorAtualizado.id)
-        {
-            return BadRequest("O ID do utilizador não corresponde.");
-        }
-        
-        var talento = await _context.Talentos.FirstOrDefaultAsync(t => t.idutilizador == id);
-        if (talento != null)
-        {
-            // Atualizar os dados no talento também
-            talento.nome = utilizadorAtualizado.nome;
-            talento.email = utilizadorAtualizado.email;
-            _context.Entry(talento).State = EntityState.Modified;
-        }
+        var user = await _userManager.FindByIdAsync(id);
 
-        _context.Entry(utilizadorAtualizado).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!UtilizadorExists(id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-        return NoContent();
-    }
-    
-    // DELETE: api/Utilizador/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUtilizador(int id)
-    {
-        var utilizador = await _context.Utilizadores.FindAsync(id);
-        if (utilizador == null)
+        if (user == null)
         {
             return NotFound();
         }
 
-        _context.Utilizadores.Remove(utilizador);
-        await _context.SaveChangesAsync();
+        var userInfo = new UserInfoDto
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Username = user.UserName,
+            Nome = user.nome
+        };
+        return Ok(userInfo);
+    }
+
+    // PUT: api/Utilizador/{id}
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateUtilizador(string id, UserInfoDto updatedUserDto)
+    {
+        if (id != updatedUserDto.Id)
+        {
+            return BadRequest("ID mismatch.");
+        }
+
+        var currentUserId = _userManager.GetUserId(User);
+        // Uncomment if you implement role-based authorization
+        // if (currentUserId != id && !User.IsInRole("Admin"))
+        // {
+        //     return Forbid();
+        // }
+
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        // Update custom properties
+        user.nome = updatedUserDto.Nome;
+
+        var updateResult = await _userManager.UpdateAsync(user);
+
+        if (!updateResult.Succeeded)
+        {
+            foreach(var error in updateResult.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+            return BadRequest(ModelState);
+        }
+
+        var talento = await _context.Talentos.FirstOrDefaultAsync(t => t.idutilizador.ToString() == id);
+        if (talento != null)
+        {
+            talento.nome = user.nome;
+            talento.email = user.Email;
+            _context.Entry(talento).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
 
         return NoContent();
     }
-    
+
+    // DELETE: api/Utilizador/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUtilizador(string id)
+    {
+        var currentUserId = _userManager.GetUserId(User);
+        // Uncomment if you implement role-based authorization
+        // if (currentUserId != id && !User.IsInRole("Admin"))
+        // {
+        //     return Forbid();
+        // }
+
+        var user = await _userManager.FindByIdAsync(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        var result = await _userManager.DeleteAsync(user);
+
+        if (!result.Succeeded)
+        {
+            return BadRequest(result.Errors);
+        }
+
+        return NoContent();
+    }
+
+    // Helper method to check if user exists
+    private bool UtilizadorExists(string id)
+    {
+        return _context.Users.Any(u => u.Id == id);
+    }
 }

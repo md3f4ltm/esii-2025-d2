@@ -19,7 +19,7 @@ public partial class PropostaTrabalho
 
     public string? descricao { get; set; }
 
-    public int? cliente_id { get; set; }
+    public string? cliente_id { get; set; } 
 
     public int? cattalento_cod { get; set; }
 

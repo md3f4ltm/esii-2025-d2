@@ -10,13 +10,13 @@ namespace ESII2025d2.Models;
 public partial class Cliente
 {
     [Key]
-    public int id { get; set; }
 
+    public string id { get; set; }
     public string empresa { get; set; } = null!;
 
     public string numerotelefone { get; set; } = null!;
 
-    public int idutilizador { get; set; }
+    public string idutilizador { get; set; } = null!;
 
     public virtual ICollection<PropostaTrabalho> PropostaTrabalhos { get; set; } = new List<PropostaTrabalho>();
 

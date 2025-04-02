@@ -21,7 +21,7 @@ public partial class Talento
 
     public int? codcategoriatalento { get; set; }
 
-    public int idutilizador { get; set; }
+    public String idutilizador { get; set; }
 
     public virtual ICollection<Experiencia> Experiencia { get; set; } = new List<Experiencia>();
 

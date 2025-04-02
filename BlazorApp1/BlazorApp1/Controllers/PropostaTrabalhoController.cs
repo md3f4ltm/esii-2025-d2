@@ -4,9 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ESII2025d2.Controllers;
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
 [Route("api/[controller]")]
 [ApiController]
 public class PropostaTrabalhoController : ControllerBase
@@ -24,13 +21,13 @@ public class PropostaTrabalhoController : ControllerBase
         return await _context.PropostaTrabalhos.ToListAsync();
     }
     
-        [HttpGet("{id}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<PropostaTrabalho>> GetPropostaTrabalho(int id)
     {
         var proposta = await _context.PropostaTrabalhos
-            .Include(p => p.cliente_id) // Inclui o cliente associado
-            .Include(p => p.cattalento_cod) // Inclui a categoria do talento
-            .Include(p => p.codskill) // Inclui a skill associada
+            .Include(p => p.cliente) // Inclui o cliente associado
+            .Include(p => p.cattalento_codNavigation) // Inclui a categoria do talento
+            .Include(p => p.codskillNavigation) // Inclui a skill associada
             .FirstOrDefaultAsync(p => p.cod == id);
 
         if (proposta == null)
@@ -46,8 +43,11 @@ public class PropostaTrabalhoController : ControllerBase
     public async Task<ActionResult<PropostaTrabalho>> CreatePropostaTrabalho(PropostaTrabalho novaProposta)
     {
         // Verifica se os IDs referenciados existem
-        if (!await _context.Clientes.AnyAsync(c => c.id == novaProposta.cliente_id))
-            return BadRequest("Cliente não encontrado.");
+        if (!string.IsNullOrEmpty(novaProposta.cliente_id))
+        {
+            if (!await _context.Clientes.AnyAsync(c => c.id == novaProposta.cliente_id))
+                return BadRequest("Cliente não encontrado.");
+        }
 
         if (!await _context.CategoriasTalento.AnyAsync(ct => ct.cod == novaProposta.cattalento_cod))
             return BadRequest("Categoria de Talento não encontrada.");
@@ -70,8 +70,11 @@ public class PropostaTrabalhoController : ControllerBase
             return BadRequest("O ID da proposta não corresponde.");
         }
 
-        if (!await _context.Clientes.AnyAsync(c => c.id == propostaAtualizada.cliente_id))
-            return BadRequest("Cliente não encontrado.");
+        if (!string.IsNullOrEmpty(propostaAtualizada.cliente_id))
+        {
+            if (!await _context.Clientes.AnyAsync(c => c.id == propostaAtualizada.cliente_id))
+                return BadRequest("Cliente não encontrado.");
+        }
 
         if (!await _context.CategoriasTalento.AnyAsync(ct => ct.cod == propostaAtualizada.cattalento_cod))
             return BadRequest("Categoria de Talento não encontrada.");
@@ -120,5 +123,4 @@ public class PropostaTrabalhoController : ControllerBase
     {
         return _context.PropostaTrabalhos.Any(p => p.cod == id);
     }
-    
 }

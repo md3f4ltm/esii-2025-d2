@@ -1,0 +1,82 @@
+@page "/profile"
+@using System.Security.Claims // Needed for ClaimTypes
+@using Microsoft.AspNetCore.Authorization // Needed for [Authorize] attribute
+@using Microsoft.AspNetCore.Components.Authorization
+
+@* Ensures only logged-in users can access this page *@
+@attribute [Authorize]
+
+<PageTitle>User Profile</PageTitle>
+
+<h1>User Profile</h1>
+
+@if (userInfoLoaded)
+{
+    if (isAuthenticated)
+    {
+        <p><strong>Welcome, @userName!</strong></p>
+        <p>This is your profile page.</p>
+        @* You could add more user details here later if needed *@
+    }
+    else
+    {
+        @* This part should ideally not be reached due to the [Authorize] attribute *@
+        <p>Cannot display profile information. User is not authenticated.</p>
+    }
+}
+else
+{
+    <p><em>Loading user information...</em></p>
+}
+
+
+@code {
+    private string? userName;
+    private bool isAuthenticated = false;
+    private bool userInfoLoaded = false;
+
+    // Use CascadingParameter to get the AuthenticationState task
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthenticationStateTask == null) {
+            // Handle case where the cascading parameter might not be available yet
+            // Although usually reliable in standard setups.
+            return;
+        }
+
+        var authState = await AuthenticationStateTask;
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            isAuthenticated = true;
+
+            // Attempt to get the user's name.
+            // 1. User.Identity.Name is often populated by default from the UserName.
+            userName = user.Identity.Name;
+
+            // 2. If User.Identity.Name is null/empty, try the standard Name claim.
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                userName = user.FindFirst(ClaimTypes.Name)?.Value;
+            }
+
+            // 3. If still no name, provide a fallback.
+            //    You might need to check which claim holds the desired name in your specific setup
+            //    (e.g., if you added a custom "FullName" claim during login).
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                userName = "(Name claim not found)";
+            }
+        }
+        else
+        {
+            isAuthenticated = false;
+        }
+
+        userInfoLoaded = true; // Indicate that loading is complete
+    }
+}
