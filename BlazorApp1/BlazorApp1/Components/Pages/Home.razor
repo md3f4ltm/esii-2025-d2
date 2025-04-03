@@ -3,16 +3,3 @@
 @inject HttpClient Http
 
 <PageTitle>Home</PageTitle>
-
-
-
-
-@code{
-
-    Cliente[] clientes;
-    
-    protected override async Task OnInitializedAsync()
-    {
-        clientes = await Http.GetFromJsonAsync<Cliente[]>("api/Cliente");
-    }
-}

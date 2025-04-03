@@ -26,6 +26,9 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         
+        modelBuilder.Entity<Utilizador>()
+            .ToTable("Utilizador");
+        
 
     }
 }
