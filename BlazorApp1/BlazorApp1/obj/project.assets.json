@@ -5216,19 +5216,19 @@
     ]
   },
   "packageFolders": {
-    "/home/null/.nuget/packages/": {}
+    "/home/ne/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/null/Documents/GitRep/esii-2025-d2/BlazorApp1/BlazorApp1/ESII2025d2.csproj",
+      "projectUniqueName": "/home/ne/Documents/gitRep/esii-2025-d2/BlazorApp1/BlazorApp1/ESII2025d2.csproj",
       "projectName": "ESII2025d2",
-      "projectPath": "/home/null/Documents/GitRep/esii-2025-d2/BlazorApp1/BlazorApp1/ESII2025d2.csproj",
-      "packagesPath": "/home/null/.nuget/packages/",
-      "outputPath": "/home/null/Documents/GitRep/esii-2025-d2/BlazorApp1/BlazorApp1/obj/",
+      "projectPath": "/home/ne/Documents/gitRep/esii-2025-d2/BlazorApp1/BlazorApp1/ESII2025d2.csproj",
+      "packagesPath": "/home/ne/.nuget/packages/",
+      "outputPath": "/home/ne/Documents/gitRep/esii-2025-d2/BlazorApp1/BlazorApp1/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/null/.nuget/NuGet/NuGet.Config"
+        "/home/ne/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -5300,7 +5300,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.114/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/8.0.114/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -97,4 +97,14 @@ public class SkillController : ControllerBase
         return _context.Skills.Any(s => s.cod == id);
     }
     
+    [HttpGet("utilizador/{id}")]
+    public async Task<ActionResult<IEnumerable<Skill>>> GetSkillsUtilizador(int id)
+    {
+        var skills = await _context.Talento_Skill
+            .Where(ts => ts.Talento.idUtilizador == id) // Filtra pelo utilizador logado
+            .Select(ts => ts.Skill) // Retorna apenas as Skills associadas
+            .ToListAsync();
+
+        return Ok(skills);
+}
 }
