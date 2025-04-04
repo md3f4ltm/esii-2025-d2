@@ -9,10 +9,4 @@
 
 @code{
 
-    Cliente[] clientes;
-    
-    protected override async Task OnInitializedAsync()
-    {
-        clientes = await Http.GetFromJsonAsync<Cliente[]>("api/Cliente");
-    }
 }

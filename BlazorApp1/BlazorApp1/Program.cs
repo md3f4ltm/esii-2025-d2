@@ -1,5 +1,5 @@
 using ESII2025d2.Components; // Likely your App component location
-using ESII2025d2.Models;     // Your Utilizador and ApplicationDbContext location
+using ESII2025d2.Models;    // Your Utilizador and ApplicationDbContext location
 using Microsoft.AspNetCore.Components; // For NavigationManager
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,15 +7,14 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- FROM CONFIG 1: Database Context ---
+// --- Database Context ---
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// --- FROM CONFIG 1: Full Identity Setup ---
+// --- Identity Setup ---
 builder.Services.AddIdentity<Utilizador, IdentityRole>(options =>
     {
-        // Configure Identity options here if needed
         options.Password.RequireDigit = true;
         options.Password.RequiredLength = 6;
         options.Password.RequireLowercase = false;
@@ -24,53 +23,44 @@ builder.Services.AddIdentity<Utilizador, IdentityRole>(options =>
         options.SignIn.RequireConfirmedAccount = false;
         options.User.RequireUniqueEmail = true;
     })
-    .AddEntityFrameworkStores<ApplicationDbContext>() // Use EF Core
-    .AddDefaultTokenProviders(); // Standard tokens
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
-// --- FROM CONFIG 1: Configure Application Cookie ---
-// Use this INSTEAD of Config 2's AddAuthentication().AddCookie()
+// --- Application Cookie Configuration ---
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
-    options.LoginPath = "/login"; // Path handled by Blazor component
-    options.AccessDeniedPath = "/Account/AccessDenied"; // Or another Blazor page
+    options.LoginPath = "/login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
     options.SlidingExpiration = true;
+    options.Cookie.SameSite = SameSiteMode.Lax; 
 
-    // Keep these events if your Blazor app makes API calls and needs 401/403
-    options.Events.OnRedirectToLogin = context => {
-        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-        return Task.CompletedTask;
-    };
-    options.Events.OnRedirectToAccessDenied = context => {
-         context.Response.StatusCode = StatusCodes.Status403Forbidden;
-         return Task.CompletedTask;
-    };
-});
+   });
 
-// --- FROM CONFIG 1: Add Auth Services ---
-// AddAuthentication is implicitly called by AddIdentity, but explicitly adding is fine.
-// AddAuthorization is needed.
-builder.Services.AddAuthentication(); // Ensure Authentication services are added
-builder.Services.AddAuthorization(); // Ensure Authorization services are added
+// --- Auth Services ---
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
+// *** Antiforgery Services ***
+builder.Services.AddAntiforgery();
 
-// --- FROM CONFIG 2: Blazor Web App Services ---
+// --- Blazor Web App Services ---
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents(); // Or .AddInteractiveWebAssemblyComponents() if needed
+    .AddInteractiveServerComponents();
 
 // Add Controllers for your API endpoints
-builder.Services.AddControllers();
+// REMOVED .ConfigureApiBehaviorOptions - Not needed for current controller logic
+builder.Services.AddControllersWithViews();
 
-// Add HttpClient (using NavigationManager for base URI is better than hardcoding)
-// Use the HttpClient setup from Config 1
+// Add HttpClient
 builder.Services.AddScoped(sp => {
     var navigationManager = sp.GetRequiredService<NavigationManager>();
-    return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
+    var baseAddress = navigationManager.BaseUri.EndsWith('/') ? navigationManager.BaseUri : navigationManager.BaseUri + "/";
+    return new HttpClient { BaseAddress = new Uri(baseAddress) };
 });
 
-
-// --- Swagger Setup (from either config, this is fine) ---
+// --- Swagger Setup ---
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -86,9 +76,10 @@ var app = builder.Build();
 // --- Middleware Pipeline ---
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage(); // More detailed errors in dev
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "esii2025d2 API V1"));
+    // app.UseMigrationsEndPoint();
 }
 else
 {
@@ -101,21 +92,18 @@ app.UseStaticFiles();
 
 app.UseRouting(); // Needed before Auth
 
-// --- FROM CONFIG 1 & 2: Authentication/Authorization Middleware ---
-// Order is crucial: Authentication then Authorization
+// Authentication/Authorization Middleware
 app.UseAuthentication();
 app.UseAuthorization();
 
-// --- Antiforgery (Required for interactive components in Blazor Web App) ---
+// Antiforgery Middleware
 app.UseAntiforgery();
 
 // Map API controllers
 app.MapControllers();
 
-// --- FROM CONFIG 2: Map Blazor Components ---
-// Use this INSTEAD of MapFallbackToPage and MapBlazorHub
+// Map Blazor Components
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode(); // Match service registration
-
+    .AddInteractiveServerRenderMode();
 
 app.Run();

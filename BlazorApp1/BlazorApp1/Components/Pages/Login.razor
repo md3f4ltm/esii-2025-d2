@@ -1,10 +1,17 @@
 @page "/login"
-@using System.Net.Http
-@using System.Net.Http.Json
-@using System.Text.Json
-@using ESII2025d2.Models.Dtos
-@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.Authorization
+@attribute [AllowAnonymous] 
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using System.Net.Http // Required for HttpClient
+@using System.Net.Http.Json // Potentially useful for reading error responses
+@using ESII2025d2.Models.Dtos // Make sure LoginDto is defined here
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web // Required for PageTitle component
+
+@* Inject HttpClient to call the API *@
 @inject HttpClient Http
+@inject NavigationManager Navigation
 @inject ILogger<Login> Logger
 
 <PageTitle>Login</PageTitle>
@@ -12,74 +19,158 @@
 <h1 class="header">Plataforma de Gestão de Talentos IT</h1>
 
 <div class="container">
-    <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
-        <DataAnnotationsValidator />
-
-       <input type="email" id="email" @bind="loginModel.Email" placeholder="Digite o seu e-mail" class="form-control mb-2" />
-       <ValidationMessage For="@(() => loginModel.Email)" />
-
-       <input type="password" id="password" @bind="loginModel.Password" placeholder="Palavra-passe" class="form-control mb-2" />
-       <ValidationMessage For="@(() => loginModel.Password)" />
-
-        <div class="form-check mb-2">
-             <input type="checkbox" class="form-check-input" id="rememberMe" @bind="loginModel.RememberMe">
-             <label class="form-check-label" for="rememberMe">Lembrar-me</label>
-        </div>
+    @* FormName is correctly added from the previous step *@
+    <EditForm Model="@loginModel" OnValidSubmit="HandleValidSubmitAsync" FormName="loginForm">
+        <DataAnnotationsValidator /> @* Enables validation based on DTO attributes *@
 
         @if (!string.IsNullOrWhiteSpace(errorMessage))
         {
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger mb-3" role="alert">
                 @errorMessage
             </div>
         }
 
-        <button type="submit" id="login" class="btn btn-secondary">Iniciar Sessão</button>
-        <p></p>
-        <hr class="divider" />
-        <p></p>
-        <a id="register" class="btn btn-secondary register" href="/register">Criar Nova Conta</a>
+        @* <ValidationSummary /> *@
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <InputText id="email" class="form-control" @bind-Value="loginModel.Email" />
+            <ValidationMessage For="@(() => loginModel.Email)" />
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Palavra-passe</label>
+            <InputText type="password" id="password" class="form-control" @bind-Value="loginModel.Password" />
+            <ValidationMessage For="@(() => loginModel.Password)" />
+        </div>
+
+        <div class="form-check mb-3">
+            <InputCheckbox class="form-check-input" id="rememberMe" @bind-Value="loginModel.RememberMe" />
+            <label class="form-check-label" for="rememberMe">Lembrar-me</label>
+        </div>
+
+        <button type="submit" id="login" disabled="@isSubmitting" class="btn btn-secondary w-100 mb-2">
+            @if (isSubmitting)
+            {
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            }
+            Iniciar Sessão
+        </button>
+
+        <hr class="divider my-3" />
+        <a id="register" class="btn btn-outline-secondary w-100 register" href="/register">Criar Nova Conta</a>
     </EditForm>
 </div>
 
 @code {
-    private LoginDto loginModel = new LoginDto();
+    private LoginDto loginModel = new();
     private string? errorMessage;
+    private bool isSubmitting;
 
-    private async Task HandleLogin()
+    // Make sure this LoginDto class definition exists, either here or preferably
+    // in the ESII2025d2.Models.Dtos namespace as your 'using' statement suggests.
+    // It should match the API's expected fields.
+    public class LoginDto // If not defined elsewhere, define it here or move it
     {
-        errorMessage = null; // Clear previous errors
+        [Required(ErrorMessage = "O campo Email é obrigatório.")]
+        [EmailAddress(ErrorMessage = "O formato do Email é inválido.")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "O campo Palavra-passe é obrigatório.")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; } = string.Empty;
+
+        [Display(Name = "Lembrar-me")]
+        public bool RememberMe { get; set; } = false;
+    }
+
+    // Updated method to call the API endpoint
+    private async Task HandleValidSubmitAsync()
+    {
+        Logger.LogWarning(">>> HandleValidSubmitAsync METHOD ENTERED!"); // Add this!
+        Console.WriteLine(">>> HandleValidSubmitAsync METHOD ENTERED!"); // Also log to console
+
+        isSubmitting = true;
+        errorMessage = null;
+        StateHasChanged(); // Update UI to show spinner
+
+        Logger.LogInformation("API Login attempt started for user {Email}", loginModel.Email);
+
         try
         {
-            var response = await Http.PostAsJsonAsync("api/account/login", loginModel);
+            // Construct the multipart/form-data content
+            using var content = new MultipartFormDataContent();
+            content.Add(new StringContent(loginModel.Email), "Email");
+            content.Add(new StringContent(loginModel.Password), "Password");
+            // Convert boolean to string for form data
+            content.Add(new StringContent(loginModel.RememberMe.ToString().ToLowerInvariant()), "RememberMe");
 
-            if (response.IsSuccessStatusCode)
+            // Construct the full API URL
+            var apiUrl = Navigation.ToAbsoluteUri("/api/Account/login");
+            Logger.LogInformation("Posting login request to {ApiUrl}", apiUrl);
+
+            // Send the POST request
+            var response = await Http.PostAsync(apiUrl, content);
+
+            if (response.IsSuccessStatusCode) // Check for 2xx status codes
             {
-                // Login successful, cookie is set by the server.
-                // Navigate to the home page or dashboard
-                Navigation.NavigateTo("/", forceLoad: true); // forceLoad to ensure auth state is picked up
+                Logger.LogInformation("API Login successful for user {Email}. Status: {StatusCode}", loginModel.Email, response.StatusCode);
+
+                // IMPORTANT: Force a full page reload after successful API login.
+                // This ensures the browser picks up the auth cookie set by the API
+                // and the Blazor app's auth state is updated correctly.
+                Navigation.NavigateTo("/", forceLoad: true);
+                return; // Exit the method after navigation
             }
             else
             {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                Logger?.LogWarning("Login failed: {StatusCode} - {ErrorContent}", response.StatusCode, errorContent);
-                
-                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                {
-                     errorMessage = "E-mail ou palavra-passe inválidos.";
-                } else {
-                     errorMessage = $"Erro no login ({response.StatusCode}). Tente novamente.";
+                // Attempt to read error details from the response body
+                string errorDetail = await response.Content.ReadAsStringAsync();
+                Logger.LogWarning("API Login failed for user {Email}. Status: {StatusCode}. Reason: {ReasonPhrase}. Details: {ErrorDetail}",
+                    loginModel.Email, response.StatusCode, response.ReasonPhrase, errorDetail);
+
+                // Set a user-friendly error message
+                // You might want to parse 'errorDetail' if your API returns structured errors (e.g., JSON)
+                if (!string.IsNullOrWhiteSpace(errorDetail)) {
+                    // Basic check if it might be JSON containing a message property
+                    try {
+                         var errorJson = System.Text.Json.JsonDocument.Parse(errorDetail);
+                         if (errorJson.RootElement.TryGetProperty("message", out var messageElement)) {
+                              errorMessage = messageElement.GetString();
+                         } else if (errorJson.RootElement.TryGetProperty("title", out var titleElement)) { // ASP.NET Core default problem details
+                              errorMessage = titleElement.GetString();
+                         }
+                         else {
+                              errorMessage = $"Erro: {response.ReasonPhrase}"; // Fallback if JSON doesn't have expected fields
+                         }
+                    } catch (System.Text.Json.JsonException) {
+                         errorMessage = errorDetail; // If it's not JSON, display as is (or a generic message)
+                    }
                 }
+
+
+                if (string.IsNullOrWhiteSpace(errorMessage))
+                {
+                     errorMessage = $"Falha no login. Status: {response.StatusCode}"; // Default error
+                }
+
+
             }
         }
-        catch (HttpRequestException ex)
+        catch (HttpRequestException httpEx)
         {
-            Logger?.LogError(ex, "Network error during login.");
-            errorMessage = "Erro de rede ao tentar fazer login. Verifique a sua conexão.";
+             Logger.LogError(httpEx, "Network error during login attempt for {Email}", loginModel.Email);
+             errorMessage = "Erro de rede ao tentar fazer login. Verifique sua conexão.";
         }
         catch (Exception ex)
         {
-            Logger?.LogError(ex, "Unexpected error during login.");
-            errorMessage = "Ocorreu um erro inesperado. Tente novamente mais tarde.";
+            Logger.LogError(ex, "An unexpected error occurred during API login attempt for {Email}", loginModel.Email);
+            errorMessage = "Ocorreu um erro inesperado. Tente novamente.";
+        }
+        finally
+        {
+            isSubmitting = false;
+            StateHasChanged(); // Update UI to hide spinner / show error
         }
     }
 }

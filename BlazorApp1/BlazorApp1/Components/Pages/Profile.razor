@@ -1,4 +1,5 @@
 @page "/profile"
+@rendermode InteractiveServer
 @using System.Security.Claims // Needed for ClaimTypes
 @using Microsoft.AspNetCore.Authorization // Needed for [Authorize] attribute
 @using Microsoft.AspNetCore.Components.Authorization
@@ -35,48 +36,55 @@ else
     private bool isAuthenticated = false;
     private bool userInfoLoaded = false;
 
-    // Use CascadingParameter to get the AuthenticationState task
     [CascadingParameter]
-    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; } = default!; // Initialize to suppress CS8618
+    @inject ILogger<Profile> Logger // Inject logger
 
     protected override async Task OnInitializedAsync()
     {
-        if (AuthenticationStateTask == null) {
-            // Handle case where the cascading parameter might not be available yet
-            // Although usually reliable in standard setups.
-            return;
-        }
+        Logger.LogInformation("Profile OnInitializedAsync started.");
 
-        var authState = await AuthenticationStateTask;
-        var user = authState.User;
+        // No null check needed if CascadingAuthenticationState is guaranteed by App.razor
+        // and [Authorize] ensures user is logged in.
 
-        if (user.Identity != null && user.Identity.IsAuthenticated)
+        try
         {
-            isAuthenticated = true;
+            var authState = await AuthenticationStateTask;
+            Logger.LogInformation("Got authState. User authenticated: {IsAuth}", authState.User?.Identity?.IsAuthenticated ?? false);
 
-            // Attempt to get the user's name.
-            // 1. User.Identity.Name is often populated by default from the UserName.
-            userName = user.Identity.Name;
+            var user = authState.User;
 
-            // 2. If User.Identity.Name is null/empty, try the standard Name claim.
-            if (string.IsNullOrWhiteSpace(userName))
+            if (user?.Identity != null && user.Identity.IsAuthenticated)
             {
-                userName = user.FindFirst(ClaimTypes.Name)?.Value;
+                // Assigning to the now-declared variables
+                isAuthenticated = true;
+                Logger.LogInformation("User IS authenticated.");
+
+                // Simplified username fetching for clarity
+                userName = user.Identity.Name ?? user.FindFirst(ClaimTypes.Name)?.Value ?? "(Name claim not found)";
+
+                Logger.LogInformation("User name found: {UserName}", userName);
             }
-
-            // 3. If still no name, provide a fallback.
-            //    You might need to check which claim holds the desired name in your specific setup
-            //    (e.g., if you added a custom "FullName" claim during login).
-            if (string.IsNullOrWhiteSpace(userName))
+            else
             {
-                userName = "(Name claim not found)";
+                 // Assigning to the now-declared variable
+                isAuthenticated = false;
+                Logger.LogWarning("User IS NOT authenticated despite [Authorize] attribute.");
             }
         }
-        else
+        catch (Exception ex)
         {
+            Logger.LogError(ex, "Error in Profile OnInitializedAsync.");
+            // Assigning to the now-declared variables
             isAuthenticated = false;
+            userName = "(Error loading profile)";
         }
-
-        userInfoLoaded = true; // Indicate that loading is complete
+        finally // Use finally to ensure userInfoLoaded is always set
+        {
+             // Assigning to the now-declared variable
+             userInfoLoaded = true;
+             Logger.LogInformation("Profile OnInitializedAsync finished. userInfoLoaded = true.");
+             StateHasChanged();
+        }
     }
 }
