@@ -10,17 +10,17 @@ namespace ESII2025d2.Models;
 public partial class Utilizador 
 {
     [Key]
-    public int id { get; set; }
+    public int Id { get; set; }
 
-    public string nome { get; set; } = null!;
+    public string Nome { get; set; } = null!;
 
-    public string email { get; set; } = null!;
+    public string Email { get; set; } = null!;
 
-    public string username { get; set; } = null!;
+    public string Username { get; set; } = null!;
 
-    public string palavra_passe { get; set; } = null!;
+    public string Password { get; set; } = null!;
 
-    public DateOnly datanascimento { get; set; }
+    public DateOnly DataNascimento { get; set; }
 
     public virtual ICollection<Cliente> Clientes { get; set; } = new List<Cliente>();
 

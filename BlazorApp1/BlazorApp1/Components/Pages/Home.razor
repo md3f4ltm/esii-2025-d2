@@ -3,3 +3,28 @@
 @inject HttpClient Http
 
 <PageTitle>Home</PageTitle>
+
+<h1>Hello world</h1>
+
+@if (utilizadores == null)
+{
+    <p>Não existem utilizadores.</p>
+}
+else
+{
+    @foreach (var utilizador in utilizadores)
+    {
+        <p>@utilizador.Nome</p>
+    }
+}
+
+@code{
+
+    Utilizador[] utilizadores;
+
+    protected override async Task OnInitializedAsync()
+    {
+        utilizadores = await Http.GetFromJsonAsync<Utilizador[]>("http://localhost:5232/api/Utilizador");
+    }
+
+}

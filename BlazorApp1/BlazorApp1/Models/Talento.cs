@@ -11,11 +11,7 @@ public partial class Talento
     [Key]
     public int id { get; set; }
 
-    public string nome { get; set; } = null!;
-
     public string pais { get; set; } = null!;
-
-    public string email { get; set; } = null!;
 
     public decimal precohora { get; set; }
 

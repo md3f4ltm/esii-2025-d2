@@ -1,135 +1,133 @@
-using System.Security.Cryptography;
+using Microsoft.AspNetCore.Identity;
 using System.Text;
 using ESII2025d2.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
-namespace ESII2025d2.Controllers;
-
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-[Route("api/[controller]")]
-[ApiController]
-public class UtilizadorController : ControllerBase
+namespace ESII2025d2.Controllers
 {
-    private readonly ApplicationDbContext _context;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UtilizadorController : ControllerBase
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly PasswordHasher<Utilizador> _passwordHasher;
 
-    public UtilizadorController(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Utilizador>>> GetUtilizador()
-    {
-        return await _context.Utilizadores.ToListAsync();
-    }
-    
-    [HttpPost]
-    public async Task<ActionResult<Utilizador>> CreateUtilizador([FromBody] Utilizador novoUtilizador)
-    {
-        if (await _context.Utilizadores.AnyAsync(u => u.email == novoUtilizador.email))
+        public UtilizadorController(ApplicationDbContext context)
         {
-            return Conflict("Já existe um utilizador com este e-mail.");
+            _context = context;
+            _passwordHasher = new PasswordHasher<Utilizador>();
         }
 
-        // Encriptar a password antes de guardar
-        novoUtilizador.palavra_passe = HashPassword(novoUtilizador.palavra_passe);
-
-        _context.Utilizadores.Add(novoUtilizador);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetUtilizador), new { id = novoUtilizador.id }, novoUtilizador);
-    }
-    
-    [HttpPost("login")]
-    public async Task<ActionResult<string>> Login([FromBody] LoginRequest request)
-    {
-        var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.email == request.Email);
-
-        if (utilizador == null || utilizador.palavra_passe != HashPassword(request.Password))
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Utilizador>>> GetUtilizador()
         {
-            return Unauthorized("E-mail ou password incorretos.");
+            return await _context.Utilizadores.ToListAsync();
         }
 
-        return Ok($"Login bem-sucedido! Bem-vindo, {utilizador.nome}");
-    }
-
-// Método para encriptar a password (SHA-256)
-    private string HashPassword(string password)
-    {
-        using var sha256 = SHA256.Create();
-        var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-        return Convert.ToBase64String(hashedBytes);
-    }
-    
-    private bool UtilizadorExists(int id)
-    {
-        return _context.Utilizadores.Any(u => u.id == id);
-    }
-
-    
-    // PUT: api/Utilizador/5
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateUtilizador(int id, Utilizador utilizadorAtualizado)
-    {
-        if (id != utilizadorAtualizado.id)
+        [HttpPost]
+        [Route("api/utilizadores")]
+        public async Task<IActionResult> CriarUtilizador([FromBody] Utilizador novoUtilizador)
         {
-            return BadRequest("O ID do utilizador não corresponde.");
-        }
-        
-        var talento = await _context.Talentos.FirstOrDefaultAsync(t => t.idutilizador == id);
-        if (talento != null)
-        {
-            // Atualizar os dados no talento também
-            talento.nome = utilizadorAtualizado.nome;
-            talento.email = utilizadorAtualizado.email;
-            _context.Entry(talento).State = EntityState.Modified;
-        }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        _context.Entry(utilizadorAtualizado).State = EntityState.Modified;
+            var passwordHasher = new PasswordHasher<Utilizador>();
+            novoUtilizador.Password = passwordHasher.HashPassword(novoUtilizador, novoUtilizador.Password);
 
-        try
-        {
+            _context.Utilizadores.Add(novoUtilizador);
             await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Conta criada com sucesso!" });
         }
-        catch (DbUpdateConcurrencyException)
+
+
+
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> Login([FromBody] LoginRequest request)
         {
-            if (!UtilizadorExists(id))
+            var utilizador = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Email == request.Email);
+
+            if (utilizador == null)
+            {
+                return Unauthorized("E-mail ou password incorretos.");
+            }
+
+            // Verificar a senha fornecida com o hash armazenado
+            var result = _passwordHasher.VerifyHashedPassword(utilizador, utilizador.Password, request.Password);
+
+            if (result != PasswordVerificationResult.Success)
+            {
+                return Unauthorized("E-mail ou password incorretos.");
+            }
+
+            return Ok($"Login bem-sucedido! Bem-vindo, {utilizador.Nome}");
+        }
+
+
+        private bool UtilizadorExists(int id)
+        {
+            return _context.Utilizadores.Any(u => u.Id == id);
+        }
+
+        // PUT: api/Utilizador/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUtilizador(int id, Utilizador utilizadorAtualizado)
+        {
+            if (id != utilizadorAtualizado.Id)
+            {
+                return BadRequest("O ID do utilizador não corresponde.");
+            }
+
+            var talento = await _context.Talentos.FirstOrDefaultAsync(t => t.idutilizador == id);
+            if (talento != null)
+            {
+                _context.Entry(talento).State = EntityState.Modified;
+            }
+
+            _context.Entry(utilizadorAtualizado).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UtilizadorExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return NoContent();
+        }
+
+        // DELETE: api/Utilizador/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUtilizador(int id)
+        {
+            var utilizador = await _context.Utilizadores.FindAsync(id);
+            if (utilizador == null)
             {
                 return NotFound();
             }
-            else
-            {
-                throw;
-            }
+
+            _context.Utilizadores.Remove(utilizador);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
-        return NoContent();
     }
-    
-    // DELETE: api/Utilizador/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUtilizador(int id)
+
+    public class LoginRequest
     {
-        var utilizador = await _context.Utilizadores.FindAsync(id);
-        if (utilizador == null)
-        {
-            return NotFound();
-        }
-
-        _context.Utilizadores.Remove(utilizador);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
-    
 }
 
-public class LoginRequest
-{
-    public string Email { get; set; }
-    public string Password { get; set; }
-}

@@ -1,0 +1,95 @@
+@page "/register"
+@using ESII2025d2.Models
+@using ESII2025d2.Models.ViewModels
+@inject ApplicationDbContext ApplicationDbContext
+
+<PageTitle>Criar Conta</PageTitle>
+
+<h1>Criar uma conta nova</h1>
+
+<EditForm Model="@model" OnValidSubmit="CriarConta" FormName="RegisterForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="input-row">
+        <input type="text" @bind="model.Nome" placeholder="Nome Próprio"/>
+        <ValidationMessage For="() => model.Nome" />
+    </div>
+
+    <div class="dob">
+        <label for="day">Dia:</label>
+        <select id="day" @bind="model.Dia">
+            @for (int i = 1; i <= 31; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+        <ValidationMessage For="() => model.Dia" />
+
+        <label for="month">Mês:</label>
+        <select id="month" @bind="model.Mes">
+            @for (int i = 1; i <= 12; i++)
+            {
+                <option value="@i">@Months[i-1]</option>  <!-- i-1 para ajustar à lista de meses -->
+            }
+        </select>
+        <ValidationMessage For="() => model.Mes" />
+
+        <label for="year">Ano:</label>
+        <select id="year" @bind="model.Ano">
+            @for (int i = 1900; i <= DateTime.Now.Year; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+        <ValidationMessage For="() => model.Ano" />
+    </div>
+
+    <input type="text" @bind="model.Username" placeholder="Nome de Utilizador"/>
+    <ValidationMessage For="() => model.Username" />
+    
+    <input type="email" @bind="model.Email" placeholder="Digite o seu e-mail"/>
+    <ValidationMessage For="() => model.Email" />
+    
+    <input type="password" @bind="model.Password" placeholder="Palavra-passe"/>
+    <ValidationMessage For="() => model.Password" />
+
+    <input type="password" @bind="model.ConfirmPassword" placeholder="Confirme a palavra-passe"/>
+    <ValidationMessage For="() => model.ConfirmPassword" />
+
+    <button type="submit">Criar Conta</button>
+</EditForm>
+
+@code {
+    private RegisterViewModel model = new RegisterViewModel();
+
+    
+    private string[] Months = new string[]
+    {
+        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    };
+
+    private async Task CriarConta()
+    {
+        Console.WriteLine($"Nome: {model.Nome}, Username: {model.Username}, Email: {model.Email}");
+        Console.WriteLine($"Data de Nascimento: {model.Dia}/{model.Mes}/{model.Ano}");
+
+        // Lógica para criar conta
+        var user = new Utilizador
+        {
+            Nome = model.Nome,
+            DataNascimento = new DateOnly(model.Ano, model.Mes, model.Dia),
+            Email = model.Email,
+            Username = model.Username,
+            Password = model.Password
+        };
+
+        ApplicationDbContext.Utilizadores.Add(user);
+        await ApplicationDbContext.SaveChangesAsync();
+    }
+
+}
+
+
+

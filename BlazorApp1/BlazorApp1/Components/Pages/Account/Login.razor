@@ -1,0 +1,111 @@
+@page "/login"
+@using System.Net
+@using System.Security.Claims
+@using ESII2025d2.Models
+@using ESII2025d2.Models.ViewModels
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Microsoft.AspNetCore.Identity
+@inject NavigationManager NavigationManager
+@inject ApplicationDbContext ApplicationDbContext
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+
+<PageTitle>Login</PageTitle>
+
+<h1 class="header">Plataforma de Gestão de Talentos IT</h1>
+
+<div class="row">
+    <div class="col-lg-4 offset-lg-4 pt-4 pb-4 border">
+        <EditForm Model="@Model" OnValidSubmit="Authenticate" FormName="LoginForm">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3 text-center flex-column">
+                <h3>Login</h3>
+            </div>
+            <div class="mb-3">
+                <label for="email">E-mail</label>
+                <InputText @bind-Value="Model.Email" class="form-control" placeholder="Introduza o seu e-mail" />
+                <ValidationMessage For="() => Model.Email"/>
+            </div>
+            <div class="mb-3">
+                <label>Palavra-passe</label>
+                <InputText @bind-Value="Model.Password" type="password" class="form-control" placeholder="Introduza a sua palavra-passe" />
+                <ValidationMessage For="() => Model.Password"/>
+            </div>
+            <div class="mb-3 text-center">
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <span class="text-danger">@errorMessage</span>
+                }
+            </div>
+            <div class="mb-3 d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+
+    [SupplyParameterFromForm]
+    public LoginViewModel Model { get; set; } = new();
+
+    private string? errorMessage;
+
+    private bool showAlert = false;
+
+    private async Task Authenticate()
+    {
+        if (HttpContext == null)
+        {
+            Console.WriteLine("HttpContext é null!");
+            return;
+        }
+
+        var Utilizador = ApplicationDbContext.Utilizadores.Where(x => x.Email == Model.Email).FirstOrDefault();
+        if (Utilizador == null)
+        {
+            errorMessage = "Utilizador não encontrado.";
+            return;
+        }
+
+        // Criação de um PasswordHasher para verificar a senha fornecida
+        var passwordHasher = new PasswordHasher<Utilizador>();
+
+        // Verifica se a senha fornecida corresponde ao hash armazenado
+        var result = passwordHasher.VerifyHashedPassword(Utilizador, Utilizador.Password, Model.Password);
+
+        if (result != PasswordVerificationResult.Success)
+        {
+            errorMessage = "Palavra-passe inválida.";
+            return;
+        }
+
+        // Se a senha estiver correta, autentica o usuário
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Email, Model.Email)
+        };
+
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+        await HttpContext.SignInAsync(principal);
+
+        // Redirecionar para a página inicial após login
+        NavigationManager.NavigateTo("/");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && showAlert)
+        {
+            await JS.InvokeVoidAsync("alert", "A função Authenticate() foi chamada!");
+            showAlert = false; // Reseta a flag após mostrar o alerta
+        }
+    }
+}
+

@@ -122,12 +122,9 @@ public partial class esii2025d2Context : DbContext
             entity.HasKey(e => e.id).HasName("talento_pkey");
 
             entity.ToTable("Talento");
-
-            entity.HasIndex(e => e.email, "talento_email_key").IsUnique();
+            
 
             entity.Property(e => e.id).HasDefaultValueSql("nextval('talento_id_seq'::regclass)");
-            entity.Property(e => e.email).HasMaxLength(255);
-            entity.Property(e => e.nome).HasMaxLength(255);
             entity.Property(e => e.pais).HasMaxLength(100);
             entity.Property(e => e.precohora).HasPrecision(10, 2);
 
@@ -160,21 +157,21 @@ public partial class esii2025d2Context : DbContext
 
         modelBuilder.Entity<Utilizador>(entity =>
         {
-            entity.HasKey(e => e.id).HasName("utilizador_pkey");
+            entity.HasKey(e => e.Id).HasName("utilizador_pkey");
 
             entity.ToTable("Utilizador");
 
-            entity.HasIndex(e => e.email, "utilizador_email_key").IsUnique();
+            entity.HasIndex(e => e.Email, "utilizador_email_key").IsUnique();
 
-            entity.HasIndex(e => e.username, "utilizador_username_key").IsUnique();
+            entity.HasIndex(e => e.Username, "utilizador_username_key").IsUnique();
 
-            entity.Property(e => e.id).HasDefaultValueSql("nextval('utilizador_id_seq'::regclass)");
-            entity.Property(e => e.email).HasMaxLength(255);
-            entity.Property(e => e.nome).HasMaxLength(255);
-            entity.Property(e => e.palavra_passe)
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('utilizador_id_seq'::regclass)");
+            entity.Property(e => e.Email).HasMaxLength(255);
+            entity.Property(e => e.Nome).HasMaxLength(255);
+            entity.Property(e => e.Password)
                 .HasMaxLength(255)
                 .HasColumnName("palavra-passe");
-            entity.Property(e => e.username).HasMaxLength(50);
+            entity.Property(e => e.Username).HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);

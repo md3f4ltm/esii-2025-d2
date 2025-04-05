@@ -11,11 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Adicionar DbContext e configurar a Connection String
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString)
 );
+
 
 // Adicionar suporte a Razor Pages e Blazor
 builder.Services.AddRazorPages();
@@ -29,6 +29,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.Cookie.Name = "auth_token";
         options.LoginPath = "/login";
+        options.LogoutPath = "/logout";
         options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
         options.AccessDeniedPath = "/access_denied";
     });
