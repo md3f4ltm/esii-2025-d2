@@ -23,7 +23,7 @@ else
         <input type="text" @bind="user.Name" placeholder="Enter your name" />
     </h4>
 
-    @if (user.UserType == UserType.Talent)
+    @if (user != null)
     {
         <h4>Skills:</h4>
         <ul>

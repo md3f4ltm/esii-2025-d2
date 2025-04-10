@@ -3,6 +3,7 @@
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Identity
 @using esii_2025_d2.Data
+@using System.Linq 
 
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
@@ -19,24 +20,56 @@
         <EditForm Model="Input" FormName="profile" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" role="alert" />
+
+            @* Username (read-only) *@
             <div class="form-floating mb-3">
-                <input type="text" value="@username" id="username" class="form-control" placeholder="Choose your username." disabled />
+                <input type="text" value="@username" id="username" class="form-control" placeholder="Username" disabled />
                 <label for="username" class="form-label">Username</label>
             </div>
+
+            @* Name (editable) *@
             <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.PhoneNumber" id="Input.PhoneNumber" class="form-control" placeholder="Enter your phone number" />
-                <label for="Input.PhoneNumber" class="form-label">Phone number</label>
+                <InputText @bind-Value="Input.Name" id="name" class="form-control" placeholder="Enter your name" />
+                <label for="name" class="form-label">Name</label>
+                <ValidationMessage For="() => Input.Name" class="text-danger" />
+            </div>
+
+            @* Phone number (editable) *@
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.PhoneNumber" id="phone-number" class="form-control" placeholder="Enter your phone number" />
+                <label for="phone-number" class="form-label">Phone number</label>
                 <ValidationMessage For="() => Input.PhoneNumber" class="text-danger" />
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Save Profile</button>
         </EditForm>
     </div>
+
+     @* Display Roles (read-only) - Colocado fora do formulário de edição *@
+     <div class="col-xl-6 mt-4 mt-xl-0">
+          <h5>Your Roles</h5>
+          @if (userRoles.Any())
+          {
+              <ul class="list-unstyled">
+                   @foreach (var role in userRoles)
+                   {
+                       <li>@role</li>
+                   }
+              </ul>
+          }
+          else
+          {
+              <p>You have not been assigned any roles.</p>
+          }
+     </div>
 </div>
 
 @code {
     private ApplicationUser user = default!;
     private string? username;
+    private string? originalName; // Variável para guardar o nome original
     private string? phoneNumber;
+    private IList<string> userRoles = new List<string>(); // Lista para guardar as roles
 
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
@@ -49,28 +82,80 @@
         user = await UserAccessor.GetRequiredUserAsync(HttpContext);
         username = await UserManager.GetUserNameAsync(user);
         phoneNumber = await UserManager.GetPhoneNumberAsync(user);
+        originalName = user.Name; // Carregar o nome do objeto user
+        userRoles = await UserManager.GetRolesAsync(user); // Carregar as roles
 
+        // Inicializar o InputModel com os valores atuais
         Input.PhoneNumber ??= phoneNumber;
+        Input.Name ??= originalName;
     }
 
     private async Task OnValidSubmitAsync()
     {
-        if (Input.PhoneNumber != phoneNumber)
+        bool profileUpdated = false;
+        List<string> errors = new List<string>();
+
+        // Verifica e atualiza o Nome se mudou
+        if (Input.Name != originalName)
         {
-            var setPhoneResult = await UserManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-            if (!setPhoneResult.Succeeded)
+            // Aqui pode adicionar validação extra se necessário antes de atribuir
+            user.Name = Input.Name; // Atualiza a propriedade no objeto user
+            var updateNameResult = await UserManager.UpdateAsync(user); // Guarda na BD
+            if (updateNameResult.Succeeded)
             {
-                RedirectManager.RedirectToCurrentPageWithStatus("Error: Failed to set phone number.", HttpContext);
+                profileUpdated = true;
+                originalName = user.Name; // Atualiza o valor original para a próxima comparação
+            }
+            else
+            {
+                 // Adiciona erros específicos da atualização do nome
+                 errors.AddRange(updateNameResult.Errors.Select(e => $"Failed to update name: {e.Description}"));
             }
         }
 
-        await SignInManager.RefreshSignInAsync(user);
-        RedirectManager.RedirectToCurrentPageWithStatus("Your profile has been updated", HttpContext);
+        // Verifica e atualiza o Número de Telefone se mudou
+        if (Input.PhoneNumber != phoneNumber)
+        {
+            var setPhoneResult = await UserManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+            if (setPhoneResult.Succeeded)
+            {
+                profileUpdated = true;
+                phoneNumber = Input.PhoneNumber; // Atualiza o valor original para a próxima comparação
+            }
+            else
+            {
+                // Adiciona erros específicos da atualização do telefone
+                errors.Add("Failed to set phone number."); // Pode detalhar mais se quiser iterar pelos erros
+            }
+        }
+
+        // Trata o resultado final
+        if (errors.Any())
+        {
+            // Se houve erros, mostra-os
+             RedirectManager.RedirectToCurrentPageWithStatus($"Error: {string.Join(" ", errors)}", HttpContext);
+        }
+        else if (profileUpdated)
+        {
+             // Se houve atualizações bem-sucedidas (e sem erros), atualiza o cookie de login e mostra sucesso
+            await SignInManager.RefreshSignInAsync(user);
+            RedirectManager.RedirectToCurrentPageWithStatus("Your profile has been updated", HttpContext);
+        }
+        else
+        {
+             // Se não houve alterações nem erros, informa que nada mudou
+              RedirectManager.RedirectToCurrentPageWithStatus("No changes detected in your profile.", HttpContext);
+        }
     }
 
+    // Modelo de Input atualizado para incluir Name
     private sealed class InputModel
     {
-        [Phone]
+        [Required(ErrorMessage = "Name is required.")] // Adiciona validação Required
+        [Display(Name = "Name")]
+        public string? Name { get; set; }
+
+        [Phone(ErrorMessage = "The Phone number field is not a valid phone number.")] // Mensagem de erro melhorada
         [Display(Name = "Phone number")]
         public string? PhoneNumber { get; set; }
     }
