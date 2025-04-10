@@ -98,3 +98,4 @@ __prev/
 *.zip
 *.rar
 *.7z
+/esii-2025-d2/Migrations/*.cs

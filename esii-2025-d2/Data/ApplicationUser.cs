@@ -11,8 +11,6 @@ namespace esii_2025_d2.Data; // Adjust namespace if needed
 public class ApplicationUser : IdentityUser
 {
     
-    public UserType UserType { get; set; }
-    
     public List<Skill> Skills { get; set; } = new List<Skill>();
     // Custom properties from old Utilizador, renamed
     [StringLength(100)]

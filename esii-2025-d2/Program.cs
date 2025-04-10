@@ -25,7 +25,7 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
 builder.Services.AddScoped<HttpClient>(sp =>
-    new HttpClient { BaseAddress = new Uri($"http://localhost:5112/") });
+    new HttpClient { BaseAddress = new Uri($"http://localhost:5112/") }); // Atenção ao URL base se for para produção
 
 
 builder.Services.AddAuthentication(options =>
@@ -40,14 +40,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// --->>> ADD ROLE SERVICES <<<---
+// Certifique-se de adicionar suporte a Roles ao Identity Core
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>() // <--- ADICIONE ISTO PARA SUPORTE A ROLES
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
-// Swagger Service Configuration (already added)
+// Swagger Service Configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -59,7 +62,46 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// --- Construção da Aplicação ---
 var app = builder.Build();
+
+// --->>> CÓDIGO PARA CRIAR ROLES <<<---
+// Coloque este bloco DEPOIS de 'var app = builder.Build();'
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        // Pega no RoleManager a partir dos serviços configurados
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+        // Lista das roles que quer garantir que existem
+        string[] roleNames = { "Admin", "Talent", "Customer" };
+        IdentityResult roleResult;
+
+        foreach (var roleName in roleNames)
+        {
+            // Verifica se a role já existe na base de dados
+            var roleExist = await roleManager.RoleExistsAsync(roleName);
+            if (!roleExist)
+            {
+                // Se não existir, cria a role
+                roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
+                // (Opcional: pode adicionar logging aqui para saber se a role foi criada)
+                // if (roleResult.Succeeded) { Console.WriteLine($"Role '{roleName}' created successfully."); }
+                // else { /* Log errors */ }
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        // (Opcional: Adicionar logging para capturar erros durante a criação de roles)
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database roles.");
+    }
+}
+// --->>> FIM DO CÓDIGO PARA CRIAR ROLES <<<---
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -67,7 +109,7 @@ if (app.Environment.IsDevelopment())
     app.UseWebAssemblyDebugging();
     app.UseMigrationsEndPoint();
 
-    // Swagger Middleware (already added)
+    // Swagger Middleware
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
@@ -83,20 +125,20 @@ else
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles(); // Certifique-se que isto está antes de UseAntiforgery se aplicável
 app.UseAntiforgery();
 
-app.MapStaticAssets();
-
 // --->>> MAP CONTROLLER ROUTES <<<---
-// Map routes for your API Controllers BEFORE mapping Blazor components or fallback routes.
-app.MapControllers();
+// Mapeia rotas para API Controllers ANTES de mapear componentes Blazor
+app.MapControllers(); // Garante que as rotas da API são reconhecidas
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(esii_2025_d2.Client._Imports).Assembly);
 
+// Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
 
 
-app.Run();
+app.Run(); 
