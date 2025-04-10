@@ -15,6 +15,9 @@ public class ApplicationUser : IdentityUser
     public string? Name { get; set; } // Was 'nome'
 
     // Use DateOnly or DateTime depending on your needs
+    [Required]
+    [DataType(DataType.Date)]
+    [Display(Name="Date of Birth")]
     public DateOnly DateOfBirth { get; set; } // Was 'datanascimento'
 
     // Email, UserName, PasswordHash etc. are inherited from IdentityUser

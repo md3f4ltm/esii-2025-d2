@@ -6,6 +6,7 @@ using esii_2025_d2.Client.Pages;
 using esii_2025_d2.Components;
 using esii_2025_d2.Components.Account;
 using esii_2025_d2.Data;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,10 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+
+builder.Services.AddScoped<HttpClient>(sp =>
+    new HttpClient { BaseAddress = new Uri($"http://localhost:5112/") });
+
 
 builder.Services.AddAuthentication(options =>
     {
