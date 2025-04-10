@@ -35,6 +35,8 @@ public class Talent
     public string UserId { get; set; } = null!; // Foreign key property
 
     [ForeignKey("TalentCategoryId")]
+    [Required(ErrorMessage = "A Categoria de Talento é obrigatória.")]
+    [Display(Name = "Categoria de Talento")]
     public virtual TalentCategory? TalentCategory { get; set; }
 
     [ForeignKey("UserId")]

@@ -1,64 +1,77 @@
-﻿@page "/weather"
-@attribute [StreamRendering]
+﻿@page "/Weather"
+@inject HttpClient Http
+@using esii_2025_d2.Models
 
-<PageTitle>Weather</PageTitle>
+<h3>Criar Perfil</h3>
 
-<h1>Weather</h1>
+<button class="btn btn-primary" @onclick="SelecionarTalento">Sou Talento</button>
+<button class="btn btn-secondary" @onclick="SelecionarCliente">Sou Cliente</button>
 
-<p>This component demonstrates showing data.</p>
 
-@if (forecasts == null)
+@if (tipoSelecionado == "Talent")
 {
-    <p><em>Loading...</em></p>
+    <div class="modal">
+        <h4>Criar Perfil de Talento</h4>
+        <input @bind="novoTalento.Name" placeholder="Nome" />
+        <input @bind="novoTalento.Country" placeholder="País" />
+        <input type="number" @bind="novoTalento.HourlyRate" placeholder="Preço/Hora" />
+        <button @onclick="GuardarTalento">Guardar</button>
+    </div>
 }
-else
+else if (tipoSelecionado == "Customer")
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th aria-label="Temperature in Celsius">Temp. (C)</th>
-                <th aria-label="Temperature in Farenheit">Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="modal">
+        <h4>Criar Perfil de Cliente</h4>
+        <input @bind="novoCliente.Company" placeholder="Empresa" />
+        <input @bind="novoCliente.PhoneNumber" placeholder="Telefone" />
+        <button @onclick="GuardarCliente">Guardar</button>
+    </div>
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private string tipoSelecionado = "";
 
-    protected override async Task OnInitializedAsync()
+    private Talent novoTalento = new();
+    private Customer novoCliente = new();
+
+    private void SelecionarTalento()
     {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
-
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
+        tipoSelecionado = "Talent";
+        Console.WriteLine("Sou Talento clicked");
+        StateHasChanged();  // Forces a re-render if needed
     }
 
-    private class WeatherForecast
+    private void SelecionarCliente()
     {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        tipoSelecionado = "Customer";
+        Console.WriteLine("Sou Cliente clicked");
+        StateHasChanged();  // Forces a re-render if needed
+    }
+
+    // Métodos para salvar
+    async Task GuardarTalento()
+    {
+        var response = await Http.PostAsJsonAsync("api/Talent", novoTalento);
+        if (response.IsSuccessStatusCode)
+        {
+            // Sucesso!
+        }
+        else
+        {
+            // Mostrar erro
+        }
+    }
+
+    async Task GuardarCliente()
+    {
+        var response = await Http.PostAsJsonAsync("api/Customer", novoCliente);
+        if (response.IsSuccessStatusCode)
+        {
+            // Sucesso!
+        }
+        else
+        {
+            // Mostrar erro
+        }
     }
 }

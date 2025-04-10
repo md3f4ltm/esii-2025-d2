@@ -8,6 +8,8 @@ using esii_2025_d2.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSingleton<HttpClient>();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -68,3 +70,4 @@ app.MapRazorComponents<App>()
 app.MapAdditionalIdentityEndpoints();
 
 app.Run();
+
