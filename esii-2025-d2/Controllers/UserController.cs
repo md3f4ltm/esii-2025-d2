@@ -179,4 +179,25 @@ public class UserController : ControllerBase
 
         return NoContent();
     }
+    
+    [HttpPost("{userId}/skills")]
+    public async Task<IActionResult> AddSkillToUser(string userId, [FromBody] Skill skill)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return NotFound("User not found");
+        }
+
+        if (user.Skills == null)
+        {
+            user.Skills = new List<Skill>();
+        }
+
+        user.Skills.Add(skill);
+        await _context.SaveChangesAsync();
+
+        return Ok();
+    }
+
 }
