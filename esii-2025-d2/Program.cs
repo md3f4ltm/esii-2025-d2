@@ -5,8 +5,11 @@ using esii_2025_d2.Client.Pages;
 using esii_2025_d2.Components;
 using esii_2025_d2.Components.Account;
 using esii_2025_d2.Data;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+// Add MudBlazer
+builder.Services.AddMudServices();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
