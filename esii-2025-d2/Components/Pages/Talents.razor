@@ -1,20 +1,27 @@
-@page "/talents"
+@*
+@page "/Talents"
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using esii_2025_d2.Data
-
+@using MudBlazor
 
 <PageTitle>Getão e criação de talentos</PageTitle>
 
 <h1>Getão e criação de talentos</h1>
 
-<MudTable Striped="true" Hover="true">
-    <HeadContent>
+<MudTable Items="@lista" Striped="true" Hover="true" Bordered AllowUnsorted="true">
+    <HeaderContent>
         <MudTh>Area</MudTh>
         <MudTh>Nome</MudTh>
-    </HeadContent>
+    </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Area">@context.area</MudTd>
         <MudTd DataLabel="Nome">@context.nome</MudTd>
     </RowTemplate>
 </Mudtable>
+
+@code{
+    private List<
+
+    }
+    *@
