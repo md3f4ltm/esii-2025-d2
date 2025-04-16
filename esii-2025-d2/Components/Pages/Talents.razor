@@ -4,24 +4,45 @@
 @using Microsoft.AspNetCore.Identity
 @using esii_2025_d2.Data
 @using MudBlazor
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
+@using esii_2025_d2.Models
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ApplicationDbContext Db
+
 
 <PageTitle>Getão e criação de talentos</PageTitle>
 
 <h1>Getão e criação de talentos</h1>
 
-<MudTable Items="@lista" Striped="true" Hover="true" Bordered AllowUnsorted="true">
+<MudTable Items="@talentos" Striped="true" Hover="true" Bordered AllowUnsorted="true">
     <HeaderContent>
         <MudTh>Area</MudTh>
         <MudTh>Nome</MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Area">@context.area</MudTd>
-        <MudTd DataLabel="Nome">@context.nome</MudTd>
+         <MudTd DataLabel="País">@context.Country</MudTd>
+        <MudTd DataLabel="Nome">@context.Name</MudTd>
     </RowTemplate>
-</Mudtable>
+</MudTable>
 
 @code{
-    private List<
+ private List<Talent> talentos = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            talentos = await Db.Talents
+                .Where(t => t.UserId == userId)
+                .ToListAsync();
+        }
+    }
 
     }
     
