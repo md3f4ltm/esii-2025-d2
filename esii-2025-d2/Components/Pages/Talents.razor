@@ -9,12 +9,13 @@
 @using esii_2025_d2.Models
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ApplicationDbContext Db
-
+@inject IDialogService DialogService
 
 <PageTitle>Getão e criação de talentos</PageTitle>
 
 <h1>Getão e criação de talentos</h1>
 
+<!--
 <MudTable Items="@talentos" Striped="true" Hover="true" Bordered AllowUnsorted="true">
     <HeaderContent>
         <MudTh>Area</MudTh>
@@ -25,24 +26,73 @@
         <MudTd DataLabel="Nome">@context.Name</MudTd>
     </RowTemplate>
 </MudTable>
+-->
+
+<MudTable Items="@talentos" Striped="true" Hover="true" Bordered AllowUnsorted="true">
+ <HeaderContent>
+        <MudTh>Nome</MudTh>
+        <MudTh>Pas</MudTh>
+        <MudTh>Email</MudTh>
+        <MudTh>Preo/Hora</MudTh>
+        <MudTh>Categoria</MudTh>
+        <MudTh>Arias</MudTh>
+        <MudTh>Ações</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Nome">@context.Name</MudTd>
+        <MudTd DataLabel="Pais">@context.Country</MudTd>
+        <MudTd DataLabel="Email">@context.Email</MudTd>
+        <MudTd DataLabel="Preço/Hora">@context.HourlyRate.ToString("C")</MudTd>
+        <MudTd DataLabel="Categoria">@context.TalentCategory?.Name</MudTd>
+        <MudTd>
+        <MudButton OnClick="() => EditTalent(context)"  Color="Color.Info">
+            Editar
+        </MudButton>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+<MudButton Color="Color.Primary" OnClick="AddTalent">Adicionar Talento</MudButton>
+
 
 @code{
- private List<Talent> talentos = new();
+private List<Talent> talentos = new();
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
-
-        if (user.Identity != null && user.Identity.IsAuthenticated)
+        if (user.Identity?.IsAuthenticated == true)
         {
             var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            talentos = await Db.Talents.Where(t => t.UserId == userId).ToListAsync();
+        }
+    }
 
-            talentos = await Db.Talents
-                .Where(t => t.UserId == userId)
-                .ToListAsync();
+    private async Task AddTalent()
+    {
+        var parameters = new DialogParameters { ["TalentModel"] = new Talent(), ["IsEdit"] = false };
+        var dialog = DialogService.Show<TalentForm>("Novo Talento", parameters);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+
+        {
+            await OnInitializedAsync(); // refresh
+        }
+    }
+
+    private async Task EditTalent(Talent talento)
+    {
+        var parameters = new DialogParameters { ["TalentModel"] = talento, ["IsEdit"] = true };
+        var dialog = DialogService.Show<TalentForm>("Editar Talento", parameters);
+        var result = await dialog.Result;
+        if(!result.Canceled)
+
+        {
+            await OnInitializedAsync(); // refresh
         }
     }
 
     }
+    
+
     

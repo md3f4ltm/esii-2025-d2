@@ -1,0 +1,49 @@
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Identity
+@using esii_2025_d2.Data
+@using MudBlazor
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
+@using esii_2025_d2.Models
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ApplicationDbContext Db
+@inject IDialogService DialogService
+@inject IMudDialogInstance MudDialog
+
+
+<MudDialog>
+    <DialogContent>
+        <MudTextField @bind-Value="TalentModel.Name" Label="Nome" Required />
+        <MudTextField @bind-Value="TalentModel.Country" Label="País" Required />
+        <MudTextField @bind-Value="TalentModel.Email" Label="Email" Required />
+        <MudNumericField T="decimal" @bind-Value="TalentModel.HourlyRate" Label="Preço/Hora" Required />
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Save">Guardar</MudButton>
+        <MudButton OnClick="Cancel">Cancelar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+@code {
+    [CascadingParameter]IMudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter] public Talent TalentModel { get; set; } = new();
+    [Parameter] public bool IsEdit { get; set; }
+
+    private async Task Save()
+    {
+        if (IsEdit)
+        {
+            Db.Talents.Update(TalentModel);
+        }
+        else
+        {
+            Db.Talents.Add(TalentModel);
+        }
+        await Db.SaveChangesAsync();
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+}
+
