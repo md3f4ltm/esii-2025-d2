@@ -28,10 +28,11 @@
 </MudTable>
 -->
 
+<MudLayout>
 <MudTable Items="@talentos" Striped="true" Hover="true" Bordered AllowUnsorted="true">
  <HeaderContent>
         <MudTh>Nome</MudTh>
-        <MudTh>Pas</MudTh>
+        <MudTh>Pais</MudTh>
         <MudTh>Email</MudTh>
         <MudTh>Preo/Hora</MudTh>
         <MudTh>Categoria</MudTh>
@@ -50,9 +51,12 @@
         </MudButton>
         </MudTd>
     </RowTemplate>
+     <NoRecordsContent>
+        <MudText Class="mx-4 my-2" Color="Color.Secondary">Nenhum talento encontrado.</MudText>
+    </NoRecordsContent>
 </MudTable>
-<MudButton Color="Color.Primary" OnClick="AddTalent">Adicionar Talento</MudButton>
-
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddTalent">Adicionar Talento</MudButton>
+</MudLayout>
 
 @code{
 private List<Talent> talentos = new();
@@ -76,7 +80,7 @@ private List<Talent> talentos = new();
         if (!result.Canceled)
 
         {
-            await OnInitializedAsync(); // refresh
+            await OnInitializedAsync(); 
         }
     }
 
@@ -88,7 +92,7 @@ private List<Talent> talentos = new();
         if(!result.Canceled)
 
         {
-            await OnInitializedAsync(); // refresh
+            await OnInitializedAsync(); 
         }
     }
 
