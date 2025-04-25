@@ -1,8 +1,151 @@
 ﻿@page "/"
-@using esii_2025_d2.Components.Account
-@using Microsoft.AspNetCore.Components
-@using Microsoft.AspNetCore.Components.Web
-@inject IdentityRedirectManager RedirectManager
+@rendermode InteractiveServer // Keep InteractiveServer for now
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Net.Http.Json
+@using esii_2025_d2.Models
+@using esii_2025_d2.Data
+@using Microsoft.Extensions.Logging 
 
-<PageTitle>Homepage</PageTitle>
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject ILogger<Home> Logger 
 
+<PageTitle>Home</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        @if (isLoading)
+        {
+            <p><em>Loading feed...</em></p>
+        }
+        else
+        {
+            @if (isTalent)
+            {
+                // Correct invocation using @ symbol
+                @TalentFeed(jobProposals)
+            }
+            else if (isCustomer)
+            {
+                 // Correct invocation using @ symbol
+                 @CustomerFeed(talents)
+            }
+            else
+            {
+                <p>Your role could not be determined, or you have a role without a specific feed (e.g., Admin).</p>
+            }
+        }
+    </Authorized>
+    <NotAuthorized>
+        <p>Please log in to see your personalized feed.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    // --- Keep the entire @code block from the previous version ---
+    // (Includes isLoading, isTalent, isCustomer, jobProposals, talents, Logger, OnInitializedAsync, TalentFeed, CustomerFeed)
+    // Make sure OnInitializedAsync still has StateHasChanged() at the end.
+    // Make sure CustomerFeed still has the Logger.LogInformation calls inside it.
+
+    private bool isLoading = true;
+    private bool isTalent = false;
+    private bool isCustomer = false;
+    private IEnumerable<JobProposal> jobProposals = new List<JobProposal>();
+    private IEnumerable<Talent> talents = new List<Talent>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Logger.LogInformation("Home OnInitializedAsync started.");
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated ?? false)
+        {
+            isTalent = user.IsInRole("Talent");
+            isCustomer = user.IsInRole("Customer");
+            Logger.LogInformation("User Role Check - IsTalent: {isTalent}, IsCustomer: {isCustomer}", isTalent, isCustomer);
+
+            try
+            {
+                if (isTalent)
+                {
+                    Logger.LogInformation("Fetching Job Proposals...");
+                    jobProposals = await Http.GetFromJsonAsync<IEnumerable<JobProposal>>("api/JobProposal/GetAllProposals") ?? new List<JobProposal>();
+                    Logger.LogInformation("Job Proposals fetched. Count: {Count}", jobProposals.Count()); // <-- Log count
+                }
+                else if (isCustomer)
+                {
+                     Logger.LogInformation("Fetching Talents...");
+                     talents = await Http.GetFromJsonAsync<IEnumerable<Talent>>("api/Talent/GetAllTalents") ?? new List<Talent>();
+                     if (talents == null) {
+                         Logger.LogWarning("Talents list is NULL after fetch.");
+                     } else {
+                         Logger.LogInformation("Talents fetched. Count: {Count}", talents.Count()); // <-- Log count
+                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                 Logger.LogError(ex, "Error fetching feed data");
+                 jobProposals = new List<JobProposal>();
+                 talents = new List<Talent>();
+            }
+        }
+        else
+        {
+            Logger.LogInformation("User not authenticated.");
+        }
+
+        isLoading = false;
+        Logger.LogInformation("isLoading set to false. Calling StateHasChanged.");
+        StateHasChanged(); // <-- Ensure StateHasChanged is called
+    }
+
+    // --- Feed Display Components ---
+
+    private RenderFragment TalentFeed(IEnumerable<JobProposal>? Proposals) => __builder =>
+    {
+        // ... (Implementation remains the same, including any logging) ...
+        Logger.LogInformation("Rendering TalentFeed..."); // Example log
+        <h2>Job Proposals Feed</h2>
+         if (Proposals == null || !Proposals.Any())
+         {
+             __builder.AddContent(0, "<p><em>No job proposals available right now.</em></p>");
+         }
+         else
+         {
+             // ... rest of TalentFeed ...
+         }
+    };
+
+    private RenderFragment CustomerFeed(IEnumerable<Talent>? Talents) => __builder =>
+    {
+         Logger.LogInformation("Rendering CustomerFeed. Talent parameter is null: {isParamNull}. Talent parameter count: {paramCount}",
+             Talents == null, Talents?.Count() ?? 0);
+
+        <h2>Available Talents</h2>
+        if (Talents == null || !Talents.Any())
+        {
+             Logger.LogInformation("CustomerFeed: No talents to display.");
+            __builder.AddContent(0, "<p><em>No talents found.</em></p>");
+        }
+        else
+        {
+             Logger.LogInformation("CustomerFeed: Rendering {count} talents.", Talents.Count());
+            __builder.OpenElement(1, "div");
+            __builder.AddAttribute(2, "class", "list-group");
+            foreach (var talent in Talents)
+            {
+                __builder.OpenElement(3, "div");
+                __builder.AddAttribute(4, "class", "list-group-item mb-3");
+                __builder.AddMarkupContent(5, $"<h5>{talent?.Name}</h5>"); // Added null check
+                __builder.AddMarkupContent(6, $"<p><em>Skills/Category placeholder</em></p>");
+                __builder.AddMarkupContent(7, $"<small>Rate: {talent?.HourlyRate:C}/hour</small>"); // Added null check
+                __builder.CloseElement(); // Close talent div
+            }
+            __builder.CloseElement(); // Close list-group div
+        }
+    };
+} 

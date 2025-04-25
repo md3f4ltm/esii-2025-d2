@@ -12,7 +12,7 @@ namespace esii_2025_d2.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-// [Authorize] // Uncomment if needed
+// [Authorize] // Consider adding authorization if needed
 public class TalentController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -24,25 +24,31 @@ public class TalentController : ControllerBase
 
     // GET: api/Talent
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Talent>>> GetTalents() // Method name pluralized
+    public async Task<ActionResult<IEnumerable<Talent>>> GetTalents() // Existing method
     {
         // Use English DbSet name
         return await _context.Talents.ToListAsync();
     }
 
+    // *** START: NEW ENDPOINT FOR FEED ***
+    // GET: api/Talent/GetAllTalents
+    [HttpGet("GetAllTalents")]
+    public async Task<ActionResult<IEnumerable<Talent>>> GetAllTalents()
+    {
+        // Consider adding filtering or pagination for large datasets
+        // Also consider which related data to include (e.g., Skills)
+        // return await _context.Talents.Include(t => t.TalentSkills).ThenInclude(ts => ts.Skill).ToListAsync();
+        return await _context.Talents.ToListAsync(); // Simple version for now
+    }
+    // *** END: NEW ENDPOINT FOR FEED ***
+
+
     // GET: api/Talent/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Talent>> GetTalent(int id)
+    public async Task<ActionResult<Talent>> GetTalent(int id) // Method name singularized
     {
-        // Use English DbSet name and Id property
-        // Optional: Include related data if needed on GET by ID
-        var talent = await _context.Talents
-            // .Include(t => t.TalentCategory)
-            // .Include(t => t.User)
-            // .Include(t => t.Experiences)
-            // .Include(t => t.TalentSkills).ThenInclude(ts => ts.Skill) // Example nested include
-            .FirstOrDefaultAsync(t => t.Id == id);
-
+        // Use English DbSet name
+        var talent = await _context.Talents.FindAsync(id);
 
         if (talent == null)
         {
@@ -52,58 +58,18 @@ public class TalentController : ControllerBase
         return talent;
     }
 
-    // POST: api/Talent
-    [HttpPost]
-    public async Task<ActionResult<Talent>> CreateTalent(Talent newTalent)
-    {
-        // Validate foreign keys
-         if (newTalent.TalentCategoryId.HasValue)
-        {
-             if (!await _context.TalentCategories.AnyAsync(ct => ct.Id == newTalent.TalentCategoryId))
-                return BadRequest(new { message = $"Talent Category with ID {newTalent.TalentCategoryId} not found." });
-        }
-        // else { /* Handle null if needed */ }
-
-        if (!await _context.Users.AnyAsync(u => u.Id == newTalent.UserId)) // Use Users DbSet, Id property
-             return BadRequest(new { message = $"User with ID {newTalent.UserId} not found." });
-
-
-        _context.Talents.Add(newTalent);
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateException /* ex */)
-        {
-            // Log exception details
-             return BadRequest(new { message = "Failed to create talent. Check related data." });
-        }
-
-
-        return CreatedAtAction(nameof(GetTalent), new { id = newTalent.Id }, newTalent); // Use Id
-    }
-
     // PUT: api/Talent/5
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateTalent(int id, Talent updatedTalent)
+    public async Task<IActionResult> PutTalent(int id, Talent talent)
     {
-        if (id != updatedTalent.Id) // Use Id
+        if (id != talent.Id)
         {
-            return BadRequest("Talent ID mismatch.");
+            return BadRequest();
         }
 
-        // Re-validate foreign keys
-        if (updatedTalent.TalentCategoryId.HasValue)
-        {
-             if (!await _context.TalentCategories.AnyAsync(ct => ct.Id == updatedTalent.TalentCategoryId))
-                return BadRequest(new { message = $"Talent Category with ID {updatedTalent.TalentCategoryId} not found." });
-        }
-         // else { /* Handle null if needed */ }
-
-         if (!await _context.Users.AnyAsync(u => u.Id == updatedTalent.UserId))
-             return BadRequest(new { message = $"User with ID {updatedTalent.UserId} not found." });
-
-        _context.Entry(updatedTalent).State = EntityState.Modified;
+        // Use English DbSet name
+        _context.Entry(talent).State = EntityState.Modified;
 
         try
         {
@@ -120,42 +86,35 @@ public class TalentController : ControllerBase
                 throw;
             }
         }
-         catch (DbUpdateException /* ex */)
-        {
-            // Log exception details
-            return BadRequest(new { message = "Failed to update talent. Check related data." });
-        }
-
 
         return NoContent();
+    }
+
+    // POST: api/Talent
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPost]
+    public async Task<ActionResult<Talent>> PostTalent(Talent talent)
+    {
+        // Use English DbSet name
+        _context.Talents.Add(talent);
+        await _context.SaveChangesAsync();
+
+        // Use English property name (assuming Id)
+        return CreatedAtAction("GetTalent", new { id = talent.Id }, talent);
     }
 
     // DELETE: api/Talent/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTalent(int id)
     {
-        // Include dependent entities that need to be removed first
-        var talent = await _context.Talents
-            .Include(t => t.Experiences) // Use English navigation property
-            .Include(t => t.TalentSkills) // Use English navigation property
-            .FirstOrDefaultAsync(t => t.Id == id); // Use Id
-
+        // Use English DbSet name
+        var talent = await _context.Talents.FindAsync(id);
         if (talent == null)
         {
             return NotFound();
         }
 
-        // Remove dependent records first (using English names)
-        if (talent.Experiences != null && talent.Experiences.Any())
-        {
-            _context.Experiences.RemoveRange(talent.Experiences); // Use English DbSet name
-        }
-
-        if (talent.TalentSkills != null && talent.TalentSkills.Any())
-        {
-            _context.TalentSkills.RemoveRange(talent.TalentSkills); // Use English DbSet name
-        }
-
+        // Use English DbSet name
         _context.Talents.Remove(talent);
         await _context.SaveChangesAsync();
 
@@ -164,6 +123,7 @@ public class TalentController : ControllerBase
 
     private bool TalentExists(int id)
     {
-        return _context.Talents.Any(t => t.Id == id); // Use Id
+        // Use English DbSet name
+        return _context.Talents.Any(e => e.Id == id);
     }
 }
