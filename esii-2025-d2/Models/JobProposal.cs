@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace esii_2025_d2.Models;
 
-// Removed [Table("PropostaTrabalho")] - EF Core will use convention "JobProposals"
 public class JobProposal
 {
     [Key]

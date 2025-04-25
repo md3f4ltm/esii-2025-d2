@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace esii_2025_d2.Models;
 
-// Removed [Table("Skill")] - EF Core will use convention "Skills" (already English)
 public class Skill
 {
     [Key]

@@ -1,5 +1,4 @@
-// esii-2025-d2/Models/Customer.cs
-using esii_2025_d2.Data; // Needed for ApplicationUser class
+using esii_2025_d2.Data; 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -20,15 +19,12 @@ public class Customer
     [StringLength(20)]
     public string PhoneNumber { get; set; } = null!;
 
-    // --- Foreign Key and Navigation Property for the User ---
     [Required]
     public string UserId { get; set; } = null!; // Foreign key property
 
     [JsonIgnore]
     [ForeignKey("UserId")]
-    // *** CHANGE: Use ApplicationUser? instead of User? ***
     public virtual ApplicationUser? User { get; set; }
 
-    // --- Navigation Property for Job Proposals ---
     public virtual ICollection<JobProposal> JobProposals { get; set; } = new List<JobProposal>();
 }
