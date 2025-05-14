@@ -1,0 +1,105 @@
+@page "/Account/Manage/Company"
+@attribute [Authorize(Roles = "Customer")] // Restrict access to users with the "Customer" role
+
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authorization @* <<< ADD THIS LINE <<< *@
+@using esii_2025_d2.Data 
+@using esii_2025_d2.Models 
+@using esii_2025_d2.Services 
+
+@inject UserManager<ApplicationUser> UserManager
+@inject IdentityUserAccessor UserAccessor
+@inject ICustomerService CustomerService
+@inject IdentityRedirectManager RedirectManager
+
+<PageTitle>Company Information</PageTitle>
+
+<h3>Company Information</h3>
+<StatusMessage />
+
+<div class="row">
+    <div class="col-xl-6">
+        <EditForm Model="Input" FormName="company-profile" OnValidSubmit="OnValidSubmitAsync" method="post">
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert" />
+
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.CompanyName" id="company-name" class="form-control" placeholder="Enter company name" />
+                <label for="company-name" class="form-label">Company Name</label>
+                <ValidationMessage For="() => Input.CompanyName" class="text-danger" />
+            </div>
+
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.PhoneNumber" id="company-phone-number" class="form-control" placeholder="Enter company phone number" />
+                <label for="company-phone-number" class="form-label">Company Phone Number</label>
+                <ValidationMessage For="() => Input.PhoneNumber" class="text-danger" />
+            </div>
+
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Save Company Information</button>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private ApplicationUser _user = default!;
+    private Customer? _customerData;
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromForm]
+    private InputModel Input { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
+        _customerData = await CustomerService.GetCustomerByUserIdAsync(_user.Id);
+
+        if (_customerData != null)
+        {
+            Input.CompanyName = _customerData.Company;
+            Input.PhoneNumber = _customerData.PhoneNumber;
+        }
+    }
+
+    private async Task OnValidSubmitAsync()
+    {
+        _user = await UserAccessor.GetRequiredUserAsync(HttpContext);
+
+        var customerToSave = new Customer
+        {
+            Id = _customerData?.Id ?? string.Empty, 
+            UserId = _user.Id,
+            Company = Input.CompanyName!,
+            PhoneNumber = Input.PhoneNumber!
+        };
+
+        var (success, error) = await CustomerService.SaveCustomerAsync(customerToSave);
+
+        if (success)
+        {
+            _customerData = await CustomerService.GetCustomerByUserIdAsync(_user.Id);
+            RedirectManager.RedirectToCurrentPageWithStatus("Company information has been updated.", HttpContext);
+        }
+        else
+        {
+            var errorMessage = string.IsNullOrWhiteSpace(error) ? "An unknown error occurred." : error;
+            RedirectManager.RedirectToCurrentPageWithStatus($"Error: {errorMessage}", HttpContext);
+        }
+    }
+
+    private sealed class InputModel
+    {
+        [Required(ErrorMessage = "Company Name is required.")]
+        [StringLength(200, ErrorMessage = "Company Name cannot be longer than 200 characters.")]
+        [Display(Name = "Company Name")]
+        public string? CompanyName { get; set; }
+
+        [Required(ErrorMessage = "Company Phone Number is required.")]
+        [Phone(ErrorMessage = "The Phone number field is not a valid phone number.")]
+        [StringLength(20, ErrorMessage = "Phone Number cannot be longer than 20 characters.")]
+        [Display(Name = "Company Phone Number")]
+        public string? PhoneNumber { get; set; }
+    }
+}

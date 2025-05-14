@@ -124,7 +124,7 @@ builder.Services.AddSwaggerGen(c =>
 
 });
 
-
+builder.Services.AddScoped<esii_2025_d2.Services.ICustomerService, esii_2025_d2.Services.CustomerService>();
 
 // --- Construção da Aplicação ---
 
