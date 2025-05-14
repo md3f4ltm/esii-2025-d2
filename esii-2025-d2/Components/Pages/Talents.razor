@@ -10,23 +10,11 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ApplicationDbContext Db
 @inject IDialogService DialogService
+@using esii_2025_d2.Components
 
 <PageTitle>Getão e criação de talentos</PageTitle>
 
 <h1>Getão e criação de talentos</h1>
-
-<!--
-<MudTable Items="@talentos" Striped="true" Hover="true" Bordered AllowUnsorted="true">
-    <HeaderContent>
-        <MudTh>Area</MudTh>
-        <MudTh>Nome</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-         <MudTd DataLabel="País">@context.Country</MudTd>
-        <MudTd DataLabel="Nome">@context.Name</MudTd>
-    </RowTemplate>
-</MudTable>
--->
 
 <MudLayout>
 <MudTable Items="@talentos" Striped="true" Hover="true" Bordered AllowUnsorted="true">
@@ -73,28 +61,34 @@ private List<Talent> talentos = new();
     }
 
     private async Task AddTalent()
+{
+    var parameters = new DialogParameters { ["TalentModel"] = new Talent(), ["IsEdit"] = false };
+    var dialog = await DialogService.ShowAsync<TalentForm>("Novo Talento", parameters);
+
+    if (dialog is not null)
     {
-        var parameters = new DialogParameters { ["TalentModel"] = new Talent(), ["IsEdit"] = false };
-        var dialog = DialogService.Show<TalentForm>("Novo Talento", parameters);
         var result = await dialog.Result;
         if (!result.Canceled)
-
         {
-            await OnInitializedAsync(); 
+            await OnInitializedAsync(); // refresh
         }
     }
+}
 
-    private async Task EditTalent(Talent talento)
+private async Task EditTalent(Talent talento)
+{
+    var parameters = new DialogParameters { ["TalentModel"] = talento, ["IsEdit"] = true };
+    var dialog = await DialogService.ShowAsync<TalentForm>("Editar Talento", parameters);
+
+    if (dialog is not null)
     {
-        var parameters = new DialogParameters { ["TalentModel"] = talento, ["IsEdit"] = true };
-        var dialog = DialogService.Show<TalentForm>("Editar Talento", parameters);
         var result = await dialog.Result;
-        if(!result.Canceled)
-
+        if (!result.Canceled)
         {
-            await OnInitializedAsync(); 
+            await OnInitializedAsync(); // refresh
         }
     }
+}
 
     }
     

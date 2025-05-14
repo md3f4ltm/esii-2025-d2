@@ -8,10 +8,9 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject ApplicationDbContext Db
 @inject IDialogService DialogService
+@using esii_2025_d2.Components
 
-
-
-<MudDialog>
+<MudBlazor.MudDialog>
     <DialogContent>
         <MudTextField @bind-Value="TalentModel.Name" Label="Nome" Required />
         <MudTextField @bind-Value="TalentModel.Country" Label="País" Required />
@@ -22,11 +21,10 @@
         <MudButton Color="Color.Primary" OnClick="Save">Guardar</MudButton>
         <MudButton OnClick="Cancel">Cancelar</MudButton>
     </DialogActions>
-</MudDialog>
-
+</MudBlazor.MudDialog>
 
 @code {
-    [CascadingParameter]IMudDialogInstance MudDialog { get; set; } = default!;
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;
     [Parameter] public Talent TalentModel { get; set; } = new();
     [Parameter] public bool IsEdit { get; set; }
 
@@ -46,4 +44,3 @@
 
     private void Cancel() => MudDialog.Cancel();
 }
-
