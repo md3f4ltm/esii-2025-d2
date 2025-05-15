@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
 @using esii_2025_d2.Data
 
 @inject SignInManager<ApplicationUser> SignInManager
@@ -25,6 +26,13 @@
     <li class="nav-item">
         <NavLink class="nav-link" href="Account/Manage/PersonalData">Personal data</NavLink>
     </li>
+   <AuthorizeView Roles="Customer">
+    <Authorized>
+        <li class="nav-item">
+            <a class="nav-link" id="company" href="Account/Manage/Company">Company Information</a>
+        </li>
+    </Authorized>
+</AuthorizeView>
 </ul>
 
 @code {

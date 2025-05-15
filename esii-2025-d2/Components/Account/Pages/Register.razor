@@ -27,21 +27,40 @@
             <h2>Create a new account.</h2>
             <hr />
             <ValidationSummary class="text-danger" role="alert" />
+
             <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label for="Input.Email">Email</label>
+                <InputText @bind-Value="Input.Email" id="email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label for="email">Email</label>
                 <ValidationMessage For="() => Input.Email" class="text-danger" />
             </div>
+
             <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="Input.Password">Password</label>
+                <InputText type="password" @bind-Value="Input.Password" id="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label for="password">Password</label>
                 <ValidationMessage For="() => Input.Password" class="text-danger" />
             </div>
+
             <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.ConfirmPassword" id="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="Input.ConfirmPassword">Confirm Password</label>
+                <InputText type="password" @bind-Value="Input.ConfirmPassword" id="confirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label for="confirmPassword">Confirm Password</label>
                 <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
             </div>
+
+            @* --- Adicionar Seleção de Role --- *@
+            <div class="form-floating mb-3">
+                 <InputSelect @bind-Value="Input.SelectedRole" id="role" class="form-select" aria-required="true">
+                     <option value="">-- Select Role --</option> @* Opção padrão para forçar escolha *@
+                     @foreach (var roleName in selectableRoles)
+                     {
+                         <option value="@roleName">@roleName</option>
+                     }
+                 </InputSelect>
+                 <label for="role">Register as</label>
+                 <ValidationMessage For="() => Input.SelectedRole" class="text-danger" />
+            </div>
+            @* --- Fim da Seleção de Role --- *@
+
+
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
     </div>
@@ -57,6 +76,9 @@
 @code {
     private IEnumerable<IdentityError>? identityErrors;
 
+    // Lista das roles que o utilizador pode escolher (Exclui "Admin")
+    private readonly List<string> selectableRoles = new() { "Talent", "Customer" };
+
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
 
@@ -69,19 +91,59 @@
     {
         var user = CreateUser();
 
+        // Definir o nome de utilizador e email
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+        // Criar o utilizador com a password
         var result = await UserManager.CreateAsync(user, Input.Password);
 
         if (!result.Succeeded)
         {
             identityErrors = result.Errors;
-            return;
+            return; // Falhou a criação do utilizador, parar aqui
         }
 
-        Logger.LogInformation("User created a new account with password.");
+        Logger.LogInformation("User '{UserId}' created a new account with password.", await UserManager.GetUserIdAsync(user));
 
+        // --- Adicionar Utilizador à Role Selecionada ---
+        // Validar se a role selecionada é uma das permitidas
+        if (!string.IsNullOrEmpty(Input.SelectedRole) && selectableRoles.Contains(Input.SelectedRole))
+        {
+            var roleResult = await UserManager.AddToRoleAsync(user, Input.SelectedRole);
+            if (!roleResult.Succeeded)
+            {
+                // Falhou a adição da role. Logar e adicionar aos erros.
+                Logger.LogError("User '{UserId}' could not be added to role '{Role}'. Errors: {Errors}",
+                                await UserManager.GetUserIdAsync(user),
+                                Input.SelectedRole,
+                                string.Join(", ", roleResult.Errors.Select(e => e.Description)));
+                // Adiciona os erros da role aos erros gerais para serem mostrados
+                identityErrors = (identityErrors ?? Enumerable.Empty<IdentityError>()).Concat(roleResult.Errors).ToList();
+                // Considerar se deve parar aqui ou continuar mesmo sem a role.
+                // Parar é mais seguro para garantir consistência.
+                // Poderia até apagar o utilizador recém-criado se a adição da role for crítica.
+                 identityErrors = identityErrors.Append(new IdentityError { Description = $"Failed to assign role '{Input.SelectedRole}'." });
+                 return; // Parar se a atribuição da role falhar
+            }
+             Logger.LogInformation("User '{UserId}' added to role '{Role}'.", await UserManager.GetUserIdAsync(user), Input.SelectedRole);
+        }
+        else
+        {
+            // Role inválida ou não selecionada - isto não deve acontecer se a validação do InputModel funcionar
+             Logger.LogWarning("User '{UserId}' registration attempted with invalid or missing role selection: '{Role}'.",
+                             await UserManager.GetUserIdAsync(user),
+                             Input.SelectedRole);
+             identityErrors = (identityErrors ?? Enumerable.Empty<IdentityError>())
+                              .Append(new IdentityError { Description = "Invalid role selected." })
+                              .ToList();
+             return; // Parar se a role for inválida
+        }
+        // --- Fim da Adição à Role ---
+
+
+        // Gerar token de confirmação de email e enviar email
         var userId = await UserManager.GetUserIdAsync(user);
         var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -91,15 +153,18 @@
 
         await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
+        // Redirecionar ou fazer login
         if (UserManager.Options.SignIn.RequireConfirmedAccount)
         {
             RedirectManager.RedirectTo(
                 "Account/RegisterConfirmation",
                 new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
         }
-
-        await SignInManager.SignInAsync(user, isPersistent: false);
-        RedirectManager.RedirectTo(ReturnUrl);
+        else // Se não precisar de confirmação, faz login direto
+        {
+            await SignInManager.SignInAsync(user, isPersistent: false);
+            RedirectManager.RedirectTo(ReturnUrl);
+        }
     }
 
     private ApplicationUser CreateUser()
@@ -124,6 +189,7 @@
         return (IUserEmailStore<ApplicationUser>)UserStore;
     }
 
+    // Modelo de Input atualizado para incluir SelectedRole
     private sealed class InputModel
     {
         [Required]
@@ -141,5 +207,10 @@
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = "";
+
+        // Propriedade para a Role selecionada
+        [Required(ErrorMessage = "Please select a role.")] // Garante que uma escolha é feita
+        [Display(Name = "Register as")]
+        public string SelectedRole { get; set; } = ""; // Inicializa como string vazia
     }
 }
