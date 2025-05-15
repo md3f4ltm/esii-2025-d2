@@ -1,47 +1,45 @@
-@page "/Talents2"
-@using Microsoft.AspNetCore.Authentication
-@using Microsoft.EntityFrameworkCore
-@using System.Security.Claims
-@inject AuthenticationStateProvider AuthenticationStateProvider
-@inject ApplicationDbContext Db
-@using esii_2025_d2.Data
-@using esii_2025_d2.Models
+@page "/talents2"
+@inject HttpClient Http
 
-<PageTitle>Gestão e Criação de Talentos</PageTitle>
+<h3>Talents</h3>
 
-<h1>Gestão e Criação de Talentos</h1>
+<button class="btn btn-primary mb-3" @onclick="ShowAddModal">Add New Talent</button>
 
-<table class="table table-striped table-hover table-bordered">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>Nome</th>
-            <th>País</th>
+            <th>Name</th>
+            <th>Country</th>
             <th>Email</th>
-            <th>Preço/Hora</th>
-            <th>Categoria</th>
-            <th>Ações</th>
+            <th>Hourly Rate</th>
+            <th>Category</th>
+            <th>User ID</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @if (talentos.Count == 0)
+        @if (talents == null)
         {
-            <tr>
-                <td colspan="6" class="text-center text-secondary">Nenhum talento encontrado.</td>
-            </tr>
+            <tr><td colspan="7">Loading...</td></tr>
+        }
+        else if (!talents.Any())
+        {
+            <tr><td colspan="7">No talents found.</td></tr>
         }
         else
         {
-            @foreach (var talento in talentos)
+            @foreach (var talent in talents)
             {
                 <tr>
-                    <td>@talento.Name</td>
-                    <td>@talento.Country</td>
-                    <td>@talento.Email</td>
-                    <td>@talento.HourlyRate.ToString("C")</td>
-                    <td>@talento.TalentCategory?.Name</td>
+                    <td>@talent.Name</td>
+                    <td>@talent.Country</td>
+                    <td>@talent.Email</td>
+                    <td>@talent.HourlyRate</td>
+                    <td>@talent.TalentCategory?.Name</td>
+                    <td>@talent.UserId</td>
                     <td>
-                        <button class="btn btn-info btn-sm" @onclick="() => OpenModal(talento)">Editar</button>
-                        <button class="btn btn-danger btn-sm" @onclick="() => OpenDeleteModal(talento)">Excluir</button>
+                        <button class="btn btn-sm btn-warning" @onclick="() => ShowEditModal(talent)">Edit</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteTalent(talent.Id)">Delete</button>
                     </td>
                 </tr>
             }
@@ -49,175 +47,167 @@
     </tbody>
 </table>
 
-<button class="btn btn-primary" @onclick="() => OpenModal(null)">Adicionar Talento</button>
-
-@if (isModalOpen)
+<!-- Modal -->
+@if (showModal)
 {
-    <div class="modal-backdrop" @onclick="CloseModal"></div>
-    <div class="modal-dialog" @onclick:stopPropagation="true">
-        <h3>@(isEditMode ? "Editar Talento" : "Novo Talento")</h3>
+    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@((editingTalent.Id == 0) ? "Add Talent" : "Edit Talent")</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="editingTalent" OnValidSubmit="SaveTalent">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        
+                        <div class="mb-3">
+                            <label>Name</label>
+                            <InputText class="form-control" @bind-Value="editingTalent.Name" />
+                        </div>
+                        <div class="mb-3">
+                            <label>Country</label>
+                            <InputText class="form-control" @bind-Value="editingTalent.Country" />
+                        </div>
+                        <div class="mb-3">
+                            <label>Email</label>
+                            <InputText type="email" class="form-control" @bind-Value="editingTalent.Email" />
+                        </div>
+                        <div class="mb-3">
+                            <label>Hourly Rate</label>
+                            <InputNumber class="form-control" @bind-Value="editingTalent.HourlyRate" />
+                        </div>
+                        <div class="mb-3">
+                            <label>Talent Category ID</label>
+                            <InputNumber class="form-control" @bind-Value="editingTalent.TalentCategoryId" />
+                        </div>
+                        <div class="mb-3">
+                            <label>User ID</label>
+                            <InputText class="form-control" @bind-Value="editingTalent.UserId" />
+                        </div>
 
-        <div class="form-group">
-            <label>Nome</label>
-            <input class="form-control" @bind="modalTalent.Name" required />
-        </div>
-        <div class="form-group">
-            <label>País</label>
-            <input class="form-control" @bind="modalTalent.Country" required />
-        </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" class="form-control" @bind="modalTalent.Email" required />
-        </div>
-        <div class="form-group">
-            <label>Preço/Hora</label>
-            <input type="number" min="0" step="0.01" class="form-control" @bind="modalTalent.HourlyRate" required />
-        </div>
-        <div class="form-group">
-            <label>Categoria</label>
-            <select class="form-control" @bind="modalTalent.TalentCategoryId" required>
-                <option value="">-- Selecione --</option>
-                @foreach (var cat in categories)
-                {
-                    <option value="@cat.Id">@cat.Name</option>
-                }
-            </select>
-        </div>
-
-        <div class="modal-actions">
-            <button class="btn btn-primary" @onclick="SaveTalent">Salvar</button>
-            <button class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
-        </div>
-    </div>
-}
-
-@if (isDeleteModalOpen)
-{
-    <div class="modal-backdrop" @onclick="CloseDeleteModal"></div>
-    <div class="modal-dialog" @onclick:stopPropagation="true">
-        <h4>Confirmar Exclusão</h4>
-        <p>Tem certeza que deseja excluir o talento <strong>@deleteTalent.Name</strong>?</p>
-        <div class="modal-actions">
-            <button class="btn btn-danger" @onclick="ConfirmDelete">Excluir</button>
-            <button class="btn btn-secondary" @onclick="CloseDeleteModal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary ms-2" @onclick="CloseModal">Cancel</button>
+                    </EditForm>
+                </div>
+            </div>
         </div>
     </div>
 }
 
 @code {
-    private List<Talent> talentos = new();
-    private List<TalentCategory> categories = new();
-
-    private bool isModalOpen = false;
-    private bool isEditMode = false;
-    private Talent modalTalent = new();
-
-    private bool isDeleteModalOpen = false;
-    private Talent deleteTalent;
+    private List<Talent>? talents;
+    private Talent editingTalent = new();
+    private bool showModal = false;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadData();
+        await LoadTalents();
     }
 
-    private async Task LoadData()
+    private async Task LoadTalents()
     {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        if (user.Identity?.IsAuthenticated == true)
-        {
-            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            talentos = await Db.Talents
-                .Include(t => t.TalentCategory)
-                .Where(t => t.UserId == userId)
-                .ToListAsync();
-
-            categories = await Db.TalentCategories.ToListAsync();
-        }
+        talents = await Http.GetFromJsonAsync<List<Talent>>("api/talent");
     }
 
-    private void OpenModal(Talent talento)
+    private void ShowAddModal()
     {
-        if (talento == null)
-        {
-            modalTalent = new Talent();
-            isEditMode = false;
-        }
-        else
-        {
-            modalTalent = new Talent
-            {
-                Id = talento.Id,
-                Name = talento.Name,
-                Country = talento.Country,
-                Email = talento.Email,
-                HourlyRate = talento.HourlyRate,
-                TalentCategoryId = talento.TalentCategoryId,
-                UserId = talento.UserId
-            };
-            isEditMode = true;
-        }
+        editingTalent = new Talent();
+        showModal = true;
+    }
 
-        isModalOpen = true;
+    private void ShowEditModal(Talent talent)
+    {
+        editingTalent = new Talent
+        {
+            Id = talent.Id,
+            Name = talent.Name,
+            Country = talent.Country,
+            Email = talent.Email,
+            HourlyRate = talent.HourlyRate,
+            TalentCategoryId = talent.TalentCategoryId,
+            UserId = talent.UserId
+        };
+        showModal = true;
     }
 
     private void CloseModal()
     {
-        isModalOpen = false;
+        showModal = false;
     }
 
     private async Task SaveTalent()
     {
-        if (isEditMode)
+        if (editingTalent.Id == 0)
         {
-            Db.Talents.Update(modalTalent);
+            // Create new
+            var response = await Http.PostAsJsonAsync("api/talent", editingTalent);
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadTalents();
+                CloseModal();
+            }
+            else
+            {
+                // handle error
+                var error = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error creating talent: {error}");
+            }
         }
         else
         {
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            modalTalent.UserId = userId;
-
-            await Db.Talents.AddAsync(modalTalent);
+            // Update existing
+            var response = await Http.PutAsJsonAsync($"api/talent/{editingTalent.Id}", editingTalent);
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadTalents();
+                CloseModal();
+            }
+            else
+            {
+                // handle error
+                var error = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error updating talent: {error}");
+            }
         }
-
-        await Db.SaveChangesAsync();
-
-        await LoadData();
-
-        isModalOpen = false;
-        StateHasChanged();
     }
 
-    // --- Exclus�o ---
-
-    private void OpenDeleteModal(Talent talento)
+    private async Task DeleteTalent(int id)
     {
-        deleteTalent = talento;
-        isDeleteModalOpen = true;
-    }
-
-    private void CloseDeleteModal()
-    {
-        isDeleteModalOpen = false;
-        deleteTalent = null;
-    }
-
-    private async Task ConfirmDelete()
-    {
-        if (deleteTalent != null)
+        if (await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete talent {id}?"))
         {
-            Db.Talents.Remove(deleteTalent);
-            await Db.SaveChangesAsync();
-
-            await LoadData();
-
-            CloseDeleteModal();
-            StateHasChanged();
+            var response = await Http.DeleteAsync($"api/talent/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadTalents();
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"Error deleting talent: {error}");
+            }
         }
     }
+
+    // Talent model matching the API
+    public class Talent
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public string Country { get; set; } = "";
+        public string Email { get; set; } = "";
+        public decimal HourlyRate { get; set; }
+        public int? TalentCategoryId { get; set; }
+        public string UserId { get; set; } = "";
+        public TalentCategory? TalentCategory { get; set; }
+    }
+
+    public class TalentCategory
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+    }
+
+    [Inject] IJSRuntime JSRuntime { get; set; } = default!;
 }
-
-
-
