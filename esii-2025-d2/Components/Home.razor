@@ -82,7 +82,7 @@
                         talents = new List<Talent>(); // Ensure it's not null for rendering
                     }
                     Logger.LogInformation("Talents fetched. Count: {Count}", talents.Count());
-                     if (!talents.Any())
+                        if (!talents.Any())
                     {
                         Logger.LogInformation("No talents were returned from the API or the list is empty.");
                     }
@@ -163,7 +163,7 @@
                 }
                 else
                 {
-                     __builder.OpenElement(15, "p");
+                        __builder.OpenElement(15, "p");
                     __builder.AddAttribute(16, "class", "mb-1");
                     __builder.AddContent(17, $"Required Skill ID: {proposal.SkillId}"); // Fallback if Skill object not loaded
                     __builder.CloseElement(); // p
@@ -224,18 +224,19 @@
                 __builder.AddContent(11, talent.Name);
                 __builder.CloseElement(); // h5
 
+                // CORRECTED BLOCK:
                 if (talent.TalentCategory != null)
                 {
-                     __builder.OpenElement(12, "p");
-                     __builder.AddAttribute(13, "class", "mb-1");
-                     __builder.AddContent(14, $"Category: {talent.TalentCategory?.Name ?? "N/A"}");
-                     __builder.CloseElement(); //p
+                        __builder.OpenElement(12, "p");
+                        __builder.AddAttribute(13, "class", "mb-1");
+                        __builder.AddContent(14, $"Category: {talent.TalentCategory.Name ?? "N/A"}"); // Assuming Name is required or handled
+                        __builder.CloseElement(); //p
                 }
-                else if (talent.TalentCategoryId.HasValue)
+                else // Fallback to show ID if TalentCategory object not loaded
                 {
                     __builder.OpenElement(12, "p");
                     __builder.AddAttribute(13, "class", "mb-1");
-                    __builder.AddContent(14, $"Category ID: {talent.TalentCategoryId.Value}"); // Fallback
+                    __builder.AddContent(14, $"Category ID: {talent.TalentCategoryId}"); // Directly use int value
                     __builder.CloseElement(); //p
                 }
 

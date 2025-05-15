@@ -1,8 +1,13 @@
 @page "/Experiences"
 @using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Security.Claims 
 @attribute [Authorize(Roles = "Talent")]
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
+@inject AuthenticationStateProvider AuthStateProvider
+@rendermode InteractiveServer
+
 <h3>Experiences</h3>
 
 <button class="btn btn-primary mb-3" @onclick="ShowAddModal">Add New Experience</button>
@@ -14,18 +19,18 @@
             <th>Company</th>
             <th>Start Year</th>
             <th>End Year</th>
-            <th>Talent ID</th>
+            <th>Talent</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @if (experiences == null)
+        @if (experiences == null && !initialLoadAttempted)
         {
-            <tr><td colspan="6">Loading...</td></tr>
+            <tr><td colspan="6">Loading experiences...</td></tr>
         }
-        else if (!experiences.Any())
+        else if (experiences == null || !experiences.Any())
         {
-            <tr><td colspan="6">No experiences found.</td></tr>
+            <tr><td colspan="6">No experiences found. @(string.IsNullOrWhiteSpace(apiError) ? "" : $"Error: {apiError}")</td></tr>
         }
         else
         {
@@ -36,7 +41,7 @@
                     <td>@exp.CompanyName</td>
                     <td>@exp.StartYear</td>
                     <td>@(exp.EndYear?.ToString() ?? "-")</td>
-                    <td>@exp.TalentId</td>
+                    <td>@exp.Talent?.Name</td>
                     <td>
                         <button class="btn btn-sm btn-warning" @onclick="() => ShowEditModal(exp)">Edit</button>
                         <button class="btn btn-sm btn-danger" @onclick="() => DeleteExperience(exp.Id)">Delete</button>
@@ -60,7 +65,7 @@
                     <EditForm Model="editingExperience" OnValidSubmit="SaveExperience">
                         <DataAnnotationsValidator />
                         <ValidationSummary />
-                        
+
                         <div class="mb-3">
                             <label>Title</label>
                             <InputText class="form-control" @bind-Value="editingExperience.Title" />
@@ -74,15 +79,30 @@
                             <InputNumber class="form-control" @bind-Value="editingExperience.StartYear" />
                         </div>
                         <div class="mb-3">
-                            <label>End Year</label>
+                            <label>End Year (optional)</label>
                             <InputNumber class="form-control" @bind-Value="editingExperience.EndYear" />
                         </div>
                         <div class="mb-3">
-                            <label>Talent ID</label>
-                            <InputNumber class="form-control" @bind-Value="editingExperience.TalentId" />
+                            <label>Talent Profile</label>
+                            @if (talents == null && !initialLoadAttempted) {
+                                <p>Loading talent profiles...</p>
+                            } else if (talents == null || !talents.Any()) {
+                                <p>No talent profiles available. @(string.IsNullOrWhiteSpace(apiError) ? "You may need to create one first." : $"Error: {apiError}")</p>
+                                <InputSelect class="form-control" @bind-Value="editingExperience.TalentId" disabled>
+                                     <option value="">-- No talents available --</option>
+                                </InputSelect>
+                            } else {
+                                <InputSelect class="form-control" @bind-Value="editingExperience.TalentId">
+                                    <option value="0">-- Select Talent Profile --</option>
+                                    @foreach (var t in talents)
+                                    {
+                                        <option value="@t.Id">@t.Name</option>
+                                    }
+                                </InputSelect>
+                            }
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary" disabled="@(talents == null || !talents.Any())">Save</button>
                         <button type="button" class="btn btn-secondary ms-2" @onclick="CloseModal">Cancel</button>
                     </EditForm>
                 </div>
@@ -92,29 +112,100 @@
 }
 
 @code {
-    private List<Experience>? experiences;
-    private Experience editingExperience = new();
+    private List<TalentDto>? talents;
+    private List<ExperienceDto>? experiences;
+    private ExperienceDto editingExperience = new();
     private bool showModal = false;
+    private string? LoggedInUserId;
+    private string? apiError;
+    private bool initialLoadAttempted = false;
 
     protected override async Task OnInitializedAsync()
     {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        LoggedInUserId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        initialLoadAttempted = false; // Reset before load attempts
+        apiError = null;
+
+        if (string.IsNullOrEmpty(LoggedInUserId))
+        {
+            apiError = "User not authenticated.";
+            Console.WriteLine(apiError);
+            talents = new List<TalentDto>();
+            experiences = new List<ExperienceDto>();
+            initialLoadAttempted = true;
+            return;
+        }
+
+        await LoadUserTalents();
         await LoadExperiences();
+        initialLoadAttempted = true;
+    }
+
+    private async Task LoadUserTalents()
+    {
+        try
+        {
+            // This endpoint should return a list of TalentDto for the currently authenticated user.
+            // The backend controller should use the User.Identity to get the user ID.
+            talents = await Http.GetFromJsonAsync<List<TalentDto>>("api/Talent/mytalents"); // Ensure this API endpoint exists and is GET
+             if (talents == null) talents = new List<TalentDto>();
+        }
+        catch (HttpRequestException ex)
+        {
+            apiError = $"Failed to load talent profiles: {ex.Message} (Status: {ex.StatusCode})";
+            Console.WriteLine($"{apiError}. URL: api/Talent/mytalents");
+            talents = new List<TalentDto>();
+        }
+        catch (Exception ex)
+        {
+            apiError = $"An unexpected error occurred while loading talent profiles: {ex.Message}";
+            Console.WriteLine(apiError);
+            talents = new List<TalentDto>();
+        }
     }
 
     private async Task LoadExperiences()
     {
-        experiences = await Http.GetFromJsonAsync<List<Experience>>("api/experience");
+        try
+        {
+            // This endpoint should return experiences linked to the user's talent profiles.
+            // The backend should filter experiences based on the authenticated user.
+            experiences = await Http.GetFromJsonAsync<List<ExperienceDto>>("api/Experience/myexperiences"); // Ensure this API endpoint exists and is GET
+            if (experiences == null) experiences = new List<ExperienceDto>();
+        }
+        catch (HttpRequestException ex)
+        {
+            apiError = (apiError ?? "") + $" Failed to load experiences: {ex.Message} (Status: {ex.StatusCode})";
+            Console.WriteLine($"Failed to load experiences. URL: api/Experience/myexperiences. Error: {ex.Message}");
+            experiences = new List<ExperienceDto>();
+        }
+        catch (Exception ex)
+        {
+             apiError = (apiError ?? "") + $" An unexpected error occurred while loading experiences: {ex.Message}";
+            Console.WriteLine($"An unexpected error occurred while loading experiences: {ex.Message}");
+            experiences = new List<ExperienceDto>();
+        }
     }
 
     private void ShowAddModal()
     {
-        editingExperience = new Experience();
+        editingExperience = new ExperienceDto();
+        if (talents != null && talents.Any())
+        {
+            // If there's only one talent profile, or to pre-select the first available one.
+            // Consider if TalentId=0 should be the default for "-- Select Talent Profile --"
+             editingExperience.TalentId = talents.FirstOrDefault()?.Id ?? 0;
+        } else {
+            editingExperience.TalentId = 0; // No talents to select
+        }
         showModal = true;
     }
 
-    private void ShowEditModal(Experience exp)
+    private void ShowEditModal(ExperienceDto exp)
     {
-        editingExperience = new Experience
+        // Create a new instance to avoid modifying the original object in the list directly
+        editingExperience = new ExperienceDto
         {
             Id = exp.Id,
             Title = exp.Title,
@@ -129,64 +220,97 @@
     private void CloseModal()
     {
         showModal = false;
+        editingExperience = new ExperienceDto(); // Clear the form
     }
 
     private async Task SaveExperience()
     {
-        HttpResponseMessage response;
-
-        if (editingExperience.Id == 0)
+        if (editingExperience.TalentId == 0)
         {
-            response = await Http.PostAsJsonAsync("api/experience", editingExperience);
-        }
-        else
-        {
-            response = await Http.PutAsJsonAsync($"api/experience/{editingExperience.Id}", editingExperience);
+            await JSRuntime.InvokeVoidAsync("alert", "Please select a Talent Profile.");
+            return;
         }
 
-        if (response.IsSuccessStatusCode)
+        apiError = null;
+        try
         {
-            await LoadExperiences();
-            CloseModal();
+            HttpResponseMessage response;
+            if (editingExperience.Id == 0) // New experience
+            {
+                response = await Http.PostAsJsonAsync("api/Experience", editingExperience);
+            }
+            else // Existing experience
+            {
+                response = await Http.PutAsJsonAsync($"api/Experience/{editingExperience.Id}", editingExperience);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadExperiences(); // Refresh the list
+                CloseModal();
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                apiError = $"Error saving experience (Status: {response.StatusCode}): {errorContent}";
+                Console.WriteLine(apiError);
+                await JSRuntime.InvokeVoidAsync("alert", apiError);
+            }
         }
-        else
+        catch (Exception ex)
         {
-            var error = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Error saving experience: {error}");
+            apiError = $"An exception occurred while saving the experience: {ex.Message}";
+            Console.WriteLine(apiError);
+            await JSRuntime.InvokeVoidAsync("alert", apiError);
         }
     }
 
     private async Task DeleteExperience(int id)
     {
-        if (await JSRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete experience {id}?"))
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this experience?"))
         {
-            var response = await Http.DeleteAsync($"api/experience/{id}");
-            if (response.IsSuccessStatusCode)
+            apiError = null;
+            try
             {
-                await LoadExperiences();
+                var response = await Http.DeleteAsync($"api/Experience/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    await LoadExperiences(); // Refresh the list
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    apiError = $"Error deleting experience (Status: {response.StatusCode}): {errorContent}";
+                    Console.WriteLine(apiError);
+                    await JSRuntime.InvokeVoidAsync("alert", apiError);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var error = await response.Content.ReadAsStringAsync();
-                Console.WriteLine($"Error deleting experience: {error}");
+                apiError = $"An exception occurred while deleting the experience: {ex.Message}";
+                Console.WriteLine(apiError);
+                await JSRuntime.InvokeVoidAsync("alert", apiError);
             }
         }
     }
 
-    public class Experience
+    // DTOs (Data Transfer Objects) to match the data structure expected by/from the API
+    // These should ideally be in a shared project if used by both client and server.
+    // Renamed from Experience/Talent to ExperienceDto/TalentDto to avoid confusion with potential EF models.
+    public class ExperienceDto
     {
         public int Id { get; set; }
         public string Title { get; set; } = "";
         public string CompanyName { get; set; } = "";
         public int StartYear { get; set; }
         public int? EndYear { get; set; }
-        public int TalentId { get; set; }
-        public Talent? Talent { get; set; }
+        public int TalentId { get; set; } // ID of the TalentDto this experience belongs to
+        public TalentDto? Talent { get; set; } // For display purposes, if the API includes it
     }
 
-    public class Talent
+    public class TalentDto
     {
         public int Id { get; set; }
-        public string Name { get; set; } = "";
+        public string Name { get; set; } = ""; // e.g., "John Doe's Developer Profile"
     }
 }
