@@ -3,7 +3,6 @@
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
 @using esii_2025_d2.Data
-@using MudBlazor
 @using Microsoft.EntityFrameworkCore
 @using System.Security.Claims
 @using esii_2025_d2.Models
@@ -12,42 +11,40 @@
 @inject IDialogService DialogService
 @using esii_2025_d2.Components
 
-<PageTitle>Getão e criação de talentos</PageTitle>
+<PageTitle>Gestão e Criação de Talentos</PageTitle>
 
-<h1>Getão e criação de talentos</h1>
+<h1>Gestão e Criação de Talentos</h1>
 
 <MudLayout>
-<MudTable Items="@talentos" Striped="true" Hover="true" Bordered AllowUnsorted="true">
- <HeaderContent>
-        <MudTh>Nome</MudTh>
-        <MudTh>Pais</MudTh>
-        <MudTh>Email</MudTh>
-        <MudTh>Preo/Hora</MudTh>
-        <MudTh>Categoria</MudTh>
-        <MudTh>Arias</MudTh>
-        <MudTh>Ações</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Nome">@context.Name</MudTd>
-        <MudTd DataLabel="Pais">@context.Country</MudTd>
-        <MudTd DataLabel="Email">@context.Email</MudTd>
-        <MudTd DataLabel="Preço/Hora">@context.HourlyRate.ToString("C")</MudTd>
-        <MudTd DataLabel="Categoria">@context.TalentCategory?.Name</MudTd>
-        <MudTd>
-        <MudButton OnClick="() => EditTalent(context)"  Color="Color.Info">
-            Editar
-        </MudButton>
-        </MudTd>
-    </RowTemplate>
-     <NoRecordsContent>
-        <MudText Class="mx-4 my-2" Color="Color.Secondary">Nenhum talento encontrado.</MudText>
-    </NoRecordsContent>
-</MudTable>
-<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddTalent">Adicionar Talento</MudButton>
+    <MudTable Items="@talentos" Striped="true" Hover="true" Bordered AllowUnsorted="true">
+        <HeaderContent>
+            <MudTh>Nome</MudTh>
+            <MudTh>País</MudTh>
+            <MudTh>Email</MudTh>
+            <MudTh>Preço/Hora</MudTh>
+            <MudTh>Categoria</MudTh>
+            <MudTh>Ações</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Nome">@context.Name</MudTd>
+            <MudTd DataLabel="País">@context.Country</MudTd>
+            <MudTd DataLabel="Email">@context.Email</MudTd>
+            <MudTd DataLabel="Preço/Hora">@context.HourlyRate.ToString("C")</MudTd>
+            <MudTd DataLabel="Categoria">@context.TalentCategory?.Name</MudTd>
+            <MudTd>
+                <MudButton OnClick="() => EditTalent(context)" Color="Color.Info">Editar</MudButton>
+            </MudTd>
+        </RowTemplate>
+        <NoRecordsContent>
+            <MudText Class="mx-4 my-2" Color="Color.Secondary">Nenhum talento encontrado.</MudText>
+        </NoRecordsContent>
+    </MudTable>
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddTalent">Adicionar Talento</MudButton>
 </MudLayout>
 
-@code{
-private List<Talent> talentos = new();
+@code {
+    private List<Talent> talentos = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,36 +58,32 @@ private List<Talent> talentos = new();
     }
 
     private async Task AddTalent()
-{
-    var parameters = new DialogParameters { ["TalentModel"] = new Talent(), ["IsEdit"] = false };
-    var dialog = await DialogService.ShowAsync<TalentForm>("Novo Talento", parameters);
-
-    if (dialog is not null)
     {
-        var result = await dialog.Result;
-        if (!result.Canceled)
+        var parameters = new DialogParameters { ["TalentModel"] = new Talent(), ["IsEdit"] = false };
+        var dialog = await DialogService.ShowAsync<TalentForm>("Novo Talento", parameters);
+
+        if (dialog is not null)
         {
-            await OnInitializedAsync(); // refresh
+            var result = await dialog.Result;
+            if (!result.Canceled)
+            {
+                await OnInitializedAsync(); // Recarregar a lista de talentos
+            }
+        }
+    }
+
+    private async Task EditTalent(Talent talento)
+    {
+        var parameters = new DialogParameters { ["TalentModel"] = talento, ["IsEdit"] = true };
+        var dialog = await DialogService.ShowAsync<TalentForm>("Editar Talento", parameters);
+
+        if (dialog is not null)
+        {
+            var result = await dialog.Result;
+            if (!result.Canceled)
+            {
+                await OnInitializedAsync(); // Recarregar a lista de talentos
+            }
         }
     }
 }
-
-private async Task EditTalent(Talent talento)
-{
-    var parameters = new DialogParameters { ["TalentModel"] = talento, ["IsEdit"] = true };
-    var dialog = await DialogService.ShowAsync<TalentForm>("Editar Talento", parameters);
-
-    if (dialog is not null)
-    {
-        var result = await dialog.Result;
-        if (!result.Canceled)
-        {
-            await OnInitializedAsync(); // refresh
-        }
-    }
-}
-
-    }
-    
-
-    

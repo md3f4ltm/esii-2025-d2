@@ -1,0 +1,223 @@
+@page "/Talents2"
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ApplicationDbContext Db
+@using esii_2025_d2.Data
+@using esii_2025_d2.Models
+
+<PageTitle>Gestão e Criação de Talentos</PageTitle>
+
+<h1>Gestão e Criação de Talentos</h1>
+
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>País</th>
+            <th>Email</th>
+            <th>Preço/Hora</th>
+            <th>Categoria</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (talentos.Count == 0)
+        {
+            <tr>
+                <td colspan="6" class="text-center text-secondary">Nenhum talento encontrado.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var talento in talentos)
+            {
+                <tr>
+                    <td>@talento.Name</td>
+                    <td>@talento.Country</td>
+                    <td>@talento.Email</td>
+                    <td>@talento.HourlyRate.ToString("C")</td>
+                    <td>@talento.TalentCategory?.Name</td>
+                    <td>
+                        <button class="btn btn-info btn-sm" @onclick="() => OpenModal(talento)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => OpenDeleteModal(talento)">Excluir</button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<button class="btn btn-primary" @onclick="() => OpenModal(null)">Adicionar Talento</button>
+
+@if (isModalOpen)
+{
+    <div class="modal-backdrop" @onclick="CloseModal"></div>
+    <div class="modal-dialog" @onclick:stopPropagation="true">
+        <h3>@(isEditMode ? "Editar Talento" : "Novo Talento")</h3>
+
+        <div class="form-group">
+            <label>Nome</label>
+            <input class="form-control" @bind="modalTalent.Name" required />
+        </div>
+        <div class="form-group">
+            <label>País</label>
+            <input class="form-control" @bind="modalTalent.Country" required />
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" @bind="modalTalent.Email" required />
+        </div>
+        <div class="form-group">
+            <label>Preço/Hora</label>
+            <input type="number" min="0" step="0.01" class="form-control" @bind="modalTalent.HourlyRate" required />
+        </div>
+        <div class="form-group">
+            <label>Categoria</label>
+            <select class="form-control" @bind="modalTalent.TalentCategoryId" required>
+                <option value="">-- Selecione --</option>
+                @foreach (var cat in categories)
+                {
+                    <option value="@cat.Id">@cat.Name</option>
+                }
+            </select>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn btn-primary" @onclick="SaveTalent">Salvar</button>
+            <button class="btn btn-secondary" @onclick="CloseModal">Cancelar</button>
+        </div>
+    </div>
+}
+
+@if (isDeleteModalOpen)
+{
+    <div class="modal-backdrop" @onclick="CloseDeleteModal"></div>
+    <div class="modal-dialog" @onclick:stopPropagation="true">
+        <h4>Confirmar Exclusão</h4>
+        <p>Tem certeza que deseja excluir o talento <strong>@deleteTalent.Name</strong>?</p>
+        <div class="modal-actions">
+            <button class="btn btn-danger" @onclick="ConfirmDelete">Excluir</button>
+            <button class="btn btn-secondary" @onclick="CloseDeleteModal">Cancelar</button>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Talent> talentos = new();
+    private List<TalentCategory> categories = new();
+
+    private bool isModalOpen = false;
+    private bool isEditMode = false;
+    private Talent modalTalent = new();
+
+    private bool isDeleteModalOpen = false;
+    private Talent deleteTalent;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated == true)
+        {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            talentos = await Db.Talents
+                .Include(t => t.TalentCategory)
+                .Where(t => t.UserId == userId)
+                .ToListAsync();
+
+            categories = await Db.TalentCategories.ToListAsync();
+        }
+    }
+
+    private void OpenModal(Talent talento)
+    {
+        if (talento == null)
+        {
+            modalTalent = new Talent();
+            isEditMode = false;
+        }
+        else
+        {
+            modalTalent = new Talent
+            {
+                Id = talento.Id,
+                Name = talento.Name,
+                Country = talento.Country,
+                Email = talento.Email,
+                HourlyRate = talento.HourlyRate,
+                TalentCategoryId = talento.TalentCategoryId,
+                UserId = talento.UserId
+            };
+            isEditMode = true;
+        }
+
+        isModalOpen = true;
+    }
+
+    private void CloseModal()
+    {
+        isModalOpen = false;
+    }
+
+    private async Task SaveTalent()
+    {
+        if (isEditMode)
+        {
+            Db.Talents.Update(modalTalent);
+        }
+        else
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            modalTalent.UserId = userId;
+
+            await Db.Talents.AddAsync(modalTalent);
+        }
+
+        await Db.SaveChangesAsync();
+
+        await LoadData();
+
+        isModalOpen = false;
+        StateHasChanged();
+    }
+
+    // --- Exclus�o ---
+
+    private void OpenDeleteModal(Talent talento)
+    {
+        deleteTalent = talento;
+        isDeleteModalOpen = true;
+    }
+
+    private void CloseDeleteModal()
+    {
+        isDeleteModalOpen = false;
+        deleteTalent = null;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (deleteTalent != null)
+        {
+            Db.Talents.Remove(deleteTalent);
+            await Db.SaveChangesAsync();
+
+            await LoadData();
+
+            CloseDeleteModal();
+            StateHasChanged();
+        }
+    }
+}
+
+
+
