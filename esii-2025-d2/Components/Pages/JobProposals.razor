@@ -1,0 +1,414 @@
+@page "/job-proposals"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime JSRuntime
+@attribute [Authorize(Roles = "Customer")]
+
+@rendermode InteractiveServer
+
+<h3>Job Proposals</h3>
+
+@if (!string.IsNullOrEmpty(statusMessage))
+{
+    <div class="@statusClass">
+        @statusMessage
+        <button type="button" class="btn-close float-end" @onclick="() => statusMessage = string.Empty"></button>
+    </div>
+}
+
+<button class="btn btn-primary mb-3" @onclick="ShowAddModal">Create New Job Proposal</button>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Total Hours</th>
+                <th>Description</th>
+                <th>Skill</th>
+                <th>Talent Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (jobProposals == null)
+            {
+                <tr><td colspan="6"><div class="spinner-border text-primary" role="status"></div> Loading...</td></tr>
+            }
+            else if (!jobProposals.Any())
+            {
+                <tr><td colspan="6">No job proposals found. Create your first one!</td></tr>
+            }
+            else
+            {
+                @foreach (var proposal in jobProposals)
+                {
+                    <tr>
+                        <td>@proposal.Name</td>
+                        <td>@proposal.TotalHours</td>
+                        <td>@(proposal.Description?.Length > 50 ? proposal.Description.Substring(0, 50) + "..." : proposal.Description)</td>
+                        <td>@proposal.Skill?.Name</td>
+                        <td>@proposal.TalentCategory?.Name</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" @onclick="() => ShowEditModal(proposal)">Edit</button>
+                            <button class="btn btn-sm btn-danger" @onclick="() => ShowDeleteConfirm(proposal)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Edit/Add Modal -->
+@if (showModal)
+{
+    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@((editingProposal.Id == 0) ? "Create Job Proposal" : "Edit Job Proposal")</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="editingProposal" OnValidSubmit="SaveJobProposal">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        
+                        <div class="mb-3">
+                            <label>Name</label>
+                            <InputText class="form-control" @bind-Value="editingProposal.Name" />
+                            <ValidationMessage For="@(() => editingProposal.Name)" />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Total Hours</label>
+                            <InputNumber class="form-control" @bind-Value="editingProposal.TotalHours" />
+                            <ValidationMessage For="@(() => editingProposal.TotalHours)" />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Description</label>
+                            <InputTextArea class="form-control" @bind-Value="editingProposal.Description" rows="4" />
+                            <ValidationMessage For="@(() => editingProposal.Description)" />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Skill Required</label>
+                            <InputSelect class="form-control" @bind-Value="editingProposal.SkillId">
+                                <option value="">-- Select Skill --</option>
+                                @if (skills != null)
+                                {
+                                    @foreach (var skill in skills)
+                                    {
+                                        <option value="@skill.Id">@skill.Name (@skill.Area)</option>
+                                    }
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => editingProposal.SkillId)" />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Talent Category (Optional)</label>
+                            <InputSelect class="form-control" @bind-Value="editingProposal.TalentCategoryId">
+                                <option value="">-- Any Category --</option>
+                                @if (categories != null)
+                                {
+                                    @foreach (var category in categories)
+                                    {
+                                        <option value="@category.Id">@category.Name</option>
+                                    }
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary ms-2" @onclick="CloseModal">Cancel</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Delete Confirmation Modal -->
+@if (showDeleteConfirm)
+{
+    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                    <button type="button" class="btn-close" @onclick="CancelDelete"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the job proposal "<strong>@deletingProposal?.Name</strong>"?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
+                    <button type="button" class="btn btn-danger" @onclick="ConfirmDelete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<JobProposalDto>? jobProposals;
+    private List<SkillDto>? skills;
+    private List<CategoryDto>? categories;
+    private JobProposalDto editingProposal = new();
+    private bool showModal = false;
+    private string customerId = string.Empty;
+    private string statusMessage = string.Empty;
+    private string statusClass = string.Empty;
+    private bool showDeleteConfirm = false;
+    private JobProposalDto? deletingProposal = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        
+        // Get customer ID from the user ID
+        await GetCustomerIdAsync(userId);
+        
+        await LoadSkills();
+        await LoadCategories();
+        await LoadJobProposals();
+    }
+
+    private async Task GetCustomerIdAsync(string userId)
+    {
+        try {
+            var customer = await Http.GetFromJsonAsync<CustomerDto>($"api/customer/user/{userId}");
+            if (customer != null) {
+                customerId = customer.Id;
+            } else {
+                ShowErrorMessage("Failed to retrieve customer information. Please ensure you have a customer profile.");
+            }
+        }
+        catch (Exception ex) {
+            ShowErrorMessage($"Error retrieving customer information: {ex.Message}");
+        }
+    }
+
+    private async Task LoadJobProposals()
+    {
+        if (string.IsNullOrEmpty(customerId)) {
+            jobProposals = new List<JobProposalDto>();
+            return;
+        }
+
+        try {
+            var allProposals = await Http.GetFromJsonAsync<List<JobProposalDto>>("api/jobproposal");
+            if (allProposals != null) {
+                jobProposals = allProposals.Where(p => p.CustomerId == customerId).ToList();
+            }
+        }
+        catch (Exception ex) {
+            ShowErrorMessage($"Failed to load job proposals: {ex.Message}");
+        }
+    }
+
+    private async Task LoadSkills()
+    {
+        try {
+            skills = await Http.GetFromJsonAsync<List<SkillDto>>("api/skill");
+        }
+        catch (Exception ex) {
+            ShowErrorMessage($"Failed to load skills: {ex.Message}");
+        }
+    }
+
+    private async Task LoadCategories()
+    {
+        try {
+            categories = await Http.GetFromJsonAsync<List<CategoryDto>>("api/talentcategory");
+        }
+        catch (Exception ex) {
+            ShowErrorMessage($"Failed to load categories: {ex.Message}");
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        // Create new job proposal with customer ID already set
+        editingProposal = new JobProposalDto { CustomerId = customerId };
+        showModal = true;
+    }
+
+    private void ShowEditModal(JobProposalDto proposal)
+    {
+        editingProposal = new JobProposalDto
+        {
+            Id = proposal.Id,
+            Name = proposal.Name,
+            TotalHours = proposal.TotalHours,
+            Description = proposal.Description,
+            SkillId = proposal.SkillId,
+            TalentCategoryId = proposal.TalentCategoryId,
+            CustomerId = proposal.CustomerId
+        };
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task SaveJobProposal()
+    {
+        try
+        {
+            // Always ensure the CustomerId is set
+            editingProposal.CustomerId = customerId;
+            
+            if (editingProposal.Id == 0)
+            {
+                // Create new job proposal
+                var response = await Http.PostAsJsonAsync("api/jobproposal", editingProposal);
+                if (response.IsSuccessStatusCode)
+                {
+                    await LoadJobProposals();
+                    CloseModal();
+                    ShowSuccessMessage("Job proposal created successfully!");
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    ShowErrorMessage($"Error creating job proposal: {error}");
+                }
+            }
+            else
+            {
+                // Update existing job proposal
+                var response = await Http.PutAsJsonAsync($"api/jobproposal/{editingProposal.Id}", editingProposal);
+                if (response.IsSuccessStatusCode)
+                {
+                    await LoadJobProposals();
+                    CloseModal();
+                    ShowSuccessMessage("Job proposal updated successfully!");
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    ShowErrorMessage($"Error updating job proposal: {error}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"An error occurred: {ex.Message}");
+        }
+    }
+
+    private void ShowDeleteConfirm(JobProposalDto proposal)
+    {
+        deletingProposal = proposal;
+        showDeleteConfirm = true;
+    }
+
+    private void CancelDelete()
+    {
+        deletingProposal = null;
+        showDeleteConfirm = false;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (deletingProposal != null)
+        {
+            await DeleteJobProposal(deletingProposal.Id);
+            showDeleteConfirm = false;
+            deletingProposal = null;
+        }
+    }
+
+    private async Task DeleteJobProposal(int id)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync($"api/jobproposal/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadJobProposals();
+                ShowSuccessMessage("Job proposal deleted successfully!");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                ShowErrorMessage($"Error deleting job proposal: {error}");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"An error occurred: {ex.Message}");
+        }
+    }
+
+    private void ShowSuccessMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-success";
+    }
+
+    private void ShowErrorMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-danger";
+    }
+
+    // DTOs for data transfer
+    public class JobProposalDto
+    {
+        public int Id { get; set; }
+        
+        [Required(ErrorMessage = "Name is required")]
+        [StringLength(150, ErrorMessage = "Name cannot exceed 150 characters")]
+        public string Name { get; set; } = "";
+        
+        [Required(ErrorMessage = "Total hours is required")]
+        [Range(1, 10000, ErrorMessage = "Hours must be between 1 and 10000")]
+        public int TotalHours { get; set; }
+        
+        [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters")]
+        public string? Description { get; set; }
+        
+        [Required(ErrorMessage = "Please select a skill")]
+        public int SkillId { get; set; }
+        
+        public int? TalentCategoryId { get; set; }
+        
+        public string? CustomerId { get; set; }
+        
+        // Navigation properties for display
+        public SkillDto? Skill { get; set; }
+        public CategoryDto? TalentCategory { get; set; }
+    }
+
+    public class SkillDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public string? Area { get; set; }
+    }
+
+    public class CategoryDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+    }
+
+    public class CustomerDto
+    {
+        public string Id { get; set; } = "";
+        public string Company { get; set; } = "";
+        public string UserId { get; set; } = "";
+    }
+}
