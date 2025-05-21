@@ -42,6 +42,24 @@ public class SkillController : ControllerBase
         return skill;
     }
 
+    // GET: api/Skill/{id}/inuse
+    [HttpGet("{id}/inuse")]
+    public async Task<ActionResult<bool>> IsSkillInUse(int id)
+    {
+        if (!await _context.Skills.AnyAsync(s => s.Id == id))
+        {
+            return NotFound(new { message = $"Skill with ID {id} not found." });
+        }
+
+        // Check if skill is associated with any talents
+        bool isInUse = await _context.TalentSkills.AnyAsync(ts => ts.SkillId == id);
+
+        // You could also check if it's in use by job proposals
+        isInUse = isInUse || await _context.JobProposals.AnyAsync(jp => jp.SkillId == id);
+
+        return isInUse;
+    }
+
 
     // POST: api/Skill
     [HttpPost]
@@ -106,8 +124,14 @@ public class SkillController : ControllerBase
             return NotFound();
         }
 
-        // Add check for dependencies if needed before deleting
-        // Example: if skills are linked in non-nullable ways elsewhere
+        // Check if skill is in use before deleting
+        bool isInUse = await _context.TalentSkills.AnyAsync(ts => ts.SkillId == id);
+        isInUse = isInUse || await _context.JobProposals.AnyAsync(jp => jp.SkillId == id);
+
+        if (isInUse)
+        {
+            return BadRequest(new { message = "Cannot delete this skill because it is associated with talents or job proposals." });
+        }
 
         _context.Skills.Remove(skill);
         await _context.SaveChangesAsync();

@@ -41,9 +41,9 @@
                     </NavLink>
                 </div>
 
-                @* Your existing "Manage Skills" link, also for Talent role *@
+                @* Skills management link *@
                 <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="teste">
+                    <NavLink class="nav-link" href="skills">
                         <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Manage Skills
                     </NavLink>
                 </div>
@@ -55,6 +55,24 @@
                 <span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
             </NavLink>
         </div>
+
+        <AuthorizeView Roles="Customer">
+            <Authorized>
+                @* Link to Job Proposals Page *@
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="job-proposals">
+                        <span class="bi bi-clipboard2-fill-nav-menu" aria-hidden="true"></span> Job Proposals
+                    </NavLink>
+                </div>
+
+                @* Link to Reports Page *@
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="reports">
+                        <span class="bi bi-graph-up-nav-menu" aria-hidden="true"></span> Reports
+                    </NavLink>
+                </div>
+            </Authorized>
+        </AuthorizeView>
 
         <AuthorizeView>
             <Authorized>

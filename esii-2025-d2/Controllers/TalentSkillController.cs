@@ -6,13 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-// using Microsoft.AspNetCore.Authorization; // Uncomment if needed
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace esii_2025_d2.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-// [Authorize] // Uncomment if needed
+[Authorize]
 public class TalentSkillController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -47,14 +48,51 @@ public class TalentSkillController : ControllerBase
 
         return talentSkill;
     }
+    
+    // GET: api/TalentSkill/talent/5
+    [HttpGet("talent/{talentId}")]
+    public async Task<ActionResult<IEnumerable<TalentSkill>>> GetSkillsByTalent(int talentId)
+    {
+        // Get the current user's ID
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized(new { message = "User not authenticated." });
+        }
+
+        // Check if talent exists and belongs to the current user
+        var talent = await _context.Talents.FirstOrDefaultAsync(t => t.Id == talentId && t.UserId == userId);
+        if (talent == null)
+        {
+            return NotFound(new { message = $"Talent with ID {talentId} not found or does not belong to the current user." });
+        }
+
+        // Get all skills for this talent
+        var talentSkills = await _context.TalentSkills
+            .Where(ts => ts.TalentId == talentId)
+            .Include(ts => ts.Skill)
+            .ToListAsync();
+
+        return talentSkills;
+    }
 
     // POST: api/TalentSkill
     [HttpPost]
     public async Task<ActionResult<TalentSkill>> CreateTalentSkill(TalentSkill newTalentSkill)
     {
-        // Validate foreign keys using English names
-        if (!await _context.Talents.AnyAsync(t => t.Id == newTalentSkill.TalentId)) // Use Talents DbSet, Id property
-            return BadRequest(new { message = $"Talent with ID {newTalentSkill.TalentId} not found." });
+        // Get the current user's ID
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized(new { message = "User not authenticated." });
+        }
+        
+        // Check if talent exists and belongs to the current user
+        var talent = await _context.Talents.FirstOrDefaultAsync(t => t.Id == newTalentSkill.TalentId && t.UserId == userId);
+        if (talent == null)
+        {
+            return BadRequest(new { message = $"Talent with ID {newTalentSkill.TalentId} not found or does not belong to the current user." });
+        }
 
         if (!await _context.Skills.AnyAsync(s => s.Id == newTalentSkill.SkillId)) // Use Skills DbSet, Id property
             return BadRequest(new { message = $"Skill with ID {newTalentSkill.SkillId} not found." });
@@ -86,10 +124,24 @@ public class TalentSkillController : ControllerBase
     [HttpPut("{talentId}/{skillId}")] // Updated route parameters
     public async Task<IActionResult> UpdateTalentSkill(int talentId, int skillId, TalentSkill updatedTalentSkill)
     {
+        // Get the current user's ID
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized(new { message = "User not authenticated." });
+        }
+        
         // Use English property names for check
         if (talentId != updatedTalentSkill.TalentId || skillId != updatedTalentSkill.SkillId)
         {
             return BadRequest("Route IDs do not match payload IDs.");
+        }
+
+        // Check if talent belongs to the current user
+        var talent = await _context.Talents.FirstOrDefaultAsync(t => t.Id == talentId && t.UserId == userId);
+        if (talent == null)
+        {
+            return BadRequest(new { message = $"Talent with ID {talentId} not found or does not belong to the current user." });
         }
 
         // Find the existing entity based on the composite key
@@ -112,7 +164,7 @@ public class TalentSkillController : ControllerBase
         catch (DbUpdateConcurrencyException)
         {
             // Check existence again for concurrency
-             if (!await TalentoSkillExists(talentId, skillId))
+             if (!await TalentSkillExists(talentId, skillId))
              {
                   return NotFound();
              }
@@ -134,6 +186,20 @@ public class TalentSkillController : ControllerBase
     [HttpDelete("{talentId}/{skillId}")] // Updated route parameters
     public async Task<IActionResult> DeleteTalentSkill(int talentId, int skillId)
     {
+        // Get the current user's ID
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized(new { message = "User not authenticated." });
+        }
+        
+        // Check if talent belongs to the current user
+        var talent = await _context.Talents.FirstOrDefaultAsync(t => t.Id == talentId && t.UserId == userId);
+        if (talent == null)
+        {
+            return BadRequest(new { message = $"Talent with ID {talentId} not found or does not belong to the current user." });
+        }
+
         // Find using composite key with English property names
         var talentSkill = await _context.TalentSkills.FindAsync(talentId, skillId);
         if (talentSkill == null)
@@ -147,7 +213,7 @@ public class TalentSkillController : ControllerBase
         return NoContent();
     }
 
-    private async Task<bool> TalentoSkillExists(int talentId, int skillId) // Make async if using FindAsync
+    private async Task<bool> TalentSkillExists(int talentId, int skillId) // Make async if using FindAsync
     {
         // Check using English property names
         // FindAsync is efficient for PK lookups

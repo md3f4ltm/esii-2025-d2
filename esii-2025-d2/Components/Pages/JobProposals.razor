@@ -172,14 +172,52 @@
     protected override async Task OnInitializedAsync()
     {
         var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-        var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        var user = authState.User;
+
+        if (user?.Identity?.IsAuthenticated != true)
+        {
+            ShowErrorMessage("User not authenticated. Please log in.");
+            InitializeEmptyLists();
+            return;
+        }
+
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            ShowErrorMessage("User ID not found. Authentication may be incomplete.");
+            InitializeEmptyLists();
+            return;
+        }
         
-        // Get customer ID from the user ID
+        // Attempt to get customer ID first, as it's crucial for proposals
         await GetCustomerIdAsync(userId);
         
-        await LoadSkills();
-        await LoadCategories();
-        await LoadJobProposals();
+        // Load skills and categories in parallel
+        var skillsTask = LoadSkills();
+        var categoriesTask = LoadCategories();
+        
+        if (!string.IsNullOrEmpty(customerId))
+        {
+            await LoadJobProposals();
+        }
+        else
+        {
+            jobProposals = new List<JobProposalDto>();
+            if (string.IsNullOrEmpty(statusMessage)) // If GetCustomerIdAsync didn't set a message
+            {
+                ShowErrorMessage("Could not retrieve customer details. Unable to load job proposals.");
+            }
+        }
+        
+        await skillsTask;
+        await categoriesTask;
+    }
+
+    private void InitializeEmptyLists()
+    {
+        jobProposals = new List<JobProposalDto>();
+        skills = new List<SkillDto>();
+        categories = new List<CategoryDto>();
     }
 
     private async Task GetCustomerIdAsync(string userId)
@@ -190,28 +228,67 @@
                 customerId = customer.Id;
             } else {
                 ShowErrorMessage("Failed to retrieve customer information. Please ensure you have a customer profile.");
+                customerId = string.Empty; // Ensure customerId is cleared on failure
             }
         }
+        catch (System.Net.Http.HttpRequestException httpEx)
+        {
+            if (httpEx.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                ShowErrorMessage("Customer profile not found for your user account. Please create one if necessary.");
+            }
+            else
+            {
+                ShowErrorMessage($"Error retrieving customer information: {httpEx.Message} (Status: {httpEx.StatusCode})");
+            }
+            customerId = string.Empty; // Ensure customerId is cleared on error
+        }
         catch (Exception ex) {
-            ShowErrorMessage($"Error retrieving customer information: {ex.Message}");
+            ShowErrorMessage($"An unexpected error occurred while retrieving customer information: {ex.Message}");
+            customerId = string.Empty; // Ensure customerId is cleared on error
         }
     }
 
     private async Task LoadJobProposals()
     {
-        if (string.IsNullOrEmpty(customerId)) {
-            jobProposals = new List<JobProposalDto>();
+        if (string.IsNullOrEmpty(customerId)) 
+        {
+            jobProposals = new List<JobProposalDto>(); // Ensure initialized
+            // An error message should ideally be set by OnInitializedAsync or GetCustomerIdAsync
             return;
         }
 
-        try {
-            var allProposals = await Http.GetFromJsonAsync<List<JobProposalDto>>("api/jobproposal");
-            if (allProposals != null) {
-                jobProposals = allProposals.Where(p => p.CustomerId == customerId).ToList();
-            }
+        try 
+        {
+            // The controller's GET api/jobproposal endpoint is already authorized 
+            // and filters by the authenticated customer.
+            var result = await Http.GetFromJsonAsync<List<JobProposalDto>>("api/jobproposal");
+            jobProposals = result ?? new List<JobProposalDto>();
         }
-        catch (Exception ex) {
-            ShowErrorMessage($"Failed to load job proposals: {ex.Message}");
+        catch (System.Net.Http.HttpRequestException httpEx)
+        {
+            if (httpEx.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                ShowErrorMessage("Unauthorized: Please log in as a Customer to view job proposals.");
+            }
+            else if (httpEx.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                ShowErrorMessage("Forbidden: You do not have permission to access these job proposals.");
+            }
+            else if (httpEx.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                 ShowErrorMessage("Could not find job proposals. This may be an issue with your customer profile or the proposals themselves.");
+            }
+            else
+            {
+                ShowErrorMessage($"Failed to load job proposals: {httpEx.Message} (Status: {httpEx.StatusCode})");
+            }
+            jobProposals = new List<JobProposalDto>(); 
+        }
+        catch (Exception ex) 
+        {
+            ShowErrorMessage($"An unexpected error occurred while loading job proposals: {ex.Message}");
+            jobProposals = new List<JobProposalDto>();
         }
     }
 

@@ -1,7 +1,8 @@
 @page "/Experiences"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Forms
-@using System.Security.Claims 
+@using System.Security.Claims
+@using System.Diagnostics
 @attribute [Authorize(Roles = "Talent")]
 @inject HttpClient Http
 @inject IJSRuntime JSRuntime
@@ -167,6 +168,7 @@
 
     private async Task LoadExperiences()
     {
+        Console.WriteLine("Loading experiences...");
         try
         {
             // This endpoint should return experiences linked to the user's talent profiles.
@@ -179,11 +181,13 @@
             apiError = (apiError ?? "") + $" Failed to load experiences: {ex.Message} (Status: {ex.StatusCode})";
             Console.WriteLine($"Failed to load experiences. URL: api/Experience/myexperiences. Error: {ex.Message}");
             experiences = new List<ExperienceDto>();
+            Console.WriteLine($"Exception details: {ex}");
         }
         catch (Exception ex)
         {
              apiError = (apiError ?? "") + $" An unexpected error occurred while loading experiences: {ex.Message}";
             Console.WriteLine($"An unexpected error occurred while loading experiences: {ex.Message}");
+            Console.WriteLine($"Exception details: {ex}");
             experiences = new List<ExperienceDto>();
         }
     }

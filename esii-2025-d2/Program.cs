@@ -51,8 +51,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuth
 
 
 builder.Services.AddScoped<HttpClient>(sp =>
-
-    new HttpClient { BaseAddress = new Uri($"http://localhost:5112/") }); // Atenção ao URL base se for para produção
+    new HttpClient { BaseAddress = new Uri("http://localhost:5112/") }); // Use absolute URL for development
 
 
 

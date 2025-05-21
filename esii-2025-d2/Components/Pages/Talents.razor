@@ -21,7 +21,7 @@
 
 <button class="btn btn-primary mb-3" @onclick="ShowAddModal">Add New Talent</button>
 
-<table class="table table-striped"> <thead> <tr> <th>Name</th> <th>Country</th> <th>Email</th> <th>Hourly Rate</th> <th>Category</th> <th>Actions</th> </tr> </thead> <tbody> @if (talents == null) { <tr><td colspan="6">Loading...</td></tr> } else if (!talents.Any()) { <tr><td colspan="6">No talents found.</td></tr> } else { @foreach (var talent in talents) { <tr> <td>@talent.Name</td> <td>@talent.Country</td> <td>@talent.Email</td> <td>@talent.HourlyRate</td> <td>@talent.TalentCategory?.Name</td> <td> <button class="btn btn-sm btn-warning" @onclick="() => ShowEditModal(talent)">Edit</button> <button class="btn btn-sm btn-danger" @onclick="() => ShowDeleteConfirm(talent)">Delete</button> </td> </tr> } } </tbody> </table> <!-- Edit/Add Modal -->
+<table class="table table-striped"> <thead> <tr> <th>Name</th> <th>Country</th> <th>Email</th> <th>Hourly Rate</th> <th>Category</th> <th>Visibility</th> <th>Actions</th> </tr> </thead> <tbody> @if (talents == null) { <tr><td colspan="7">Loading...</td></tr> } else if (!talents.Any()) { <tr><td colspan="7">No talents found.</td></tr> } else { @foreach (var talent in talents) { <tr> <td>@talent.Name</td> <td>@talent.Country</td> <td>@talent.Email</td> <td>@talent.HourlyRate</td> <td>@talent.TalentCategory?.Name</td> <td>@(talent.IsPublic ? "Public" : "Private")</td> <td> <button class="btn btn-sm btn-warning" @onclick="() => ShowEditModal(talent)">Edit</button> <button class="btn btn-sm btn-danger" @onclick="() => ShowDeleteConfirm(talent)">Delete</button> </td> </tr> } } </tbody> </table>
 @if (showModal)
 {
 <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
@@ -72,6 +72,12 @@
                             }
                         </InputSelect>
                         <ValidationMessage For="@(() => editingTalent.TalentCategoryId)" />
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <InputCheckbox class="form-check-input" @bind-Value="editingTalent.IsPublic" id="isPublic" />
+                        <label class="form-check-label" for="isPublic">Public Profile</label>
+                        <div class="form-text">Make your profile visible to all users</div>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Save</button>
@@ -127,7 +133,7 @@ protected override async Task OnInitializedAsync()
 private async Task LoadCategories()
 {
     try {
-        categories = await Http.GetFromJsonAsync<List<TalentCategory>>("api/talentcategory");
+        categories = await Http.GetFromJsonAsync<List<TalentCategory>>("api/TalentCategory");
     }
     catch (Exception ex) {
         ShowErrorMessage($"Failed to load categories: {ex.Message}");
@@ -168,7 +174,8 @@ private void ShowEditModal(Talent talent)
         Email = talent.Email,
         HourlyRate = talent.HourlyRate,
         TalentCategoryId = talent.TalentCategoryId,
-        UserId = talent.UserId
+        UserId = talent.UserId,
+        IsPublic = talent.IsPublic
     };
     showModal = true;
 }
@@ -300,9 +307,11 @@ public class Talent
     public decimal HourlyRate { get; set; }
     
     [Required(ErrorMessage = "Please select a category")]
-    public int? TalentCategoryId { get; set; }
+    public int TalentCategoryId { get; set; }
     
     public string UserId { get; set; } = "";
+    
+    public bool IsPublic { get; set; } = true;
     
     public TalentCategory? TalentCategory { get; set; }
 }

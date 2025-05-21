@@ -28,6 +28,9 @@ public class Talent
     [Column(TypeName = "decimal(18,2)")]
     public decimal HourlyRate { get; set; }
 
+    [Required]
+    public bool IsPublic { get; set; } = true;
+
     // --- Foreign Keys and Navigation Properties ---
 
     // If a TalentCategory is always required, make TalentCategoryId non-nullable (int)
