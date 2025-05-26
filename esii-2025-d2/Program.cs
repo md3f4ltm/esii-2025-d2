@@ -48,10 +48,15 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
+// Add HTTP context accessor for cookie authentication
+builder.Services.AddHttpContextAccessor();
 
-
+// Configure HttpClient for authenticated API calls
 builder.Services.AddScoped<HttpClient>(sp =>
-    new HttpClient { BaseAddress = new Uri("http://localhost:5112/") }); // Use absolute URL for development
+{
+    var httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5112/") };
+    return httpClient;
+});
 
 
 
@@ -98,6 +103,11 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+// Register application services
+builder.Services.AddScoped<esii_2025_d2.Services.ICustomerService, esii_2025_d2.Services.CustomerService>();
+builder.Services.AddScoped<esii_2025_d2.Services.ITalentService, esii_2025_d2.Services.TalentService>();
+builder.Services.AddScoped<esii_2025_d2.Services.IExperienceService, esii_2025_d2.Services.ExperienceService>();
 
 
 

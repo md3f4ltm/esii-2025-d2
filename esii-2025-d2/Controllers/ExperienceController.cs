@@ -8,13 +8,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using System.Security.Claims;
-// using Microsoft.AspNetCore.Authorization; // Uncomment if needed
+using Microsoft.AspNetCore.Authorization;
 
 namespace esii_2025_d2.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-// [Authorize] // Uncomment if needed
 public class ExperienceController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -33,6 +32,7 @@ public class ExperienceController : ControllerBase
 
     // GET: api/Experience/myexperiences
     [HttpGet("myexperiences")]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<Experience>>> GetMyExperiences()
     {
         // Get the current user's ID from the claims
@@ -45,7 +45,7 @@ public class ExperienceController : ControllerBase
         // Find all experiences linked to talents belonging to the current user
         var experiences = await _context.Experiences
             .Include(e => e.Talent) // Include related talent for the experience
-            .Where(e => e.Talent.UserId == userId)
+            .Where(e => e.Talent != null && e.Talent.UserId == userId)
             .ToListAsync();
 
         return experiences;

@@ -3,10 +3,13 @@
 @using Microsoft.AspNetCore.Components.Forms
 @using System.Security.Claims
 @using System.Diagnostics
+@using esii_2025_d2.Services
+@using esii_2025_d2.Models
 @attribute [Authorize(Roles = "Talent")]
-@inject HttpClient Http
 @inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider AuthStateProvider
+@inject ITalentService TalentService
+@inject IExperienceService ExperienceService
 @rendermode InteractiveServer
 
 <h3>Experiences</h3>
@@ -113,9 +116,9 @@
 }
 
 @code {
-    private List<TalentDto>? talents;
-    private List<ExperienceDto>? experiences;
-    private ExperienceDto editingExperience = new();
+    private List<Talent>? talents;
+    private List<Experience>? experiences;
+    private Experience editingExperience = new();
     private bool showModal = false;
     private string? LoggedInUserId;
     private string? apiError;
@@ -132,8 +135,8 @@
         {
             apiError = "User not authenticated.";
             Console.WriteLine(apiError);
-            talents = new List<TalentDto>();
-            experiences = new List<ExperienceDto>();
+            talents = new List<Talent>();
+            experiences = new List<Experience>();
             initialLoadAttempted = true;
             return;
         }
@@ -147,22 +150,17 @@
     {
         try
         {
-            // This endpoint should return a list of TalentDto for the currently authenticated user.
-            // The backend controller should use the User.Identity to get the user ID.
-            talents = await Http.GetFromJsonAsync<List<TalentDto>>("api/Talent/mytalents"); // Ensure this API endpoint exists and is GET
-             if (talents == null) talents = new List<TalentDto>();
-        }
-        catch (HttpRequestException ex)
-        {
-            apiError = $"Failed to load talent profiles: {ex.Message} (Status: {ex.StatusCode})";
-            Console.WriteLine($"{apiError}. URL: api/Talent/mytalents");
-            talents = new List<TalentDto>();
+            if (!string.IsNullOrEmpty(LoggedInUserId))
+            {
+                talents = await TalentService.GetMyTalentsAsync(LoggedInUserId);
+            }
+            if (talents == null) talents = new List<Talent>();
         }
         catch (Exception ex)
         {
-            apiError = $"An unexpected error occurred while loading talent profiles: {ex.Message}";
-            Console.WriteLine(apiError);
-            talents = new List<TalentDto>();
+            apiError = $"Failed to load talent profiles: {ex.Message}";
+            Console.WriteLine($"{apiError}");
+            talents = new List<Talent>();
         }
     }
 
@@ -171,45 +169,38 @@
         Console.WriteLine("Loading experiences...");
         try
         {
-            // This endpoint should return experiences linked to the user's talent profiles.
-            // The backend should filter experiences based on the authenticated user.
-            experiences = await Http.GetFromJsonAsync<List<ExperienceDto>>("api/Experience/myexperiences"); // Ensure this API endpoint exists and is GET
-            if (experiences == null) experiences = new List<ExperienceDto>();
-        }
-        catch (HttpRequestException ex)
-        {
-            apiError = (apiError ?? "") + $" Failed to load experiences: {ex.Message} (Status: {ex.StatusCode})";
-            Console.WriteLine($"Failed to load experiences. URL: api/Experience/myexperiences. Error: {ex.Message}");
-            experiences = new List<ExperienceDto>();
-            Console.WriteLine($"Exception details: {ex}");
+            if (!string.IsNullOrEmpty(LoggedInUserId))
+            {
+                experiences = await ExperienceService.GetMyExperiencesAsync(LoggedInUserId);
+            }
+            if (experiences == null) experiences = new List<Experience>();
         }
         catch (Exception ex)
         {
-             apiError = (apiError ?? "") + $" An unexpected error occurred while loading experiences: {ex.Message}";
-            Console.WriteLine($"An unexpected error occurred while loading experiences: {ex.Message}");
+            apiError = (apiError ?? "") + $" Failed to load experiences: {ex.Message}";
+            Console.WriteLine($"Failed to load experiences. Error: {ex.Message}");
+            experiences = new List<Experience>();
             Console.WriteLine($"Exception details: {ex}");
-            experiences = new List<ExperienceDto>();
         }
     }
 
     private void ShowAddModal()
     {
-        editingExperience = new ExperienceDto();
+        editingExperience = new Experience();
         if (talents != null && talents.Any())
         {
             // If there's only one talent profile, or to pre-select the first available one.
-            // Consider if TalentId=0 should be the default for "-- Select Talent Profile --"
-             editingExperience.TalentId = talents.FirstOrDefault()?.Id ?? 0;
+            editingExperience.TalentId = talents.FirstOrDefault()?.Id ?? 0;
         } else {
             editingExperience.TalentId = 0; // No talents to select
         }
         showModal = true;
     }
 
-    private void ShowEditModal(ExperienceDto exp)
+    private void ShowEditModal(Experience exp)
     {
         // Create a new instance to avoid modifying the original object in the list directly
-        editingExperience = new ExperienceDto
+        editingExperience = new Experience
         {
             Id = exp.Id,
             Title = exp.Title,
@@ -224,7 +215,7 @@
     private void CloseModal()
     {
         showModal = false;
-        editingExperience = new ExperienceDto(); // Clear the form
+        editingExperience = new Experience(); // Clear the form
     }
 
     private async Task SaveExperience()
@@ -238,25 +229,25 @@
         apiError = null;
         try
         {
-            HttpResponseMessage response;
+            bool success = false;
             if (editingExperience.Id == 0) // New experience
             {
-                response = await Http.PostAsJsonAsync("api/Experience", editingExperience);
+                var result = await ExperienceService.CreateExperienceAsync(editingExperience);
+                success = result != null;
             }
             else // Existing experience
             {
-                response = await Http.PutAsJsonAsync($"api/Experience/{editingExperience.Id}", editingExperience);
+                success = await ExperienceService.UpdateExperienceAsync(editingExperience);
             }
 
-            if (response.IsSuccessStatusCode)
+            if (success)
             {
                 await LoadExperiences(); // Refresh the list
                 CloseModal();
             }
             else
             {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                apiError = $"Error saving experience (Status: {response.StatusCode}): {errorContent}";
+                apiError = "Error saving experience.";
                 Console.WriteLine(apiError);
                 await JSRuntime.InvokeVoidAsync("alert", apiError);
             }
@@ -276,15 +267,19 @@
             apiError = null;
             try
             {
-                var response = await Http.DeleteAsync($"api/Experience/{id}");
-                if (response.IsSuccessStatusCode)
+                bool success = false;
+                if (!string.IsNullOrEmpty(LoggedInUserId))
+                {
+                    success = await ExperienceService.DeleteExperienceAsync(id, LoggedInUserId);
+                }
+                
+                if (success)
                 {
                     await LoadExperiences(); // Refresh the list
                 }
                 else
                 {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    apiError = $"Error deleting experience (Status: {response.StatusCode}): {errorContent}";
+                    apiError = "Error deleting experience.";
                     Console.WriteLine(apiError);
                     await JSRuntime.InvokeVoidAsync("alert", apiError);
                 }
@@ -296,25 +291,5 @@
                 await JSRuntime.InvokeVoidAsync("alert", apiError);
             }
         }
-    }
-
-    // DTOs (Data Transfer Objects) to match the data structure expected by/from the API
-    // These should ideally be in a shared project if used by both client and server.
-    // Renamed from Experience/Talent to ExperienceDto/TalentDto to avoid confusion with potential EF models.
-    public class ExperienceDto
-    {
-        public int Id { get; set; }
-        public string Title { get; set; } = "";
-        public string CompanyName { get; set; } = "";
-        public int StartYear { get; set; }
-        public int? EndYear { get; set; }
-        public int TalentId { get; set; } // ID of the TalentDto this experience belongs to
-        public TalentDto? Talent { get; set; } // For display purposes, if the API includes it
-    }
-
-    public class TalentDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; } = ""; // e.g., "John Doe's Developer Profile"
     }
 }
