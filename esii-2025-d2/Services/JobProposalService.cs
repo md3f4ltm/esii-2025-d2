@@ -33,14 +33,14 @@ namespace esii_2025_d2.Services
                 .ToListAsync();
         }
 
-    public async Task<List<JobProposal>> GetJobProposalsByCustomerIdAsync(string customerId)
-    {
-        return await _context.JobProposals
-            .Include(jp => jp.Skill)
-            .Include(jp => jp.TalentCategory)
-            .Where(jp => jp.CustomerId == customerId)
-            .ToListAsync();
-    }
+        public async Task<List<JobProposal>> GetJobProposalsByCustomerIdAsync(string customerId)
+        {
+            return await _context.JobProposals
+                .Include(jp => jp.Skill)
+                .Include(jp => jp.TalentCategory)
+                .Where(jp => jp.CustomerId == customerId)
+                .ToListAsync();
+        }
 
         public async Task<JobProposal?> GetJobProposalByIdAsync(int id)
         {
@@ -74,17 +74,17 @@ namespace esii_2025_d2.Services
             return true;
         }
 
-    public async Task<bool> DeleteJobProposalAsync(int id, string customerId)
-    {
-        var jobProposal = await _context.JobProposals
-            .FirstOrDefaultAsync(jp => jp.Id == id && jp.CustomerId == customerId);
-            
-        if (jobProposal == null)
-            return false;
-            
-        _context.JobProposals.Remove(jobProposal);
-        await _context.SaveChangesAsync();
-        return true;
-    }
+        public async Task<bool> DeleteJobProposalAsync(int id, string customerId)
+        {
+            var jobProposal = await _context.JobProposals
+                .FirstOrDefaultAsync(jp => jp.Id == id && jp.CustomerId == customerId);
+
+            if (jobProposal == null)
+                return false;
+
+            _context.JobProposals.Remove(jobProposal);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

@@ -15,10 +15,10 @@
 <h3>Reports</h3>
 @if (!string.IsNullOrEmpty(statusMessage))
 {
-<div class="@statusClass">
-@statusMessage
-<button type="button" class="btn-close float-end" @onclick="() => statusMessage = string.Empty"></button>
-</div>
+    <div class="@statusClass">
+        @statusMessage
+        <button type="button" class="btn-close float-end" @onclick="() => statusMessage = string.Empty"></button>
+    </div>
 }
 
 <div class="row mb-4">
@@ -126,7 +126,7 @@
 
     private List<CategoryCountryReport>? categoryCountryReport;
     private List<SkillReport>? skillReport;
-    
+
     private string statusMessage = string.Empty;
     private string statusClass = string.Empty;
 
@@ -154,7 +154,7 @@
         try
         {
             categoryCountryReport = await ReportsService.GetCategoryCountryReportAsync();
-            
+
             if (categoryCountryReport == null)
             {
                 categoryCountryReport = new List<CategoryCountryReport>();
@@ -172,7 +172,7 @@
         try
         {
             skillReport = await ReportsService.GetSkillReportAsync();
-            
+
             if (skillReport == null)
             {
                 skillReport = new List<SkillReport>();

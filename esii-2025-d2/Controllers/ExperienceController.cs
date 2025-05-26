@@ -67,45 +67,45 @@ public class ExperienceController : ControllerBase
         return experience;
     }
 
-     // POST: api/Experience
-     [HttpPost]
-     public async Task<ActionResult<Experience>> CreateExperience(Experience newExperience)
-     {
-         // Validate that the TalentId exists
-         if (await _context.Talents.FindAsync(newExperience.TalentId) == null) // Use English DbSet and TalentId
-         {
-             return BadRequest(new { message = $"Talent with ID {newExperience.TalentId} not found." });
-         }
+    // POST: api/Experience
+    [HttpPost]
+    public async Task<ActionResult<Experience>> CreateExperience(Experience newExperience)
+    {
+        // Validate that the TalentId exists
+        if (await _context.Talents.FindAsync(newExperience.TalentId) == null) // Use English DbSet and TalentId
+        {
+            return BadRequest(new { message = $"Talent with ID {newExperience.TalentId} not found." });
+        }
 
-         // Validate StartYear and EndYear
-         if (newExperience.EndYear.HasValue && newExperience.EndYear.Value < newExperience.StartYear)
-         {
-             return BadRequest(new { message = "End year cannot be earlier than start year." });
-         }
+        // Validate StartYear and EndYear
+        if (newExperience.EndYear.HasValue && newExperience.EndYear.Value < newExperience.StartYear)
+        {
+            return BadRequest(new { message = "End year cannot be earlier than start year." });
+        }
 
-         // Check for overlapping experiences
-         var existingExperiences = await _context.Experiences
-             .Where(e => e.TalentId == newExperience.TalentId)
-             .ToListAsync();
-        
-         if (newExperience.IsOverlapping(existingExperiences))
-         {
-             return BadRequest(new { message = "This experience overlaps with another experience for the same talent." });
-         }
+        // Check for overlapping experiences
+        var existingExperiences = await _context.Experiences
+            .Where(e => e.TalentId == newExperience.TalentId)
+            .ToListAsync();
 
-         _context.Experiences.Add(newExperience);
-         try
-         {
-              await _context.SaveChangesAsync();
-         }
-         catch (DbUpdateException /* ex */)
-         {
-              // Log exception details
-             return BadRequest(new { message = "Failed to create experience. Check related data." });
-         }
+        if (newExperience.IsOverlapping(existingExperiences))
+        {
+            return BadRequest(new { message = "This experience overlaps with another experience for the same talent." });
+        }
 
-         return CreatedAtAction(nameof(GetExperience), new { id = newExperience.Id }, newExperience); // Use Id
-     }
+        _context.Experiences.Add(newExperience);
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException /* ex */)
+        {
+            // Log exception details
+            return BadRequest(new { message = "Failed to create experience. Check related data." });
+        }
+
+        return CreatedAtAction(nameof(GetExperience), new { id = newExperience.Id }, newExperience); // Use Id
+    }
 
     // PUT: api/Experience/5
     [HttpPut("{id}")]
@@ -132,7 +132,7 @@ public class ExperienceController : ControllerBase
         var existingExperiences = await _context.Experiences
             .Where(e => e.TalentId == updatedExperience.TalentId)
             .ToListAsync();
-        
+
         if (updatedExperience.IsOverlapping(existingExperiences))
         {
             return BadRequest(new { message = "This experience overlaps with another experience for the same talent." });
@@ -155,7 +155,7 @@ public class ExperienceController : ControllerBase
                 throw;
             }
         }
-         catch (DbUpdateException /* ex */)
+        catch (DbUpdateException /* ex */)
         {
             // Log exception details
             return BadRequest(new { message = "Failed to update experience. Check related data." });

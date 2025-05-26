@@ -73,7 +73,7 @@ namespace esii_2025_d2.Services
                 var experience = await _context.Experiences
                     .Include(e => e.Talent)
                     .FirstOrDefaultAsync(e => e.Id == id && e.Talent != null && e.Talent.UserId == userId);
-                
+
                 if (experience == null) return false;
 
                 _context.Experiences.Remove(experience);
