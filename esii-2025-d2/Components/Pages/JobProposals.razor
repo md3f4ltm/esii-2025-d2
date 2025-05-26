@@ -1,0 +1,433 @@
+@page "/job-proposals"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
+@using esii_2025_d2.Services
+@using esii_2025_d2.Models
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime JSRuntime
+@inject IJobProposalService JobProposalService
+@inject ICustomerService CustomerService
+@inject HttpClient Http
+@attribute [Authorize(Roles = "Customer")]
+
+@rendermode InteractiveServer
+
+<h3>Job Proposals</h3>
+
+@if (!string.IsNullOrEmpty(statusMessage))
+{
+    <div class="@statusClass">
+        @statusMessage
+        <button type="button" class="btn-close float-end" @onclick="() => statusMessage = string.Empty"></button>
+    </div>
+}
+
+<button class="btn btn-primary mb-3" @onclick="ShowAddModal">Create New Job Proposal</button>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Total Hours</th>
+                <th>Description</th>
+                <th>Skill</th>
+                <th>Talent Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (jobProposals == null)
+            {
+                <tr><td colspan="6"><div class="spinner-border text-primary" role="status"></div> Loading...</td></tr>
+            }
+            else if (!jobProposals.Any())
+            {
+                <tr><td colspan="6">No job proposals found. Create your first one!</td></tr>
+            }
+            else
+            {
+                @foreach (var proposal in jobProposals)
+                {
+                    <tr>
+                        <td>@proposal.Name</td>
+                        <td>@proposal.TotalHours</td>
+                        <td>@(proposal.Description?.Length > 50 ? proposal.Description.Substring(0, 50) + "..." : proposal.Description)</td>
+                        <td>@proposal.Skill?.Name</td>
+                        <td>@proposal.TalentCategory?.Name</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" @onclick="() => ShowEditModal(proposal)">Edit</button>
+                            <button class="btn btn-sm btn-danger" @onclick="() => ShowDeleteConfirm(proposal)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Edit/Add Modal -->
+@if (showModal)
+{
+    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@((editingProposal.Id == 0) ? "Create Job Proposal" : "Edit Job Proposal")</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="editingProposal" OnValidSubmit="SaveJobProposal">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        
+                        <div class="mb-3">
+                            <label>Name</label>
+                            <InputText class="form-control" @bind-Value="editingProposal.Name" />
+                            <ValidationMessage For="@(() => editingProposal.Name)" />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Total Hours</label>
+                            <InputNumber class="form-control" @bind-Value="editingProposal.TotalHours" />
+                            <ValidationMessage For="@(() => editingProposal.TotalHours)" />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Description</label>
+                            <InputTextArea class="form-control" @bind-Value="editingProposal.Description" rows="4" />
+                            <ValidationMessage For="@(() => editingProposal.Description)" />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Skill Required</label>
+                            <InputSelect class="form-control" @bind-Value="editingProposal.SkillId">
+                                <option value="">-- Select Skill --</option>
+                                @if (skills != null)
+                                {
+                                    @foreach (var skill in skills)
+                                    {
+                                        <option value="@skill.Id">@skill.Name (@skill.Area)</option>
+                                    }
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => editingProposal.SkillId)" />
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label>Talent Category (Optional)</label>
+                            <InputSelect class="form-control" @bind-Value="editingProposal.TalentCategoryId">
+                                <option value="">-- Any Category --</option>
+                                @if (categories != null)
+                                {
+                                    @foreach (var category in categories)
+                                    {
+                                        <option value="@category.Id">@category.Name</option>
+                                    }
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary ms-2" @onclick="CloseModal">Cancel</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Delete Confirmation Modal -->
+@if (showDeleteConfirm)
+{
+    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                    <button type="button" class="btn-close" @onclick="CancelDelete"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the job proposal "<strong>@deletingProposal?.Name</strong>"?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
+                    <button type="button" class="btn btn-danger" @onclick="ConfirmDelete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<JobProposal>? jobProposals;
+    private List<Skill>? skills;
+    private List<TalentCategory>? categories;
+    private JobProposal editingProposal = new();
+    private bool showModal = false;
+    private string customerId = string.Empty;
+    private string statusMessage = string.Empty;
+    private string statusClass = string.Empty;
+    private bool showDeleteConfirm = false;
+    private JobProposal? deletingProposal = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user?.Identity?.IsAuthenticated != true)
+        {
+            ShowErrorMessage("User not authenticated. Please log in.");
+            InitializeEmptyLists();
+            return;
+        }
+
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+        {
+            ShowErrorMessage("User ID not found. Authentication may be incomplete.");
+            InitializeEmptyLists();
+            return;
+        }
+        
+        // Attempt to get customer ID first, as it's crucial for proposals
+        await GetCustomerIdAsync(userId);
+        
+        // Load skills and categories in parallel
+        var skillsTask = LoadSkills();
+        var categoriesTask = LoadCategories();
+        
+        if (!string.IsNullOrEmpty(customerId))
+        {
+            await LoadJobProposals();
+        }
+        else
+        {
+            jobProposals = new List<JobProposal>();
+            if (string.IsNullOrEmpty(statusMessage)) // If GetCustomerIdAsync didn't set a message
+            {
+                ShowErrorMessage("Could not retrieve customer details. Unable to load job proposals.");
+            }
+        }
+        
+        await skillsTask;
+        await categoriesTask;
+    }
+
+    private void InitializeEmptyLists()
+    {
+        jobProposals = new List<JobProposal>();
+        skills = new List<Skill>();
+        categories = new List<TalentCategory>();
+    }
+
+    private async Task GetCustomerIdAsync(string userId)
+    {
+        try {
+            var customer = await CustomerService.GetCustomerByUserIdAsync(userId);
+            if (customer != null) {
+                customerId = customer.Id;
+            } else {
+                ShowErrorMessage("Failed to retrieve customer information. Please ensure you have a customer profile.");
+                customerId = string.Empty;
+            }
+        }
+        catch (Exception ex) {
+            ShowErrorMessage($"An unexpected error occurred while retrieving customer information: {ex.Message}");
+            customerId = string.Empty;
+        }
+    }
+
+    private async Task LoadJobProposals()
+    {
+        if (string.IsNullOrEmpty(customerId)) 
+        {
+            jobProposals = new List<JobProposal>(); // Ensure initialized
+            // An error message should ideally be set by OnInitializedAsync or GetCustomerIdAsync
+            return;
+        }
+
+        try 
+        {
+            // Use service layer instead of HTTP call
+            jobProposals = await JobProposalService.GetJobProposalsByCustomerIdAsync(customerId);
+        }
+        catch (HttpRequestException httpEx)
+        {
+            if (httpEx.Message.Contains("401"))
+            {
+                ShowErrorMessage("Unauthorized: Please log in as a Customer to view job proposals.");
+            }
+            else if (httpEx.Message.Contains("403"))
+            {
+                ShowErrorMessage("Forbidden: You do not have permission to access these job proposals.");
+            }
+            else if (httpEx.Message.Contains("404"))
+            {
+                 ShowErrorMessage("Could not find job proposals. This may be an issue with your customer profile or the proposals themselves.");
+            }
+            else
+            {
+                ShowErrorMessage($"Failed to load job proposals: {httpEx.Message}");
+            }
+            jobProposals = new List<JobProposal>(); 
+        }
+        catch (Exception ex) 
+        {
+            ShowErrorMessage($"An unexpected error occurred while loading job proposals: {ex.Message}");
+            jobProposals = new List<JobProposal>();
+        }
+    }
+
+    private async Task LoadSkills()
+    {
+        try {
+            skills = await Http.GetFromJsonAsync<List<Skill>>("api/skill");
+        }
+        catch (Exception ex) {
+            ShowErrorMessage($"Failed to load skills: {ex.Message}");
+            skills = new List<Skill>();
+        }
+    }
+
+    private async Task LoadCategories()
+    {
+        try {
+            categories = await Http.GetFromJsonAsync<List<TalentCategory>>("api/talentcategory");
+        }
+        catch (Exception ex) {
+            ShowErrorMessage($"Failed to load categories: {ex.Message}");
+            categories = new List<TalentCategory>();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        // Create new job proposal with customer ID already set
+        editingProposal = new JobProposal { CustomerId = customerId };
+        showModal = true;
+    }
+
+    private void ShowEditModal(JobProposal proposal)
+    {
+        editingProposal = new JobProposal
+        {
+            Id = proposal.Id,
+            Name = proposal.Name,
+            TotalHours = proposal.TotalHours,
+            Description = proposal.Description,
+            SkillId = proposal.SkillId,
+            TalentCategoryId = proposal.TalentCategoryId,
+            CustomerId = proposal.CustomerId
+        };
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task SaveJobProposal()
+    {
+        try
+        {
+            // Always ensure the CustomerId is set
+            editingProposal.CustomerId = customerId;
+            
+            if (editingProposal.Id == 0)
+            {
+                // Create new job proposal
+                var result = await JobProposalService.CreateJobProposalAsync(editingProposal);
+                if (result != null)
+                {
+                    await LoadJobProposals();
+                    CloseModal();
+                    ShowSuccessMessage("Job proposal created successfully!");
+                }
+                else
+                {
+                    ShowErrorMessage("Error creating job proposal");
+                }
+            }
+            else
+            {
+                // Update existing job proposal
+                var success = await JobProposalService.UpdateJobProposalAsync(editingProposal);
+                if (success)
+                {
+                    await LoadJobProposals();
+                    CloseModal();
+                    ShowSuccessMessage("Job proposal updated successfully!");
+                }
+                else
+                {
+                    ShowErrorMessage("Error updating job proposal");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"An error occurred: {ex.Message}");
+        }
+    }
+
+    private void ShowDeleteConfirm(JobProposal proposal)
+    {
+        deletingProposal = proposal;
+        showDeleteConfirm = true;
+    }
+
+    private void CancelDelete()
+    {
+        deletingProposal = null;
+        showDeleteConfirm = false;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (deletingProposal != null)
+        {
+            await DeleteJobProposal(deletingProposal.Id);
+            showDeleteConfirm = false;
+            deletingProposal = null;
+        }
+    }
+
+    private async Task DeleteJobProposal(int id)
+    {
+        try
+        {
+            var success = await JobProposalService.DeleteJobProposalAsync(id, customerId);
+            if (success)
+            {
+                await LoadJobProposals();
+                ShowSuccessMessage("Job proposal deleted successfully!");
+            }
+            else
+            {
+                ShowErrorMessage("Error deleting job proposal. It may have been removed already.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"An error occurred: {ex.Message}");
+        }
+    }
+
+    private void ShowSuccessMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-success";
+    }
+
+    private void ShowErrorMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-danger";
+    }
+}

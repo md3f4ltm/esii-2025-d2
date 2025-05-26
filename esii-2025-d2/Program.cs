@@ -26,11 +26,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorComponents()
 
-    .AddInteractiveServerComponents()
+  .AddInteractiveServerComponents()
 
-    .AddInteractiveWebAssemblyComponents()
+  .AddInteractiveWebAssemblyComponents()
 
-    .AddAuthenticationStateSerialization();
+  .AddAuthenticationStateSerialization();
 
 
 
@@ -48,11 +48,15 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
+// Add HTTP context accessor for cookie authentication
+builder.Services.AddHttpContextAccessor();
 
-
+// Configure HttpClient for authenticated API calls
 builder.Services.AddScoped<HttpClient>(sp =>
-
-    new HttpClient { BaseAddress = new Uri($"http://localhost:5112/") }); // Atenção ao URL base se for para produção
+{
+    var httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5112/") };
+    return httpClient;
+});
 
 
 
@@ -60,15 +64,15 @@ builder.Services.AddScoped<HttpClient>(sp =>
 
 builder.Services.AddAuthentication(options =>
 
-    {
+  {
 
-        options.DefaultScheme = IdentityConstants.ApplicationScheme;
+      options.DefaultScheme = IdentityConstants.ApplicationScheme;
 
-        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+      options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 
-    })
+  })
 
-    .AddIdentityCookies();
+  .AddIdentityCookies();
 
 
 
@@ -76,7 +80,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
-    options.UseNpgsql(connectionString));
+  options.UseNpgsql(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -88,17 +92,24 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
 
-    .AddRoles<IdentityRole>() // <--- ADICIONE ISTO PARA SUPORTE A ROLES
+  .AddRoles<IdentityRole>() // <--- ADICIONE ISTO PARA SUPORTE A ROLES
 
     .AddEntityFrameworkStores<ApplicationDbContext>()
 
-    .AddSignInManager()
+  .AddSignInManager()
 
-    .AddDefaultTokenProviders();
+  .AddDefaultTokenProviders();
 
 
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+// Register application services
+builder.Services.AddScoped<esii_2025_d2.Services.ICustomerService, esii_2025_d2.Services.CustomerService>();
+builder.Services.AddScoped<esii_2025_d2.Services.ITalentService, esii_2025_d2.Services.TalentService>();
+builder.Services.AddScoped<esii_2025_d2.Services.IExperienceService, esii_2025_d2.Services.ExperienceService>();
+builder.Services.AddScoped<esii_2025_d2.Services.IJobProposalService, esii_2025_d2.Services.JobProposalService>();
+builder.Services.AddScoped<esii_2025_d2.Services.IReportsService, esii_2025_d2.Services.ReportsService>();
 
 
 
@@ -110,17 +121,17 @@ builder.Services.AddSwaggerGen(c =>
 
 {
 
-    c.SwaggerDoc("v1", new OpenApiInfo
+    c.SwaggerDoc("v1", new OpenApiInfo
 
-    {
+    {
 
-        Title = "esii_2025_d2 API",
+        Title = "esii_2025_d2 API",
 
-        Version = "v1",
+        Version = "v1",
 
-        Description = "API documentation for the esii_2025_d2 application"
+        Description = "API documentation for the esii_2025_d2 application"
 
-    });
+    });
 
 });
 
@@ -140,11 +151,11 @@ using (var scope = app.Services.CreateScope())
 
 {
 
-    var services = scope.ServiceProvider;
+    var services = scope.ServiceProvider;
 
-    try
+    try
 
-    {
+    {
 
         // Pega no RoleManager a partir dos serviços configurados
 
@@ -156,21 +167,21 @@ using (var scope = app.Services.CreateScope())
 
         string[] roleNames = { "Admin", "Talent", "Customer" };
 
-        IdentityResult roleResult;
+        IdentityResult roleResult;
 
 
 
-        foreach (var roleName in roleNames)
+        foreach (var roleName in roleNames)
 
-        {
+        {
 
             // Verifica se a role já existe na base de dados
 
             var roleExist = await roleManager.RoleExistsAsync(roleName);
 
-            if (!roleExist)
+            if (!roleExist)
 
-            {
+            {
 
                 // Se não existir, cria a role
 
@@ -184,21 +195,21 @@ using (var scope = app.Services.CreateScope())
 
             }
 
-        }
+        }
 
-    }
+    }
 
-    catch (Exception ex)
+    catch (Exception ex)
 
-    {
+    {
 
         // (Opcional: Adicionar logging para capturar erros durante a criação de roles)
 
         var logger = services.GetRequiredService<ILogger<Program>>();
 
-        logger.LogError(ex, "An error occurred while seeding the database roles.");
+        logger.LogError(ex, "An error occurred while seeding the database roles.");
 
-    }
+    }
 
 }
 
@@ -214,9 +225,9 @@ if (app.Environment.IsDevelopment())
 
 {
 
-    app.UseWebAssemblyDebugging();
+    app.UseWebAssemblyDebugging();
 
-    app.UseMigrationsEndPoint();
+    app.UseMigrationsEndPoint();
 
 
 
@@ -224,11 +235,11 @@ if (app.Environment.IsDevelopment())
 
     app.UseSwagger();
 
-    app.UseSwaggerUI(c =>
+    app.UseSwaggerUI(c =>
 
-    {
+    {
 
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "esii_2025_d2 API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "esii_2025_d2 API V1");
 
         // c.RoutePrefix = string.Empty; // Uncomment to serve Swagger UI at root
 
@@ -240,9 +251,9 @@ else
 
 {
 
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
 
-    app.UseHsts();
+    app.UseHsts();
 
 }
 
@@ -268,11 +279,11 @@ app.MapControllers(); // Garante que as rotas da API são reconhecidas
 
 app.MapRazorComponents<App>()
 
-    .AddInteractiveServerRenderMode()
+  .AddInteractiveServerRenderMode()
 
-    .AddInteractiveWebAssemblyRenderMode()
+  .AddInteractiveWebAssemblyRenderMode()
 
-    .AddAdditionalAssemblies(typeof(esii_2025_d2.Client._Imports).Assembly);
+  .AddAdditionalAssemblies(typeof(esii_2025_d2.Client._Imports).Assembly);
 
 
 
@@ -284,4 +295,4 @@ app.MapAdditionalIdentityEndpoints();
 
 
 
-app.Run(); 
+app.Run();

@@ -6,13 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-// using Microsoft.AspNetCore.Authorization; // Uncomment if needed
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace esii_2025_d2.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-// [Authorize] // Uncomment if needed
+[Authorize]
 public class CustomerController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -41,6 +42,34 @@ public class CustomerController : ControllerBase
         if (customer == null)
         {
             return NotFound();
+        }
+
+        return customer;
+    }
+
+    // GET: api/Customer/user/{userId}
+    [HttpGet("user/{userId}")]
+    public async Task<ActionResult<Customer>> GetCustomerByUserId(string userId)
+    {
+        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(currentUserId))
+        {
+            return Unauthorized(new { message = "User not authenticated." });
+        }
+
+        // Only allow users to access their own customer data (or admins can access any)
+        if (userId != currentUserId && !User.IsInRole("Admin"))
+        {
+            return Forbid();
+        }
+
+        var customer = await _context.Customers
+            .Include(c => c.JobProposals)
+            .FirstOrDefaultAsync(c => c.UserId == userId);
+
+        if (customer == null)
+        {
+            return NotFound(new { message = $"Customer with User ID {userId} not found." });
         }
 
         return customer;

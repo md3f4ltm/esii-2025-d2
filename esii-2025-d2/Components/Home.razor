@@ -7,6 +7,7 @@
 @using esii_2025_d2.Data
 @using Microsoft.Extensions.Logging
 
+
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject HttpClient Http
 @inject NavigationManager Navigation
@@ -76,15 +77,35 @@
                 else if (isCustomer)
                 {
                     Logger.LogInformation("Fetching Talents for Customer...");
-                    talents = await Http.GetFromJsonAsync<IEnumerable<Talent>>("api/Talent/GetAllTalents") ?? new List<Talent>();
-                    if (talents == null) { // Should be handled by ?? new List<Talent>()
-                        Logger.LogWarning("Talents list is NULL after fetch despite null coalescing operator.");
-                        talents = new List<Talent>(); // Ensure it's not null for rendering
-                    }
-                    Logger.LogInformation("Talents fetched. Count: {Count}", talents.Count());
-                     if (!talents.Any())
+                    try 
                     {
-                        Logger.LogInformation("No talents were returned from the API or the list is empty.");
+                        talents = await Http.GetFromJsonAsync<IEnumerable<Talent>>("api/Talent/GetAllTalents");
+                        
+                        if (talents == null) 
+                        {
+                            Logger.LogWarning("Talents list is NULL after fetch.");
+                            talents = new List<Talent>(); // Ensure it's not null for rendering
+                        }
+                        Logger.LogInformation("Talents fetched. Count: {Count}", talents.Count());
+                        if (!talents.Any())
+                        {
+                            Logger.LogInformation("No talents were returned from the API or the list is empty.");
+                        }
+                    }
+                    catch (System.Text.Json.JsonException jsonEx)
+                    {
+                        Logger.LogError(jsonEx, "JSON parsing error: {Message}", jsonEx.Message);
+                        talents = new List<Talent>();
+                    }
+                    catch (HttpRequestException httpEx)
+                    {
+                        Logger.LogError(httpEx, "HTTP Error fetching talents: {Message}", httpEx.Message);
+                        talents = new List<Talent>();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(ex, "Unexpected error fetching talents: {Message}", ex.Message);
+                        talents = new List<Talent>();
                     }
                 }
             }
@@ -93,9 +114,13 @@
                 Logger.LogError(httpEx, "HTTP Error fetching feed data. Status Code: {StatusCode}", httpEx.StatusCode);
                 // Optionally, provide more user-friendly error messages based on status code
             }
+            catch (System.Text.Json.JsonException jsonEx)
+            {
+                Logger.LogError(jsonEx, "JSON parsing error: {Message}", jsonEx.Message);
+            }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Generic Error fetching feed data");
+                Logger.LogError(ex, "Generic Error fetching feed data: {Message}", ex.Message);
             }
             // Ensure collections are not null for rendering, even after an error
             jobProposals ??= new List<JobProposal>();
@@ -163,7 +188,7 @@
                 }
                 else
                 {
-                     __builder.OpenElement(15, "p");
+                        __builder.OpenElement(15, "p");
                     __builder.AddAttribute(16, "class", "mb-1");
                     __builder.AddContent(17, $"Required Skill ID: {proposal.SkillId}"); // Fallback if Skill object not loaded
                     __builder.CloseElement(); // p
@@ -224,18 +249,19 @@
                 __builder.AddContent(11, talent.Name);
                 __builder.CloseElement(); // h5
 
+                // CORRECTED BLOCK:
                 if (talent.TalentCategory != null)
                 {
-                     __builder.OpenElement(12, "p");
-                     __builder.AddAttribute(13, "class", "mb-1");
-                     __builder.AddContent(14, $"Category: {talent.TalentCategory?.Name ?? "N/A"}");
-                     __builder.CloseElement(); //p
+                        __builder.OpenElement(12, "p");
+                        __builder.AddAttribute(13, "class", "mb-1");
+                        __builder.AddContent(14, $"Category: {talent.TalentCategory.Name ?? "N/A"}"); // Assuming Name is required or handled
+                        __builder.CloseElement(); //p
                 }
-                else if (talent.TalentCategoryId.HasValue)
+                else // Fallback to show ID if TalentCategory object not loaded
                 {
                     __builder.OpenElement(12, "p");
                     __builder.AddAttribute(13, "class", "mb-1");
-                    __builder.AddContent(14, $"Category ID: {talent.TalentCategoryId.Value}"); // Fallback
+                    __builder.AddContent(14, $"Category ID: {talent.TalentCategoryId}"); // Directly use int value
                     __builder.CloseElement(); //p
                 }
 

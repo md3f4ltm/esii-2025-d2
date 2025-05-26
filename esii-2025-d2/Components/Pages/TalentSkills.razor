@@ -1,0 +1,515 @@
+@page "/talentskills"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime JSRuntime
+@attribute [Authorize(Roles = "Talent")]
+
+@rendermode InteractiveServer
+<h3>Manage Your Skills</h3>
+@if (!string.IsNullOrEmpty(statusMessage))
+{
+<div class="@statusClass">
+@statusMessage
+<button type="button" class="btn-close float-end" @onclick="() => statusMessage = string.Empty"></button>
+</div>
+}
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Your Talents</h5>
+            </div>
+            <div class="card-body">
+                @if (talents == null)
+                {
+                    <p>Loading talents...</p>
+                }
+                else if (!talents.Any())
+                {
+                    <p>You haven't created any talent profiles yet.</p>
+                    <a href="/talents" class="btn btn-primary">Create Talent Profile</a>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <label>Select a Talent Profile</label>
+                        <select class="form-select" @onchange="OnTalentSelectionChanged">
+                            <option value="0">-- Select Talent Profile --</option>
+                            @foreach (var talent in talents)
+                            {
+                                <option value="@talent.Id">@talent.Name</option>
+                            }
+                        </select>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (selectedTalentId > 0)
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>Current Skills</h5>
+                    <button class="btn btn-primary btn-sm" @onclick="ShowAddModal">Add Skill</button>
+                </div>
+                <div class="card-body">
+                    @if (talentSkills == null)
+                    {
+                        <p>Loading skills...</p>
+                    }
+                    else if (!talentSkills.Any())
+                    {
+                        <p>No skills associated with this talent profile yet.</p>
+                    }
+                    else
+                    {
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Skill Name</th>
+                                    <th>Area</th>
+                                    <th>Years of Experience</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var talentSkill in talentSkills)
+                                {
+                                    <tr>
+                                        <td>@talentSkill.Skill?.Name</td>
+                                        <td>@talentSkill.Skill?.Area</td>
+                                        <td>@talentSkill.YearsOfExperience</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-warning" @onclick="() => ShowEditModal(talentSkill)">Edit</button>
+                                            <button class="btn btn-sm btn-danger" @onclick="() => ShowDeleteConfirm(talentSkill)">Remove</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Add/Edit Modal -->
+@if (showModal)
+{
+    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@modalTitle</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="editingTalentSkill" OnValidSubmit="SaveTalentSkill">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="mb-3">
+                            <label>Skill</label>
+                            @if (isEditing)
+                            {
+                                <input type="text" class="form-control" value="@editingTalentSkill.Skill?.Name" disabled />
+                            }
+                            else
+                            {
+                                <InputSelect class="form-select" @bind-Value="editingTalentSkill.SkillId">
+                                    <option value="0">-- Select Skill --</option>
+                                    @if (availableSkills != null)
+                                    {
+                                        @foreach (var skill in availableSkills)
+                                        {
+                                            <option value="@skill.Id">@skill.Name (@skill.Area)</option>
+                                        }
+                                    }
+                                </InputSelect>
+                                <ValidationMessage For="@(() => editingTalentSkill.SkillId)" />
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Years of Experience</label>
+                            <InputNumber class="form-control" @bind-Value="editingTalentSkill.YearsOfExperience" />
+                            <ValidationMessage For="@(() => editingTalentSkill.YearsOfExperience)" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary ms-2" @onclick="CloseModal">Cancel</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Delete Confirmation Modal -->
+@if (showDeleteConfirm)
+{
+    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Remove</h5>
+                    <button type="button" class="btn-close" @onclick="CancelDelete"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to remove the skill "@deletingTalentSkill?.Skill?.Name" from this talent profile?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
+                    <button type="button" class="btn btn-danger" @onclick="ConfirmDelete">Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private string currentUserId = string.Empty;
+    private List<Talent>? talents;
+    private List<TalentSkillDto>? talentSkills;
+    private List<Skill>? availableSkills;
+    private int selectedTalentId = 0;
+    private TalentSkillDto editingTalentSkill = new();
+    private TalentSkillDto? deletingTalentSkill;
+    private bool showModal = false;
+    private bool showDeleteConfirm = false;
+    private bool isEditing = false;
+    private string modalTitle = string.Empty;
+    private string statusMessage = string.Empty;
+    private string statusClass = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        currentUserId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+        if (!string.IsNullOrEmpty(currentUserId))
+        {
+            await LoadUserTalents();
+            await LoadSkills();
+        }
+    }
+
+    private async Task LoadUserTalents()
+    {
+        try
+        {
+            var response = await Http.GetAsync("api/Talent/mytalents");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                try 
+                {
+                    talents = await response.Content.ReadFromJsonAsync<List<Talent>>();
+                    if (talents == null)
+                    {
+                        talents = new List<Talent>();
+                    }
+                }
+                catch (System.Text.Json.JsonException jsonEx)
+                {
+                    ShowErrorMessage($"Failed to parse talents data: {jsonEx.Message}");
+                    talents = new List<Talent>();
+                }
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                ShowErrorMessage($"Failed to load talents: HTTP {(int)response.StatusCode} - {response.ReasonPhrase}. {errorContent}");
+                talents = new List<Talent>();
+            }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            ShowErrorMessage($"Failed to load talents: Network error - {httpEx.Message}");
+            talents = new List<Talent>();
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to load talents: {ex.Message}");
+            talents = new List<Talent>();
+        }
+    }
+
+    private async Task LoadSkills()
+    {
+        try
+        {
+            var response = await Http.GetAsync("api/Skill");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                try 
+                {
+                    availableSkills = await response.Content.ReadFromJsonAsync<List<Skill>>();
+                    if (availableSkills == null)
+                    {
+                        availableSkills = new List<Skill>();
+                    }
+                }
+                catch (System.Text.Json.JsonException jsonEx)
+                {
+                    ShowErrorMessage($"Failed to parse skills data: {jsonEx.Message}");
+                    availableSkills = new List<Skill>();
+                }
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                ShowErrorMessage($"Failed to load skills: HTTP {(int)response.StatusCode} - {response.ReasonPhrase}. {errorContent}");
+                availableSkills = new List<Skill>();
+            }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            ShowErrorMessage($"Failed to load skills: Network error - {httpEx.Message}");
+            availableSkills = new List<Skill>();
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to load skills: {ex.Message}");
+            availableSkills = new List<Skill>();
+        }
+    }
+
+    private async Task OnTalentSelectionChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int talentId))
+        {
+            selectedTalentId = talentId;
+            if (selectedTalentId > 0)
+            {
+                await LoadTalentSkills();
+            }
+            else
+            {
+                talentSkills = new List<TalentSkillDto>();
+            }
+        }
+    }
+
+    private async Task LoadTalentSkills()
+    {
+        if (selectedTalentId <= 0) return;
+
+        try
+        {
+            var response = await Http.GetAsync($"api/TalentSkill/talent/{selectedTalentId}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                try 
+                {
+                    talentSkills = await response.Content.ReadFromJsonAsync<List<TalentSkillDto>>();
+                    if (talentSkills == null)
+                    {
+                        talentSkills = new List<TalentSkillDto>();
+                    }
+                }
+                catch (System.Text.Json.JsonException jsonEx)
+                {
+                    ShowErrorMessage($"Failed to parse talent skills data: {jsonEx.Message}");
+                    talentSkills = new List<TalentSkillDto>();
+                }
+            }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                ShowErrorMessage($"Failed to load talent skills: HTTP {(int)response.StatusCode} - {response.ReasonPhrase}. {errorContent}");
+                talentSkills = new List<TalentSkillDto>();
+            }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            ShowErrorMessage($"Failed to load talent skills: Network error - {httpEx.Message}");
+            talentSkills = new List<TalentSkillDto>();
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to load talent skills: {ex.Message}");
+            talentSkills = new List<TalentSkillDto>();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        if (availableSkills == null || !availableSkills.Any())
+        {
+            ShowErrorMessage("No skills available to add. Please create skills first.");
+            return;
+        }
+
+        // Filter out skills already associated with this talent
+        var existingSkillIds = talentSkills?.Select(ts => ts.SkillId).ToList() ?? new List<int>();
+        availableSkills = availableSkills.Where(s => !existingSkillIds.Contains(s.Id)).ToList();
+
+        if (!availableSkills.Any())
+        {
+            ShowErrorMessage("All available skills have already been added to this talent profile.");
+            return;
+        }
+
+        editingTalentSkill = new TalentSkillDto
+        {
+            TalentId = selectedTalentId,
+            YearsOfExperience = 1 // Default value
+        };
+        modalTitle = "Add Skill to Talent Profile";
+        isEditing = false;
+        showModal = true;
+    }
+
+    private void ShowEditModal(TalentSkillDto talentSkill)
+    {
+        editingTalentSkill = new TalentSkillDto
+        {
+            TalentId = talentSkill.TalentId,
+            SkillId = talentSkill.SkillId,
+            YearsOfExperience = talentSkill.YearsOfExperience,
+            Skill = talentSkill.Skill
+        };
+        modalTitle = "Edit Years of Experience";
+        isEditing = true;
+        showModal = true;
+    }
+
+    private void ShowDeleteConfirm(TalentSkillDto talentSkill)
+    {
+        deletingTalentSkill = talentSkill;
+        showDeleteConfirm = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private void CancelDelete()
+    {
+        showDeleteConfirm = false;
+        deletingTalentSkill = null;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (deletingTalentSkill != null)
+        {
+            await DeleteTalentSkill(deletingTalentSkill);
+            showDeleteConfirm = false;
+            deletingTalentSkill = null;
+        }
+    }
+
+    private async Task SaveTalentSkill()
+    {
+        try
+        {
+            HttpResponseMessage response;
+
+            if (isEditing)
+            {
+                // Update existing talent skill
+                response = await Http.PutAsJsonAsync($"api/TalentSkill/{editingTalentSkill.TalentId}/{editingTalentSkill.SkillId}", editingTalentSkill);
+            }
+            else
+            {
+                // Create new talent skill
+                response = await Http.PostAsJsonAsync("api/TalentSkill", editingTalentSkill);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadTalentSkills();
+                CloseModal();
+                ShowSuccessMessage(isEditing ? "Skill updated successfully!" : "Skill added successfully!");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                ShowErrorMessage($"Error {(isEditing ? "updating" : "adding")} skill: {error}");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"An error occurred: {ex.Message}");
+        }
+    }
+
+    private async Task DeleteTalentSkill(TalentSkillDto talentSkill)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync($"api/TalentSkill/{talentSkill.TalentId}/{talentSkill.SkillId}");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadTalentSkills();
+                ShowSuccessMessage("Skill removed successfully!");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                ShowErrorMessage($"Error removing skill: {error}");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"An error occurred: {ex.Message}");
+        }
+    }
+
+    private void ShowSuccessMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-success";
+    }
+
+    private void ShowErrorMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-danger";
+    }
+
+    public class Talent
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+    }
+
+    public class Skill
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string? Area { get; set; }
+    }
+
+    public class TalentSkillDto
+    {
+        public int TalentId { get; set; }
+        
+        [Required(ErrorMessage = "Skill is required")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please select a skill")]
+        public int SkillId { get; set; }
+        
+        [Required(ErrorMessage = "Years of experience is required")]
+        [Range(1, 50, ErrorMessage = "Years of experience must be between 1 and 50")]
+        public int YearsOfExperience { get; set; }
+        
+        public Skill? Skill { get; set; }
+    }
+}

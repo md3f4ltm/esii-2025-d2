@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-// using Microsoft.AspNetCore.Authorization; // Uncomment if needed
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace esii_2025_d2.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-// [Authorize] // Consider adding authorization if needed
 public class TalentController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
@@ -42,6 +42,25 @@ public class TalentController : ControllerBase
     }
     // *** END: NEW ENDPOINT FOR FEED ***
 
+    // GET: api/Talent/mytalents
+    [HttpGet("mytalents")]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<Talent>>> GetMyTalents()
+    {
+        // Get the current user's ID from the claims
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized(new { message = "User not authenticated or user ID not found in claims." });
+        }
+
+        // Find all talents belonging to the current user
+        var talents = await _context.Talents
+            .Where(t => t.UserId == userId)
+            .ToListAsync();
+
+        return talents;
+    }
 
     // GET: api/Talent/5
     [HttpGet("{id}")]

@@ -373,6 +373,9 @@ namespace esii2025d2.Migrations
                     b.Property<decimal>("HourlyRate")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
