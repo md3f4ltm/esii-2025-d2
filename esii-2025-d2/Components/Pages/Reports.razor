@@ -5,7 +5,9 @@
 @using System.ComponentModel.DataAnnotations
 @using System.Security.Claims
 @using System.Globalization
-@inject HttpClient Http
+@using esii_2025_d2.Services
+@using esii_2025_d2.Models
+@inject IReportsService ReportsService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IJSRuntime JSRuntime
 
@@ -122,8 +124,8 @@
 @code {
     private const int STANDARD_MONTHLY_HOURS = 176;
 
-    private List<CategoryCountryReportItem>? categoryCountryReport;
-    private List<SkillReportItem>? skillReport;
+    private List<CategoryCountryReport>? categoryCountryReport;
+    private List<SkillReport>? skillReport;
     
     private string statusMessage = string.Empty;
     private string statusClass = string.Empty;
@@ -151,17 +153,17 @@
     {
         try
         {
-            categoryCountryReport = await Http.GetFromJsonAsync<List<CategoryCountryReportItem>>("api/reports/bycategorycountry");
+            categoryCountryReport = await ReportsService.GetCategoryCountryReportAsync();
             
             if (categoryCountryReport == null)
             {
-                categoryCountryReport = new List<CategoryCountryReportItem>();
+                categoryCountryReport = new List<CategoryCountryReport>();
             }
         }
         catch (Exception ex)
         {
             ShowErrorMessage($"Failed to load category/country report: {ex.Message}");
-            categoryCountryReport = new List<CategoryCountryReportItem>();
+            categoryCountryReport = new List<CategoryCountryReport>();
         }
     }
 
@@ -169,17 +171,17 @@
     {
         try
         {
-            skillReport = await Http.GetFromJsonAsync<List<SkillReportItem>>("api/reports/byskill");
+            skillReport = await ReportsService.GetSkillReportAsync();
             
             if (skillReport == null)
             {
-                skillReport = new List<SkillReportItem>();
+                skillReport = new List<SkillReport>();
             }
         }
         catch (Exception ex)
         {
             ShowErrorMessage($"Failed to load skill report: {ex.Message}");
-            skillReport = new List<SkillReportItem>();
+            skillReport = new List<SkillReport>();
         }
     }
 
@@ -193,22 +195,5 @@
     {
         statusMessage = message;
         statusClass = "alert alert-danger";
-    }
-
-    // Data Transfer Objects
-    public class CategoryCountryReportItem
-    {
-        public string CategoryName { get; set; } = string.Empty;
-        public string Country { get; set; } = string.Empty;
-        public decimal AverageMonthlyRate { get; set; }
-        public int TalentCount { get; set; }
-    }
-
-    public class SkillReportItem
-    {
-        public string SkillName { get; set; } = string.Empty;
-        public string? Area { get; set; }
-        public decimal AverageMonthlyRate { get; set; }
-        public int TalentCount { get; set; }
     }
 }

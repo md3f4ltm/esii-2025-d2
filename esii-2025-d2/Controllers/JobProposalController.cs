@@ -1,6 +1,7 @@
 // esii-2025-d2/Controllers/JobProposalController.cs
 using esii_2025_d2.Models;
 using esii_2025_d2.Data;
+using esii_2025_d2.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -18,10 +19,17 @@ namespace esii_2025_d2.Controllers;
 public class JobProposalController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly IJobProposalService _jobProposalService;
+    private readonly ICustomerService _customerService;
 
-    public JobProposalController(ApplicationDbContext context)
+    public JobProposalController(
+        ApplicationDbContext context,
+        IJobProposalService jobProposalService,
+        ICustomerService customerService)
     {
         _context = context;
+        _jobProposalService = jobProposalService;
+        _customerService = customerService;
     }
 
     // GET: api/JobProposal
@@ -38,18 +46,13 @@ public class JobProposalController : ControllerBase
         // Otherwise, return all proposals (for admins, etc.)
         if (User.IsInRole("Customer"))
         {
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.UserId == userId);
+            var customer = await _customerService.GetCustomerByUserIdAsync(userId);
             if (customer == null)
             {
                 return NotFound(new { message = "Customer profile not found for current user." });
             }
 
-            return await _context.JobProposals
-                .Where(jp => jp.CustomerId == customer.Id)
-                .Include(jp => jp.Skill)
-                .Include(jp => jp.TalentCategory)
-                .Include(jp => jp.Customer)
-                .ToListAsync();
+            return await _jobProposalService.GetJobProposalsByCustomerIdAsync(customer.Id);
         }
         else
         {
@@ -104,7 +107,8 @@ public class JobProposalController : ControllerBase
             .ToListAsync();
 
         // Create a list of talents with calculated total cost
-        var results = eligibleTalents.Select(talent => new {
+        var results = eligibleTalents.Select(talent => new
+        {
             Id = talent.Id,
             Name = talent.Name,
             Country = talent.Country,
@@ -156,12 +160,12 @@ public class JobProposalController : ControllerBase
         var existingProposal = await _context.JobProposals
             .Include(jp => jp.Customer)
             .FirstOrDefaultAsync(jp => jp.Id == id);
-            
+
         if (existingProposal == null)
         {
             return NotFound();
         }
-        
+
         if (existingProposal.Customer?.UserId != userId)
         {
             return Forbid();
@@ -248,7 +252,7 @@ public class JobProposalController : ControllerBase
         var jobProposal = await _context.JobProposals
             .Include(jp => jp.Customer)
             .FirstOrDefaultAsync(jp => jp.Id == id);
-            
+
         if (jobProposal == null)
         {
             return NotFound();
