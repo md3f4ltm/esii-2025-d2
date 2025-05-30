@@ -1,29 +1,29 @@
 #+TITLE: Projeto Plataforma de Gestão de Currículos IT
 #+DATE: Friday, May 16, 2025
 
-* Gestão de Utilizadores e Autenticação [0/2]
-  - [ ] Implementar criação de conta de utilizador
-  - [ ] Implementar sistema de login para utilizadores
+* Gestão de Utilizadores e Autenticação [2/2]
+  - [X] Implementar criação de conta de utilizador
+  - [X] Implementar sistema de login para utilizadores
 
-* Gestão de Skills [0/4]
-  - [ ] Permitir que utilizadores criem skills (nome, área profissional)
-    - [ ] Definir áreas profissionais (developer, design, product manager, project manager, etc.)
-  - [ ] Permitir que utilizadores editem skills existentes
-  - [ ] Permitir apagar skills (apenas se não associadas a nenhum profissional)
-  - [ ] Garantir que as skills são partilhadas entre todos os utilizadores
+* Gestão de Skills [4/4]
+  - [X] Permitir que utilizadores criem skills (nome, área profissional)
+    - [X] Definir áreas profissionais (developer, design, product manager, project manager, etc.)
+  - [X] Permitir que utilizadores editem skills existentes
+  - [X] Permitir apagar skills (apenas se não associadas a nenhum profissional)
+  - [X] Garantir que as skills são partilhadas entre todos os utilizadores
 
-* Gestão de Perfis de Talento [0/5]
-  - [ ] Permitir que utilizadores criem perfis de talento (nome, país, e-mail, preço/hora)
-  - [ ] Implementar opção de perfil público ou privado
+* Gestão de Perfis de Talento [2/4]
+  - [X] Permitir que utilizadores criem perfis de talento (nome, país, e-mail, preço/hora)
+  - [X] Implementar opção de perfil público ou privado
   - [ ] Associar múltiplas skills a um perfil de talento
     - [ ] Indicar número de anos de experiência para cada skill associada
   - [ ] Adicionar detalhes de experiência profissional ao perfil
     - [ ] Campos: título, nome da empresa, ano de começo, ano de término (opcional)
     - [ ] Implementar validação para não sobreposição de experiências no mesmo ano
 
-* Gestão de Clientes [0/2]
-  - [ ] Permitir que utilizadores criem clientes na plataforma
-  - [ ] Permitir que utilizadores apresentem talentos a clientes
+* Gestão de Clientes [2/2]
+  - [X] Permitir que utilizadores criem clientes na plataforma
+  - [X] Permitir que utilizadores apresentem talentos a clientes
 
 * Funcionalidades de Pesquisa e Matching [0/3]
   - [ ] Permitir pesquisar talentos por combinação de skills
