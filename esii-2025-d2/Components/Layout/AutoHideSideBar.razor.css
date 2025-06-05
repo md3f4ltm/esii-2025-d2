@@ -1,0 +1,36 @@
+.sidebar-container {
+    height: 100vh;
+    background: linear-gradient(180deg, rgb(5, 39, 103), #3a0647);
+    border-radius: 0 10px 10px 0;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: relative;
+    transition: width 0.3s ease;
+    overflow: hidden;
+    padding: 1rem;
+}
+
+.sidebar-container.collapsed {
+    width: 100px;
+}
+
+.sidebar-container.expand {
+    width: 250px;
+}
+
+.toggle-btn {
+    position: absolute;
+    top: 10px;
+    right: -15px;
+    width: 30px;
+    height: 30px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}

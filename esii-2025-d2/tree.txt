@@ -1,0 +1,509 @@
+.
+├── appsettings.Development.json
+├── appsettings.json
+├── bin
+│   └── Debug
+│       └── net9.0
+│           ├── appsettings.Development.json
+│           ├── appsettings.json
+│           ├── BlazorDebugProxy
+│           │   ├── BrowserDebugHost.dll
+│           │   ├── BrowserDebugHost.runtimeconfig.json
+│           │   ├── BrowserDebugProxy.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Scripting.dll
+│           │   ├── Microsoft.CodeAnalysis.dll
+│           │   ├── Microsoft.CodeAnalysis.Scripting.dll
+│           │   ├── Microsoft.FileFormats.dll
+│           │   ├── Microsoft.NET.WebAssembly.Webcil.dll
+│           │   ├── Microsoft.SymbolStore.dll
+│           │   └── Newtonsoft.Json.dll
+│           ├── cs
+│           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+│           ├── Data
+│           │   └── app.db
+│           ├── de
+│           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+│           ├── es
+│           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+│           ├── esii-2025-d2
+│           ├── esii-2025-d2.Client.dll
+│           ├── esii-2025-d2.Client.pdb
+│           ├── esii-2025-d2.Client.staticwebassets.endpoints.json
+│           ├── esii-2025-d2.Client.staticwebassets.runtime.json
+│           ├── esii-2025-d2.deps.json
+│           ├── esii-2025-d2.dll
+│           ├── esii-2025-d2.pdb
+│           ├── esii-2025-d2.runtimeconfig.json
+│           ├── esii-2025-d2.staticwebassets.endpoints.json
+│           ├── esii-2025-d2.staticwebassets.runtime.json
+│           ├── fr
+│           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+│           ├── Humanizer.dll
+│           ├── it
+│           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+│           ├── ja
+│           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+│           ├── ko
+│           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+│           ├── Microsoft.AspNetCore.Authorization.dll
+│           ├── Microsoft.AspNetCore.Components.Authorization.dll
+│           ├── Microsoft.AspNetCore.Components.dll
+│           ├── Microsoft.AspNetCore.Components.Forms.dll
+│           ├── Microsoft.AspNetCore.Components.WebAssembly.Authentication.dll
+│           ├── Microsoft.AspNetCore.Components.WebAssembly.dll
+│           ├── Microsoft.AspNetCore.Components.WebAssembly.Server.dll
+│           ├── Microsoft.AspNetCore.Components.Web.dll
+│           ├── Microsoft.AspNetCore.Cryptography.Internal.dll
+│           ├── Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+│           ├── Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+│           ├── Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+│           ├── Microsoft.AspNetCore.Metadata.dll
+│           ├── Microsoft.Bcl.AsyncInterfaces.dll
+│           ├── Microsoft.Build.Locator.dll
+│           ├── Microsoft.CodeAnalysis.CSharp.dll
+│           ├── Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+│           ├── Microsoft.CodeAnalysis.dll
+│           ├── Microsoft.CodeAnalysis.Workspaces.dll
+│           ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+│           ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+│           ├── Microsoft.Data.Sqlite.dll
+│           ├── Microsoft.EntityFrameworkCore.Abstractions.dll
+│           ├── Microsoft.EntityFrameworkCore.Design.dll
+│           ├── Microsoft.EntityFrameworkCore.dll
+│           ├── Microsoft.EntityFrameworkCore.Relational.dll
+│           ├── Microsoft.EntityFrameworkCore.Sqlite.dll
+│           ├── Microsoft.Extensions.Caching.Abstractions.dll
+│           ├── Microsoft.Extensions.Caching.Memory.dll
+│           ├── Microsoft.Extensions.Configuration.Abstractions.dll
+│           ├── Microsoft.Extensions.Configuration.Binder.dll
+│           ├── Microsoft.Extensions.Configuration.dll
+│           ├── Microsoft.Extensions.Configuration.FileExtensions.dll
+│           ├── Microsoft.Extensions.Configuration.Json.dll
+│           ├── Microsoft.Extensions.DependencyInjection.Abstractions.dll
+│           ├── Microsoft.Extensions.DependencyInjection.dll
+│           ├── Microsoft.Extensions.DependencyModel.dll
+│           ├── Microsoft.Extensions.FileProviders.Abstractions.dll
+│           ├── Microsoft.Extensions.FileProviders.Physical.dll
+│           ├── Microsoft.Extensions.FileSystemGlobbing.dll
+│           ├── Microsoft.Extensions.Identity.Core.dll
+│           ├── Microsoft.Extensions.Identity.Stores.dll
+│           ├── Microsoft.Extensions.Logging.Abstractions.dll
+│           ├── Microsoft.Extensions.Logging.dll
+│           ├── Microsoft.Extensions.Options.dll
+│           ├── Microsoft.Extensions.Primitives.dll
+│           ├── Microsoft.JSInterop.dll
+│           ├── Microsoft.JSInterop.WebAssembly.dll
+│           ├── Microsoft.OpenApi.dll
+│           ├── Mono.TextTemplating.dll
+│           ├── Npgsql.dll
+│           ├── Npgsql.EntityFrameworkCore.PostgreSQL.dll
+│           ├── pl
+│           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+│           ├── pt-BR
+│           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+│           ├── ru
+│           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+│           ├── runtimes
+│           │   ├── browser-wasm
+│           │   │   └── nativeassets
+│           │   │       └── net9.0
+│           │   │           └── e_sqlite3.a
+│           │   ├── linux-arm
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.so
+│           │   ├── linux-arm64
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.so
+│           │   ├── linux-armel
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.so
+│           │   ├── linux-mips64
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.so
+│           │   ├── linux-musl-arm
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.so
+│           │   ├── linux-musl-arm64
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.so
+│           │   ├── linux-musl-s390x
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.so
+│           │   ├── linux-musl-x64
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.so
+│           │   ├── linux-ppc64le
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.so
+│           │   ├── linux-s390x
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.so
+│           │   ├── linux-x64
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.so
+│           │   ├── linux-x86
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.so
+│           │   ├── maccatalyst-arm64
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.dylib
+│           │   ├── maccatalyst-x64
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.dylib
+│           │   ├── osx-arm64
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.dylib
+│           │   ├── osx-x64
+│           │   │   └── native
+│           │   │       └── libe_sqlite3.dylib
+│           │   ├── unix
+│           │   │   └── lib
+│           │   │       └── net6.0
+│           │   ├── win
+│           │   │   └── lib
+│           │   │       └── net6.0
+│           │   ├── win-arm
+│           │   │   └── native
+│           │   │       └── e_sqlite3.dll
+│           │   ├── win-arm64
+│           │   │   └── native
+│           │   │       └── e_sqlite3.dll
+│           │   ├── win-x64
+│           │   │   └── native
+│           │   │       └── e_sqlite3.dll
+│           │   └── win-x86
+│           │       └── native
+│           │           └── e_sqlite3.dll
+│           ├── SQLitePCLRaw.batteries_v2.dll
+│           ├── SQLitePCLRaw.core.dll
+│           ├── SQLitePCLRaw.provider.e_sqlite3.dll
+│           ├── Swashbuckle.AspNetCore.Swagger.dll
+│           ├── Swashbuckle.AspNetCore.SwaggerGen.dll
+│           ├── Swashbuckle.AspNetCore.SwaggerUI.dll
+│           ├── System.CodeDom.dll
+│           ├── System.Composition.AttributedModel.dll
+│           ├── System.Composition.Convention.dll
+│           ├── System.Composition.Hosting.dll
+│           ├── System.Composition.Runtime.dll
+│           ├── System.Composition.TypedParts.dll
+│           ├── tr
+│           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+│           ├── zh-Hans
+│           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.resources.dll
+│           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+│           └── zh-Hant
+│               ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+│               ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+│               ├── Microsoft.CodeAnalysis.resources.dll
+│               ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+│               └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+├── Components
+│   ├── Account
+│   │   ├── IdentityComponentsEndpointRouteBuilderExtensions.cs
+│   │   ├── IdentityNoOpEmailSender.cs
+│   │   ├── IdentityRedirectManager.cs
+│   │   ├── IdentityRevalidatingAuthenticationStateProvider.cs
+│   │   ├── IdentityUserAccessor.cs
+│   │   ├── Pages
+│   │   │   ├── AccessDenied.razor
+│   │   │   ├── ConfirmEmailChange.razor
+│   │   │   ├── ConfirmEmail.razor
+│   │   │   ├── ExternalLogin.razor
+│   │   │   ├── ForgotPasswordConfirmation.razor
+│   │   │   ├── ForgotPassword.razor
+│   │   │   ├── _Imports.razor
+│   │   │   ├── InvalidPasswordReset.razor
+│   │   │   ├── InvalidUser.razor
+│   │   │   ├── Lockout.razor
+│   │   │   ├── Login.razor
+│   │   │   ├── LoginWith2fa.razor
+│   │   │   ├── LoginWithRecoveryCode.razor
+│   │   │   ├── Manage
+│   │   │   │   ├── ChangePassword.razor
+│   │   │   │   ├── Company.razor
+│   │   │   │   ├── DeletePersonalData.razor
+│   │   │   │   ├── Disable2fa.razor
+│   │   │   │   ├── Email.razor
+│   │   │   │   ├── EnableAuthenticator.razor
+│   │   │   │   ├── ExternalLogins.razor
+│   │   │   │   ├── GenerateRecoveryCodes.razor
+│   │   │   │   ├── _Imports.razor
+│   │   │   │   ├── Index.razor
+│   │   │   │   ├── PersonalData.razor
+│   │   │   │   ├── ResetAuthenticator.razor
+│   │   │   │   ├── SetPassword.razor
+│   │   │   │   └── TwoFactorAuthentication.razor
+│   │   │   ├── RegisterConfirmation.razor
+│   │   │   ├── Register.razor
+│   │   │   ├── ResendEmailConfirmation.razor
+│   │   │   ├── ResetPasswordConfirmation.razor
+│   │   │   └── ResetPassword.razor
+│   │   └── Shared
+│   │       ├── ExternalLoginPicker.razor
+│   │       ├── ManageLayout.razor
+│   │       ├── ManageNavMenu.razor
+│   │       ├── ShowRecoveryCodes.razor
+│   │       └── StatusMessage.razor
+│   ├── App.razor
+│   ├── Home.razor
+│   ├── _Imports.razor
+│   ├── Layout
+│   │   ├── MainLayout.razor
+│   │   ├── MainLayout.razor.css
+│   │   ├── NavMenu.razor
+│   │   └── NavMenu.razor.css
+│   ├── Pages
+│   │   ├── Error.razor
+│   │   ├── Experiences.razor
+│   │   ├── JobProposals.razor
+│   │   ├── Profile.razor
+│   │   ├── Reports.razor
+│   │   ├── Skills.razor
+│   │   ├── TalentSkills.razor
+│   │   ├── Talents.razor
+│   │   └── Teste.razor
+│   └── Routes.razor
+├── Controllers
+│   ├── CustomerController.cs
+│   ├── ExperienceController.cs
+│   ├── JobProposalController.cs
+│   ├── ReportsController.cs
+│   ├── SkillController.cs
+│   ├── TalentCategoryController.cs
+│   ├── TalentController.cs
+│   ├── TalentSkillController.cs
+│   └── UserController.cs
+├── Data
+│   ├── app.db
+│   ├── ApplicationDbContext.cs
+│   └── ApplicationUser.cs
+├── esii-2025-d2.csproj
+├── esii-2025-d2.sln
+├── Migrations
+│   ├── 20250531210748_InitialCreate.cs
+│   ├── 20250531210748_InitialCreate.Designer.cs
+│   └── ApplicationDbContextModelSnapshot.cs
+├── Models
+│   ├── Customer.cs
+│   ├── Experience.cs
+│   ├── JobProposal.cs
+│   ├── Reports.cs
+│   ├── Skill.cs
+│   ├── TalentCategory.cs
+│   ├── Talent.cs
+│   └── TalentSkill.cs
+├── obj
+│   ├── Debug
+│   │   └── net9.0
+│   │       ├── apphost
+│   │       ├── compressed
+│   │       │   ├── 087iaedt3h-lcd1t2u6c8.gz
+│   │       │   ├── 20axbziysu-c2jlpeoesf.gz
+│   │       │   ├── 2uejj8j4sg-tdbxkamptv.gz
+│   │       │   ├── 2z7704azi9-jd9uben2k1.gz
+│   │       │   ├── 316yjbkbba-6cfz1n2cew.gz
+│   │       │   ├── 3wtbpmzlp7-hrwsygsryq.gz
+│   │       │   ├── 5pdcughy9q-vr1egmr9el.gz
+│   │       │   ├── 5wc853wew3-ee0r1s7dh0.gz
+│   │       │   ├── 6648yntxvj-pj5nd1wqec.gz
+│   │       │   ├── 6b97h5o84h-37tfw0ft22.gz
+│   │       │   ├── 6tozv5twdq-y7v9cxd14o.gz
+│   │       │   ├── 7nq6qv8351-b7pk76d08c.gz
+│   │       │   ├── bdk5ctirp5-06098lyss8.gz
+│   │       │   ├── cz431w56ph-d7shbmvgxk.gz
+│   │       │   ├── d80l8o05he-c2oey78nd0.gz
+│   │       │   ├── d8o6qbtgff-pk9g2wxc8p.gz
+│   │       │   ├── dkfll22vwg-bzc2bwbht2.gz
+│   │       │   ├── e2apcll9o7-aexeepp0ev.gz
+│   │       │   ├── f32kn295nz-gcvjxldlff.gz
+│   │       │   ├── f34lly5sx0-bqjiyaj88i.gz
+│   │       │   ├── f4jj066o0q-bzc2bwbht2.gz
+│   │       │   ├── f6uczav0el-cosvhxvwiu.gz
+│   │       │   ├── gd54a80jeh-j5mq2jizvt.gz
+│   │       │   ├── h0cvdthf7i-ft3s53vfgj.gz
+│   │       │   ├── haqgs9gtiw-fsbi9cje9m.gz
+│   │       │   ├── ippl7gohs9-jj8uyg4cgr.gz
+│   │       │   ├── m9nba4hceg-s35ty4nyc5.gz
+│   │       │   ├── o0gjhncda9-6pdc2jztkx.gz
+│   │       │   ├── o9wymfkyca-kbrnm935zg.gz
+│   │       │   ├── otmbaqotwj-0j3bgjxly4.gz
+│   │       │   ├── p5yse4usar-erw9l3u2r3.gz
+│   │       │   ├── py2cc8vyx9-notf2xhcfb.gz
+│   │       │   ├── rktx89m94c-khv3u5hwcm.gz
+│   │       │   ├── s9osokymfq-63fj8s7r0e.gz
+│   │       │   ├── si4ffjj0pq-dxx9fxp4il.gz
+│   │       │   ├── snl5vmkdat-v0zj4ognzu.gz
+│   │       │   ├── st1w19oel6-rzd6atqjts.gz
+│   │       │   ├── t5t80wd00r-w7mf952350.gz
+│   │       │   ├── tjin8lqta3-iovd86k7lj.gz
+│   │       │   ├── u4cvtz7wh8-nvvlpmu67g.gz
+│   │       │   ├── u8h6mocs5f-k8d9w2qqmf.gz
+│   │       │   ├── vte1k1owsb-ub07r2b239.gz
+│   │       │   ├── vynmwxp37w-46ein0sx1k.gz
+│   │       │   ├── wkjvic7jdd-493y06b0oq.gz
+│   │       │   ├── x8c99v8b1a-r4e9w2rdcm.gz
+│   │       │   ├── xok5p42nnj-fvhpjtyr6v.gz
+│   │       │   ├── xuzlznu6de-h1s4sie4z3.gz
+│   │       │   └── zeic3foq0k-ausgxo2sd3.gz
+│   │       ├── esii-2025-d2.AssemblyInfo.cs
+│   │       ├── esii-2025-d2.AssemblyInfoInputs.cache
+│   │       ├── esii-2025-d2.assets.cache
+│   │       ├── esii-2025-d2.csproj.AssemblyReference.cache
+│   │       ├── esii-2025-d2.csproj.CoreCompileInputs.cache
+│   │       ├── esii-2025-d2.csproj.FileListAbsolute.txt
+│   │       ├── esii-2025-d2.dll
+│   │       ├── esii-2025-d2.GeneratedMSBuildEditorConfig.editorconfig
+│   │       ├── esii-2025-d2.genruntimeconfig.cache
+│   │       ├── esii-2025-d2.GlobalUsings.g.cs
+│   │       ├── esii-2025-d2.MvcApplicationPartsAssemblyInfo.cache
+│   │       ├── esii-2025-d2.MvcApplicationPartsAssemblyInfo.cs
+│   │       ├── esii-2025-d2.pdb
+│   │       ├── esii-2025-d2.sourcelink.json
+│   │       ├── esii-202.961D631A.Up2Date
+│   │       ├── .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+│   │       ├── rbcswa.dswa.cache.json
+│   │       ├── ref
+│   │       │   └── esii-2025-d2.dll
+│   │       ├── refint
+│   │       │   └── esii-2025-d2.dll
+│   │       ├── rjimswa.dswa.cache.json
+│   │       ├── rjsmcshtml.dswa.cache.json
+│   │       ├── rjsmrazor.dswa.cache.json
+│   │       ├── rpswa.dswa.cache.json
+│   │       ├── scopedcss
+│   │       │   ├── bundle
+│   │       │   │   └── esii-2025-d2.styles.css
+│   │       │   ├── Components
+│   │       │   │   └── Layout
+│   │       │   │       ├── MainLayout.razor.rz.scp.css
+│   │       │   │       └── NavMenu.razor.rz.scp.css
+│   │       │   └── projectbundle
+│   │       │       └── esii-2025-d2.bundle.scp.css
+│   │       ├── staticwebassets
+│   │       ├── staticwebassets.build.endpoints.json
+│   │       ├── staticwebassets.build.json
+│   │       ├── staticwebassets.build.json.cache
+│   │       └── staticwebassets.development.json
+│   ├── esii-2025-d2.csproj.EntityFrameworkCore.targets
+│   ├── esii-2025-d2.csproj.nuget.dgspec.json
+│   ├── esii-2025-d2.csproj.nuget.g.props
+│   ├── esii-2025-d2.csproj.nuget.g.targets
+│   ├── esii_2025_d2.Data.EntityFrameworkCore.targets
+│   ├── project.assets.json
+│   └── project.nuget.cache
+├── Program.cs
+├── Properties
+│   └── launchSettings.json
+├── Services
+│   ├── AuthenticatedApiService.cs
+│   ├── CustomerService.cs
+│   ├── ExperienceService.cs
+│   ├── ICustomerService.cs
+│   ├── JobProposalService.cs
+│   ├── ReportsService.cs
+│   ├── SkillService.cs
+│   ├── TalentCategoryService.cs
+│   └── TalentService.cs
+├── tree.txt
+└── wwwroot
+    ├── app.css
+    ├── favicon.png
+    └── lib
+        └── bootstrap
+            └── dist
+                ├── css
+                │   ├── bootstrap.css
+                │   ├── bootstrap.css.map
+                │   ├── bootstrap-grid.css
+                │   ├── bootstrap-grid.css.map
+                │   ├── bootstrap-grid.min.css
+                │   ├── bootstrap-grid.min.css.map
+                │   ├── bootstrap-grid.rtl.css
+                │   ├── bootstrap-grid.rtl.css.map
+                │   ├── bootstrap-grid.rtl.min.css
+                │   ├── bootstrap-grid.rtl.min.css.map
+                │   ├── bootstrap.min.css
+                │   ├── bootstrap.min.css.map
+                │   ├── bootstrap-reboot.css
+                │   ├── bootstrap-reboot.css.map
+                │   ├── bootstrap-reboot.min.css
+                │   ├── bootstrap-reboot.min.css.map
+                │   ├── bootstrap-reboot.rtl.css
+                │   ├── bootstrap-reboot.rtl.css.map
+                │   ├── bootstrap-reboot.rtl.min.css
+                │   ├── bootstrap-reboot.rtl.min.css.map
+                │   ├── bootstrap.rtl.css
+                │   ├── bootstrap.rtl.css.map
+                │   ├── bootstrap.rtl.min.css
+                │   ├── bootstrap.rtl.min.css.map
+                │   ├── bootstrap-utilities.css
+                │   ├── bootstrap-utilities.css.map
+                │   ├── bootstrap-utilities.min.css
+                │   ├── bootstrap-utilities.min.css.map
+                │   ├── bootstrap-utilities.rtl.css
+                │   ├── bootstrap-utilities.rtl.css.map
+                │   ├── bootstrap-utilities.rtl.min.css
+                │   └── bootstrap-utilities.rtl.min.css.map
+                └── js
+                    ├── bootstrap.bundle.js
+                    ├── bootstrap.bundle.js.map
+                    ├── bootstrap.bundle.min.js
+                    ├── bootstrap.bundle.min.js.map
+                    ├── bootstrap.esm.js
+                    ├── bootstrap.esm.js.map
+                    ├── bootstrap.esm.min.js
+                    ├── bootstrap.esm.min.js.map
+                    ├── bootstrap.js
+                    ├── bootstrap.js.map
+                    ├── bootstrap.min.js
+                    └── bootstrap.min.js.map
+
+100 directories, 407 files

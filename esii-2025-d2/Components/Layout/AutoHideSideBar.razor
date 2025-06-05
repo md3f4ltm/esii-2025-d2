@@ -1,0 +1,43 @@
+@inject NavigationManager NavigationManager
+@using Microsoft.AspNetCore.Components.Authorization
+
+<div class="sidebar-container @(isExpanded ? "expand" : "collapsed")">
+    <div class="sidebar-content">
+        <p>Estado: @(isExpanded ? "Expandida" : "Colapsada")</p>
+    </div>
+
+    <button @onclick="ContarCliques">Clica em mim</button>
+
+    <p>Já clicaste @contador vez(es).</p>
+
+    <button class="toggle-btn" @onclick="ToggleExpand">
+        @(isExpanded ? "<" : ">")
+    </button>
+
+    <button @onclick="TestarClick">Clique aqui</button>
+</div>
+
+<p style="color:rgb(0, 0, 0)">DEBUG: @(isExpanded ? "Expandido" : "Colapsado")</p>
+
+
+@code {
+    bool isExpanded = false;
+
+    void ToggleExpand()
+    {
+        isExpanded = !isExpanded;
+        Console.WriteLine($"[DEBUG] Clicou no bot�o. Estado: {(isExpanded ? "Expandida" : "Colapsada")}");
+    }
+
+    int contador = 0;
+
+    void ContarCliques()
+    {
+        contador++;
+    }
+
+       void TestarClick()
+    {
+        Console.WriteLine(">>> CLICOU NO BOT�O <<<");
+    }
+}

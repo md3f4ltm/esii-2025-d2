@@ -4,13 +4,16 @@
     <div class="sidebar">
         <NavMenu />
     </div>
-
+  
+@*<AutoHideSideBar />*@
     <main>
         <div class="top-row px-4">
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
         </div>
 
         <article class="content px-4">
+            <button @onclick="ContarCliques">Clica em mim</button>
+            <p>Já clicaste @contador vez(es).</p>
             @Body
         </article>
     </main>
@@ -21,3 +24,12 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+@code{
+    public int contador = 0;
+
+     public void ContarCliques()
+    {
+        contador++;
+    }
+
+}
