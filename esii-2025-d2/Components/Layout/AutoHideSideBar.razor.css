@@ -2,23 +2,29 @@
     height: 100vh;
     background: linear-gradient(180deg, rgb(5, 39, 103), #3a0647);
     border-radius: 0 10px 10px 0;
-    color: white;
+    /* cor base para o texto — mantida para fallback */
+    color: white; 
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    position: relative;
+    position: fixed;
+    left: 0;
+    top: 0;
     transition: width 0.3s ease;
     overflow: hidden;
-    padding: 1rem;
+    padding-top: 2rem;
+    z-index: 1000;
 }
 
 .sidebar-container.collapsed {
-    width: 100px;
+    width: 60px;
 }
 
 .sidebar-container.expand {
     width: 250px;
+}
+
+.btn {
+    color: #ffffff;
 }
 
 .toggle-btn {
@@ -33,4 +39,61 @@
     cursor: pointer;
     font-weight: bold;
     box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    color: black;
+}
+
+/* Mantém branco o texto e o alinhamento do link */
+.nav-item .nav-link {
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+}
+
+/* Hover com fundo transparente branco leve */
+.nav-item .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+/* Estilização para ícones */
+.nav-icon-white {
+    color: white !important;
+    font-size: 1.2rem; /* ajusta tamanho dos ícones se quiser */
+}
+
+/* Estilização para textos da navbar */
+.nav-label-white {
+    color: white !important;
+    margin-left: 0.5rem;
+}
+
+/* Quando a sidebar está recolhida, centraliza os ícones e remove margem do texto */
+.nav-scrollable.collapsed .nav-link {
+    justify-content: center;
+}
+
+.nav-scrollable.collapsed .nav-link span {
+    margin-right: 0; /* remove espaçamento do texto */
+}
+
+.nav-scrollable.collapsed .nav-link::after {
+    content: none; /* remove decorações extras */
+}
+
+.nav-scrollable.collapsed .nav-link-text {
+    display: none; /* esconde o texto */
+}
+
+
+/* overlay ocupa toda a tela, exceto a sidebar */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 250px; /* largura da sidebar expandida */
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4); /* sombra escura semi-transparente */
+    z-index: 999; /* abaixo da sidebar (que tem 1000) */
+    transition: background-color 0.3s ease;
 }

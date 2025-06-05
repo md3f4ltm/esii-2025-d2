@@ -1,43 +1,178 @@
+@rendermode InteractiveServer
+@implements IDisposable
 @inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.Authorization
 
 <div class="sidebar-container @(isExpanded ? "expand" : "collapsed")">
-    <div class="sidebar-content">
-        <p>Estado: @(isExpanded ? "Expandida" : "Colapsada")</p>
-    </div>
-
-    <button @onclick="ContarCliques">Clica em mim</button>
-
-    <p>Já clicaste @contador vez(es).</p>
-
     <button class="toggle-btn" @onclick="ToggleExpand">
-        @(isExpanded ? "<" : ">")
+        <span class="bi @(isExpanded ? "bi-chevron-left" : "bi-chevron-right")"></span>
     </button>
 
-    <button @onclick="TestarClick">Clique aqui</button>
+    <div class="sidebar-content">
+        <nav class="nav flex-column">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="bi bi-house-door-fill-nav-menu nav-icon-white"></span>
+                    @if (isExpanded)
+                    {
+                        <span class="nav-label nav-label-white"> Home </span>
+                    }
+                </NavLink>
+            </div>
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="profile">
+                    <span class="bi bi-plus-square-fill-nav-menu nav-icon-white"></span>
+                    @if (isExpanded)
+                    {
+                        <span class="nav-label nav-label-white"> Profile </span>
+                    }
+                </NavLink>
+            </div>
+
+            <AuthorizeView Roles="Talent">
+                <Authorized>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="Experiences">
+                            <span class="bi bi-briefcase-fill-nav-menu nav-icon-white"></span>
+                            @if (isExpanded)
+                            {
+                                <span class="nav-label nav-label-white"> Experiences </span>
+                            }
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="Talents">
+                            <span class="bi bi-people-fill-nav-menu nav-icon-white"></span>
+                            @if (isExpanded)
+                            {
+                                <span class="nav-label nav-label-white"> Talents </span>
+                            }
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="skills">
+                            <span class="bi bi-list-nested-nav-menu nav-icon-white"></span>
+                            @if (isExpanded)
+                            {
+                                <span class="nav-label nav-label-white"> Manage Skills </span>
+                            }
+                        </NavLink>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="auth">
+                    <span class="bi bi-lock-nav-menu nav-icon-white"></span>
+                    @if (isExpanded)
+                    {
+                        <span class="nav-label nav-label-white"> Auth Required </span>
+                    }
+                </NavLink>
+            </div>
+
+            <AuthorizeView Roles="Customer">
+                <Authorized>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="job-proposals">
+                            <span class="bi bi-clipboard2-fill-nav-menu nav-icon-white"></span>
+                            @if (isExpanded)
+                            {
+                                <span class="nav-label nav-label-white"> Job Proposals </span>
+                            }
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="reports">
+                            <span class="bi bi-graph-up-nav-menu nav-icon-white"></span>
+                            @if (isExpanded)
+                            {
+                                <span class="nav-label nav-label-white"> Reports </span>
+                            }
+                        </NavLink>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+
+            <AuthorizeView>
+                <Authorized>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="Account/Manage">
+                            <span class="bi bi-person-fill-nav-menu nav-icon-white"></span>
+                            @if (isExpanded)
+                            {
+                                <span class="nav-label nav-label-white"> @context.User.Identity?.Name </span>
+                            }
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <form action="Account/Logout" method="post">
+                            <AntiforgeryToken />
+                            <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                            <button type="submit" class="nav-link">
+                                <span class="bi bi-arrow-bar-left-nav-menu nav-icon-white"></span>
+                                @if (isExpanded)
+                                {
+                                    <span class="nav-label nav-label-white"> Logout </span>
+                                }
+                            </button>
+                        </form>
+                    </div>
+                </Authorized>
+                <NotAuthorized>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="Account/Register">
+                            <span class="bi bi-person-nav-menu nav-icon-white"></span>
+                            @if (isExpanded)
+                            {
+                                <span class="nav-label nav-label-white"> Register </span>
+                            }
+                        </NavLink>
+                    </div>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="Account/Login">
+                            <span class="bi bi-person-badge-nav-menu nav-icon-white"></span>
+                            @if (isExpanded)
+                            {
+                                <span class="nav-label nav-label-white"> Login </span>
+                            }
+                        </NavLink>
+                    </div>
+                </NotAuthorized>
+            </AuthorizeView>
+        </nav>
+    </div>
 </div>
 
-<p style="color:rgb(0, 0, 0)">DEBUG: @(isExpanded ? "Expandido" : "Colapsado")</p>
-
-
 @code {
-    bool isExpanded = false;
 
-    void ToggleExpand()
+    [Parameter]
+    public EventCallback<bool> OnExpandChanged { get; set; }
+
+    private bool isExpanded = false; // Começa expandido (altere se quiser iniciar recolhido)
+    private string? currentUrl;
+
+    protected override void OnInitialized()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.LocationChanged += OnLocationChanged;
+    }
+
+    private async Task ToggleExpand()
     {
         isExpanded = !isExpanded;
-        Console.WriteLine($"[DEBUG] Clicou no bot�o. Estado: {(isExpanded ? "Expandida" : "Colapsada")}");
+        await OnExpandChanged.InvokeAsync(isExpanded);
     }
 
-    int contador = 0;
-
-    void ContarCliques()
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        contador++;
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        StateHasChanged();
     }
 
-       void TestarClick()
+    public void Dispose()
     {
-        Console.WriteLine(">>> CLICOU NO BOT�O <<<");
+        NavigationManager.LocationChanged -= OnLocationChanged;
     }
 }
