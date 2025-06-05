@@ -4,6 +4,10 @@
     flex-direction: column;
 }
 
+article.content {
+  margin-left: 60px;
+}
+
 main {
     flex: 1;
 }
