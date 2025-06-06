@@ -3,14 +3,19 @@
 @inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.Authorization
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 <div class="sidebar-container @(isExpanded ? "expand" : "collapsed")"
      @onmouseover="() => isExpanded = true"
-     @onmouseout="() => isExpanded = false">
+     @onmouseout="() => isExpanded = false"
+     tabindex="0"
+     @onfocus="() => isExpanded = true"
+     @onblur="() => isExpanded = false">
     <div class="sidebar-content">
         <nav class="nav flex-column">
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                    <span class="bi bi-house-door-fill-nav-menu nav-icon-white"></span>
+                    <span class="bi bi-house-door-fill nav-icon-white"></span>
                     @if (isExpanded)
                     {
                         <span class="nav-label nav-label-white"> Home </span>
@@ -20,7 +25,7 @@
 
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="profile">
-                    <span class="bi bi-plus-square-fill-nav-menu nav-icon-white"></span>
+                    <span class="bi bi-plus-square-fill nav-icon-white"></span>
                     @if (isExpanded)
                     {
                         <span class="nav-label nav-label-white"> Profile </span>
@@ -32,7 +37,7 @@
                 <Authorized>
                     <div class="nav-item px-3">
                         <NavLink class="nav-link" href="Experiences">
-                            <span class="bi bi-briefcase-fill-nav-menu nav-icon-white"></span>
+                            <span class="bi bi-briefcase-fill nav-icon-white"></span>
                             @if (isExpanded)
                             {
                                 <span class="nav-label nav-label-white"> Experiences </span>
@@ -41,7 +46,7 @@
                     </div>
                     <div class="nav-item px-3">
                         <NavLink class="nav-link" href="Talents">
-                            <span class="bi bi-people-fill-nav-menu nav-icon-white"></span>
+                            <span class="bi bi-people-fill nav-icon-white"></span>
                             @if (isExpanded)
                             {
                                 <span class="nav-label nav-label-white"> Talents </span>
@@ -50,7 +55,7 @@
                     </div>
                     <div class="nav-item px-3">
                         <NavLink class="nav-link" href="skills">
-                            <span class="bi bi-list-nested-nav-menu nav-icon-white"></span>
+                            <span class="bi bi-list-nested nav-icon-white"></span>
                             @if (isExpanded)
                             {
                                 <span class="nav-label nav-label-white"> Manage Skills </span>
@@ -62,7 +67,7 @@
 
             <div class="nav-item px-3">
                 <NavLink class="nav-link" href="auth">
-                    <span class="bi bi-lock-nav-menu nav-icon-white"></span>
+                    <span class="bi bi-lock nav-icon-white"></span>
                     @if (isExpanded)
                     {
                         <span class="nav-label nav-label-white"> Auth Required </span>
@@ -74,7 +79,7 @@
                 <Authorized>
                     <div class="nav-item px-3">
                         <NavLink class="nav-link" href="job-proposals">
-                            <span class="bi bi-clipboard2-fill-nav-menu nav-icon-white"></span>
+                            <span class="bi bi-clipboard2-fill nav-icon-white"></span>
                             @if (isExpanded)
                             {
                                 <span class="nav-label nav-label-white"> Job Proposals </span>
@@ -83,7 +88,7 @@
                     </div>
                     <div class="nav-item px-3">
                         <NavLink class="nav-link" href="reports">
-                            <span class="bi bi-graph-up-nav-menu nav-icon-white"></span>
+                            <span class="bi bi-graph-up nav-icon-white"></span>
                             @if (isExpanded)
                             {
                                 <span class="nav-label nav-label-white"> Reports </span>
@@ -97,7 +102,7 @@
                 <Authorized>
                     <div class="nav-item px-3">
                         <NavLink class="nav-link" href="Account/Manage">
-                            <span class="bi bi-person-fill-nav-menu nav-icon-white"></span>
+                            <span class="bi bi-person-fill nav-icon-white"></span>
                             @if (isExpanded)
                             {
                                 <span class="nav-label nav-label-white">@context.User.Identity?.Name</span>
@@ -108,8 +113,8 @@
                         <form action="Account/Logout" method="post">
                             <AntiforgeryToken />
                             <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                            <button type="submit" class="nav-link">
-                                <span class="bi bi-arrow-bar-left-nav-menu nav-icon-white"></span>
+                            <button type="submit" class="nav-link btn-logout">
+                                <span class="bi bi-arrow-bar-left nav-icon-white"></span>
                                 @if (isExpanded)
                                 {
                                     <span class="nav-label nav-label-white"> Logout </span>
@@ -121,7 +126,7 @@
                 <NotAuthorized>
                     <div class="nav-item px-3">
                         <NavLink class="nav-link" href="Account/Register">
-                            <span class="bi bi-person-nav-menu nav-icon-white"></span>
+                            <span class="bi bi-person nav-icon-white"></span>
                             @if (isExpanded)
                             {
                                 <span class="nav-label nav-label-white"> Register </span>
@@ -130,7 +135,7 @@
                     </div>
                     <div class="nav-item px-3">
                         <NavLink class="nav-link" href="Account/Login">
-                            <span class="bi bi-person-badge-nav-menu nav-icon-white"></span>
+                            <span class="bi bi-person-badge nav-icon-white"></span>
                             @if (isExpanded)
                             {
                                 <span class="nav-label nav-label-white"> Login </span>
