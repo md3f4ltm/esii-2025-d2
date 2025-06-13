@@ -1,15 +1,19 @@
-﻿@page "/"
+@page "/"
 @rendermode InteractiveServer
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
-@using System.Net.Http.Json
 @using esii_2025_d2.Models
+@using esii_2025_d2.DTOs
+@using esii_2025_d2.Services
 @using esii_2025_d2.Data
 @using Microsoft.Extensions.Logging
 
-
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject HttpClient Http
+@inject IJobProposalService JobProposalService
+@inject ITalentService TalentService
+@inject ISkillService SkillService
+@inject ITalentCategoryService TalentCategoryService
+@inject ICustomerService CustomerService
 @inject NavigationManager Navigation
 @inject ILogger<Home> Logger
 
@@ -19,36 +23,58 @@
     <Authorized>
         @if (isLoading)
         {
-            <p><em>Loading feed...</em></p>
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
         }
         else
         {
             @if (isTalent)
             {
-                @TalentFeed(jobProposals)
+                @TalentFeedWithSearch()
             }
             else if (isCustomer)
             {
-                @CustomerFeed(talents)
+                @CustomerFeedWithSearch()
             }
             else
             {
-                <p>Your role could not be determined, or you have a role without a specific feed (e.g., Admin).</p>
-                <p>Please ensure your user account has either the "Talent" or "Customer" role assigned.</p>
+                <div class="alert alert-warning role-warning">
+                    <h4>Role Not Determined</h4>
+                    <p>Your role could not be determined, or you have a role without a specific feed (e.g., Admin).</p>
+                    <p>Please ensure your user account has either the "Talent" or "Customer" role assigned.</p>
+                </div>
             }
         }
     </Authorized>
     <NotAuthorized>
-        <p>Please log in to see your personalized feed.</p>
+        <div class="welcome-banner">
+            <h1 class="display-4">Welcome to Our Platform</h1>
+            <p class="lead">Please log in to see your personalized feed and start connecting with talents or job opportunities.</p>
+            <a class="btn btn-light btn-lg" href="/Account/Login" role="button">Login</a>
+        </div>
     </NotAuthorized>
 </AuthorizeView>
 
 @code {
+    // State variables
     private bool isLoading = true;
     private bool isTalent = false;
     private bool isCustomer = false;
-    private IEnumerable<JobProposal> jobProposals = new List<JobProposal>();
-    private IEnumerable<Talent> talents = new List<Talent>();
+
+    // Job Proposals (for Talents)
+    private PaginatedResult<JobProposal> jobProposalsResult = new();
+    private JobProposalSearchDto jobSearchDto = new() { PageSize = 10 };
+    private List<Skill> availableSkills = new();
+    private List<TalentCategory> availableTalentCategories = new();
+    private List<Customer> availableCustomers = new();
+
+    // Talents (for Customers)
+    private PaginatedResult<Talent> talentsResult = new();
+    private TalentSearchDto talentSearchDto = new() { PageSize = 10, IsPublic = true };
+    private List<string> availableCountries = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,230 +92,853 @@
             {
                 if (isTalent)
                 {
-                    Logger.LogInformation("Fetching Job Proposals for Talent...");
-                    jobProposals = await Http.GetFromJsonAsync<IEnumerable<JobProposal>>("api/JobProposal/GetAllProposals") ?? new List<JobProposal>();
-                    Logger.LogInformation("Job Proposals fetched. Count: {Count}", jobProposals.Count());
-                    if (!jobProposals.Any())
-                    {
-                        Logger.LogInformation("No job proposals were returned from the API or the list is empty.");
-                    }
+                    await LoadJobProposalsAsync();
+                    await LoadJobFilterOptionsAsync();
                 }
                 else if (isCustomer)
                 {
-                    Logger.LogInformation("Fetching Talents for Customer...");
-                    try 
-                    {
-                        talents = await Http.GetFromJsonAsync<IEnumerable<Talent>>("api/Talent/GetAllTalents");
-                        
-                        if (talents == null) 
-                        {
-                            Logger.LogWarning("Talents list is NULL after fetch.");
-                            talents = new List<Talent>(); // Ensure it's not null for rendering
-                        }
-                        Logger.LogInformation("Talents fetched. Count: {Count}", talents.Count());
-                        if (!talents.Any())
-                        {
-                            Logger.LogInformation("No talents were returned from the API or the list is empty.");
-                        }
-                    }
-                    catch (System.Text.Json.JsonException jsonEx)
-                    {
-                        Logger.LogError(jsonEx, "JSON parsing error: {Message}", jsonEx.Message);
-                        talents = new List<Talent>();
-                    }
-                    catch (HttpRequestException httpEx)
-                    {
-                        Logger.LogError(httpEx, "HTTP Error fetching talents: {Message}", httpEx.Message);
-                        talents = new List<Talent>();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogError(ex, "Unexpected error fetching talents: {Message}", ex.Message);
-                        talents = new List<Talent>();
-                    }
+                    await LoadTalentsAsync();
+                    await LoadTalentFilterOptionsAsync();
                 }
-            }
-            catch (System.Net.Http.HttpRequestException httpEx)
-            {
-                Logger.LogError(httpEx, "HTTP Error fetching feed data. Status Code: {StatusCode}", httpEx.StatusCode);
-                // Optionally, provide more user-friendly error messages based on status code
-            }
-            catch (System.Text.Json.JsonException jsonEx)
-            {
-                Logger.LogError(jsonEx, "JSON parsing error: {Message}", jsonEx.Message);
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "Generic Error fetching feed data: {Message}", ex.Message);
+                Logger.LogError(ex, "Error loading feed data: {Message}", ex.Message);
             }
-            // Ensure collections are not null for rendering, even after an error
-            jobProposals ??= new List<JobProposal>();
-            talents ??= new List<Talent>();
-        }
-        else
-        {
-            Logger.LogInformation("User not authenticated.");
         }
 
         isLoading = false;
-        Logger.LogInformation("isLoading set to false. Calling StateHasChanged.");
         StateHasChanged();
     }
 
-    // --- Feed Display Components ---
-
-    private RenderFragment TalentFeed(IEnumerable<JobProposal>? proposals) => __builder =>
+    // Job Proposals Loading and Search
+    private async Task LoadJobProposalsAsync()
     {
-        Logger.LogInformation("Rendering TalentFeed. Proposals parameter is null: {isParamNull}. Proposals parameter count: {paramCount}",
-            proposals == null, proposals?.Count() ?? 0);
-
-        __builder.OpenElement(0, "h2");
-        __builder.AddContent(1, "Job Proposals Feed");
-        __builder.CloseElement(); // h2
-
-        if (proposals == null || !proposals.Any())
+        try
         {
-            Logger.LogInformation("TalentFeed: No job proposals to display.");
-            __builder.OpenElement(2, "p");
-            __builder.OpenElement(3, "em");
-            __builder.AddContent(4, "No job proposals available right now. Check back later!");
-            __builder.CloseElement(); // em
-            __builder.CloseElement(); // p
+            jobProposalsResult = await JobProposalService.SearchJobProposalsAsync(jobSearchDto);
+            Logger.LogInformation("Job Proposals loaded. Count: {Count}", jobProposalsResult.TotalItems);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading job proposals");
+            jobProposalsResult = new PaginatedResult<JobProposal>();
+        }
+    }
+
+    private async Task LoadJobFilterOptionsAsync()
+    {
+        try
+        {
+            availableSkills = await SkillService.GetAllSkillsAsync();
+            availableTalentCategories = await TalentCategoryService.GetAllTalentCategoriesAsync();
+            availableCustomers = await CustomerService.GetAllCustomersAsync();
+            Logger.LogInformation("Job filter options loaded. Skills: {SkillCount}, Categories: {CategoryCount}, Customers: {CustomerCount}",
+                availableSkills.Count, availableTalentCategories.Count, availableCustomers.Count);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading job filter options");
+        }
+    }
+
+    private async Task SearchJobProposalsAsync()
+    {
+        jobSearchDto.Page = 1; // Reset to first page
+        await LoadJobProposalsAsync();
+        StateHasChanged();
+    }
+
+    private async Task LoadJobProposalsPageAsync(int page)
+    {
+        jobSearchDto.Page = page;
+        await LoadJobProposalsAsync();
+        StateHasChanged();
+    }
+
+    // Talents Loading and Search
+    private async Task LoadTalentsAsync()
+    {
+        try
+        {
+            talentsResult = await TalentService.SearchTalentsAsync(talentSearchDto);
+            Logger.LogInformation("Talents loaded. Count: {Count}", talentsResult.TotalItems);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading talents");
+            talentsResult = new PaginatedResult<Talent>();
+        }
+    }
+
+    private async Task LoadTalentFilterOptionsAsync()
+    {
+        try
+        {
+            availableSkills = await SkillService.GetAllSkillsAsync();
+            availableTalentCategories = await TalentCategoryService.GetAllTalentCategoriesAsync();
+
+            // Get unique countries from all talents
+            var allTalents = await TalentService.GetAllTalentsAsync();
+            availableCountries = allTalents
+                .Where(t => !string.IsNullOrEmpty(t.Country))
+                .Select(t => t.Country)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToList();
+
+            Logger.LogInformation("Talent filter options loaded. Skills: {SkillCount}, Categories: {CategoryCount}, Countries: {CountryCount}",
+                availableSkills.Count, availableTalentCategories.Count, availableCountries.Count);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading talent filter options");
+        }
+    }
+
+    private async Task SearchTalentsAsync()
+    {
+        talentSearchDto.Page = 1; // Reset to first page
+        await LoadTalentsAsync();
+        StateHasChanged();
+    }
+
+    private async Task LoadTalentsPageAsync(int page)
+    {
+        talentSearchDto.Page = page;
+        await LoadTalentsAsync();
+        StateHasChanged();
+    }
+
+    // Talent Feed with Search (for when user is a Talent viewing Job Proposals)
+    private RenderFragment TalentFeedWithSearch() => __builder =>
+    {
+        __builder.OpenElement(0, "div");
+        __builder.AddAttribute(1, "class", "container-fluid");
+
+        // Header
+        __builder.OpenElement(2, "div");
+        __builder.AddAttribute(3, "class", "row mb-4");
+        __builder.OpenElement(4, "div");
+        __builder.AddAttribute(5, "class", "col-12");
+        __builder.OpenElement(6, "h2");
+        __builder.AddAttribute(7, "class", "mb-3");
+        __builder.AddContent(8, "🎯 Job Opportunities");
+        __builder.CloseElement(); // h2
+        __builder.CloseElement(); // col
+        __builder.CloseElement(); // row
+
+        // Search and Filter Section
+        __builder.OpenElement(9, "div");
+        __builder.AddAttribute(10, "class", "row mb-4");
+        __builder.OpenElement(11, "div");
+        __builder.AddAttribute(12, "class", "col-12");
+        __builder.OpenElement(13, "div");
+        __builder.AddAttribute(14, "class", "card search-card");
+        __builder.OpenElement(15, "div");
+        __builder.AddAttribute(16, "class", "card-header");
+        __builder.OpenElement(17, "h5");
+        __builder.AddAttribute(18, "class", "mb-0");
+        __builder.AddContent(19, "🔍 Search & Filter");
+        __builder.CloseElement(); // h5
+        __builder.CloseElement(); // card-header
+
+        __builder.OpenElement(20, "div");
+        __builder.AddAttribute(21, "class", "card-body");
+
+        // Search Text Input Row
+        __builder.OpenElement(22, "div");
+        __builder.AddAttribute(23, "class", "row mb-3");
+        __builder.OpenElement(24, "div");
+        __builder.AddAttribute(25, "class", "col-md-6");
+        __builder.OpenElement(26, "label");
+        __builder.AddAttribute(27, "class", "form-label");
+        __builder.AddContent(28, "Search");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(29, "input");
+        __builder.AddAttribute(30, "type", "text");
+        __builder.AddAttribute(31, "class", "form-control");
+        __builder.AddAttribute(32, "placeholder", "Search job proposals...");
+        __builder.AddAttribute(33, "value", jobSearchDto.SearchText);
+        __builder.AddAttribute(34, "oninput", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            jobSearchDto.SearchText = e.Value?.ToString();
+        }));
+        __builder.CloseElement(); // input
+        __builder.CloseElement(); // col
+
+        // Skill Filter
+        __builder.OpenElement(35, "div");
+        __builder.AddAttribute(36, "class", "col-md-3");
+        __builder.OpenElement(37, "label");
+        __builder.AddAttribute(38, "class", "form-label");
+        __builder.AddContent(39, "Skill");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(40, "select");
+        __builder.AddAttribute(41, "class", "form-select");
+        __builder.AddAttribute(42, "value", jobSearchDto.SkillId);
+        __builder.AddAttribute(43, "onchange", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            if (int.TryParse(e.Value?.ToString(), out int skillId))
+                jobSearchDto.SkillId = skillId;
+            else
+                jobSearchDto.SkillId = null;
+        }));
+        __builder.OpenElement(44, "option");
+        __builder.AddAttribute(45, "value", "");
+        __builder.AddContent(46, "All Skills");
+        __builder.CloseElement(); // option
+        foreach (var skill in availableSkills)
+        {
+            __builder.OpenElement(47, "option");
+            __builder.AddAttribute(48, "value", skill.Id);
+            __builder.AddContent(49, skill.Name);
+            __builder.CloseElement(); // option
+        }
+        __builder.CloseElement(); // select
+        __builder.CloseElement(); // col
+
+        // Search Button
+        __builder.OpenElement(50, "div");
+        __builder.AddAttribute(51, "class", "col-md-3 d-flex align-items-end");
+        __builder.OpenElement(52, "button");
+        __builder.AddAttribute(53, "class", "btn btn-primary btn-search w-100");
+        __builder.AddAttribute(54, "onclick", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, SearchJobProposalsAsync));
+        __builder.AddContent(55, "Search");
+        __builder.CloseElement(); // button
+        __builder.CloseElement(); // col
+        __builder.CloseElement(); // row
+
+        // Filters Row
+        __builder.OpenElement(56, "div");
+        __builder.AddAttribute(57, "class", "row");
+
+        // Hours Range
+        __builder.OpenElement(58, "div");
+        __builder.AddAttribute(59, "class", "col-md-3");
+        __builder.OpenElement(60, "label");
+        __builder.AddAttribute(61, "class", "form-label");
+        __builder.AddContent(62, "Min Hours");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(63, "input");
+        __builder.AddAttribute(64, "type", "number");
+        __builder.AddAttribute(65, "class", "form-control");
+        __builder.AddAttribute(66, "placeholder", "Min hours");
+        __builder.AddAttribute(67, "value", jobSearchDto.MinTotalHours);
+        __builder.AddAttribute(68, "oninput", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            if (int.TryParse(e.Value?.ToString(), out int minHours))
+                jobSearchDto.MinTotalHours = minHours;
+            else
+                jobSearchDto.MinTotalHours = null;
+        }));
+        __builder.CloseElement(); // input
+        __builder.CloseElement(); // col
+
+        __builder.OpenElement(69, "div");
+        __builder.AddAttribute(70, "class", "col-md-3");
+        __builder.OpenElement(71, "label");
+        __builder.AddAttribute(72, "class", "form-label");
+        __builder.AddContent(73, "Max Hours");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(74, "input");
+        __builder.AddAttribute(75, "type", "number");
+        __builder.AddAttribute(76, "class", "form-control");
+        __builder.AddAttribute(77, "placeholder", "Max hours");
+        __builder.AddAttribute(78, "value", jobSearchDto.MaxTotalHours);
+        __builder.AddAttribute(79, "oninput", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            if (int.TryParse(e.Value?.ToString(), out int maxHours))
+                jobSearchDto.MaxTotalHours = maxHours;
+            else
+                jobSearchDto.MaxTotalHours = null;
+        }));
+        __builder.CloseElement(); // input
+        __builder.CloseElement(); // col
+
+        // Sort By
+        __builder.OpenElement(80, "div");
+        __builder.AddAttribute(81, "class", "col-md-3");
+        __builder.OpenElement(82, "label");
+        __builder.AddAttribute(83, "class", "form-label");
+        __builder.AddContent(84, "Sort By");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(85, "select");
+        __builder.AddAttribute(86, "class", "form-select");
+        __builder.AddAttribute(87, "value", jobSearchDto.SortBy);
+        __builder.AddAttribute(88, "onchange", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            jobSearchDto.SortBy = e.Value?.ToString();
+        }));
+        __builder.OpenElement(89, "option");
+        __builder.AddAttribute(90, "value", "name");
+        __builder.AddContent(91, "Name");
+        __builder.CloseElement(); // option
+        __builder.OpenElement(92, "option");
+        __builder.AddAttribute(93, "value", "totalhours");
+        __builder.AddContent(94, "Total Hours");
+        __builder.CloseElement(); // option
+        __builder.OpenElement(95, "option");
+        __builder.AddAttribute(96, "value", "skill");
+        __builder.AddContent(97, "Skill");
+        __builder.CloseElement(); // option
+        __builder.CloseElement(); // select
+        __builder.CloseElement(); // col
+
+        // Sort Direction
+        __builder.OpenElement(98, "div");
+        __builder.AddAttribute(99, "class", "col-md-3");
+        __builder.OpenElement(100, "label");
+        __builder.AddAttribute(101, "class", "form-label");
+        __builder.AddContent(102, "Direction");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(103, "select");
+        __builder.AddAttribute(104, "class", "form-select");
+        __builder.AddAttribute(105, "value", jobSearchDto.SortDirection);
+        __builder.AddAttribute(106, "onchange", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            jobSearchDto.SortDirection = e.Value?.ToString() ?? "asc";
+        }));
+        __builder.OpenElement(107, "option");
+        __builder.AddAttribute(108, "value", "asc");
+        __builder.AddContent(109, "Ascending");
+        __builder.CloseElement(); // option
+        __builder.OpenElement(110, "option");
+        __builder.AddAttribute(111, "value", "desc");
+        __builder.AddContent(112, "Descending");
+        __builder.CloseElement(); // option
+        __builder.CloseElement(); // select
+        __builder.CloseElement(); // col
+        __builder.CloseElement(); // row
+
+        __builder.CloseElement(); // card-body
+        __builder.CloseElement(); // card
+        __builder.CloseElement(); // col
+        __builder.CloseElement(); // row
+
+        // Results Section
+        __builder.OpenElement(113, "div");
+        __builder.AddAttribute(114, "class", "row");
+        __builder.OpenElement(115, "div");
+        __builder.AddAttribute(116, "class", "col-12");
+
+        // Results Info
+        __builder.OpenElement(117, "div");
+        __builder.AddAttribute(118, "class", "results-header d-flex justify-content-between align-items-center");
+        __builder.OpenElement(119, "h5");
+        __builder.AddAttribute(120, "class", "mb-0");
+        __builder.AddContent(121, $"Found {jobProposalsResult.TotalItems} job proposals");
+        __builder.CloseElement(); // h5
+
+        // Pagination Info
+        if (jobProposalsResult.TotalPages > 1)
+        {
+            __builder.OpenElement(122, "span");
+            __builder.AddAttribute(123, "class", "text-muted");
+            __builder.AddContent(124, $"Page {jobProposalsResult.Page} of {jobProposalsResult.TotalPages}");
+            __builder.CloseElement(); // span
+        }
+        __builder.CloseElement(); // d-flex
+
+        // Job Proposals List
+        if (!jobProposalsResult.Items.Any())
+        {
+            __builder.OpenElement(125, "div");
+            __builder.AddAttribute(126, "class", "alert alert-info");
+            __builder.AddContent(127, "No job proposals found matching your criteria. Try adjusting your search filters.");
+            __builder.CloseElement(); // alert
         }
         else
         {
-            Logger.LogInformation("TalentFeed: Rendering {count} job proposals.", proposals.Count());
-            __builder.OpenElement(5, "div");
-            __builder.AddAttribute(6, "class", "list-group");
-            foreach (var proposal in proposals)
+            __builder.OpenElement(128, "div");
+            __builder.AddAttribute(129, "class", "row");
+            foreach (var proposal in jobProposalsResult.Items)
             {
-                __builder.OpenElement(7, "div");
-                __builder.AddAttribute(8, "class", "list-group-item mb-3 shadow-sm"); // Added some styling
+                __builder.OpenElement(130, "div");
+                __builder.AddAttribute(131, "class", "col-md-6 col-lg-4 mb-4");
+                __builder.OpenElement(132, "div");
+                __builder.AddAttribute(133, "class", "card feed-card job-proposal-card h-100");
 
-                __builder.OpenElement(9, "h5");
-                __builder.AddAttribute(10, "class", "mb-1");
-                __builder.AddContent(11, proposal.Name);
-                __builder.CloseElement(); // h5
+                __builder.OpenElement(134, "div");
+                __builder.AddAttribute(135, "class", "card-header");
+                __builder.OpenElement(136, "h6");
+                __builder.AddAttribute(137, "class", "mb-0 text-white");
+                __builder.AddContent(138, proposal.Name);
+                __builder.CloseElement(); // h6
+                __builder.CloseElement(); // card-header
+
+                __builder.OpenElement(139, "div");
+                __builder.AddAttribute(140, "class", "card-body");
+
+                if (!string.IsNullOrEmpty(proposal.Description))
+                {
+                    __builder.OpenElement(141, "p");
+                    __builder.AddAttribute(142, "class", "card-text");
+                    __builder.AddContent(143, proposal.Description.Length > 100 ?
+                        proposal.Description.Substring(0, 100) + "..." : proposal.Description);
+                    __builder.CloseElement(); // p
+                }
 
                 if (proposal.Customer != null)
                 {
-                    __builder.OpenElement(12, "p");
-                    __builder.AddAttribute(13, "class", "mb-1");
-                    __builder.AddContent(14, $"Company: {proposal.Customer?.Company ?? "N/A"}");
+                    __builder.OpenElement(144, "p");
+                    __builder.AddAttribute(145, "class", "text-muted mb-1");
+                    __builder.OpenElement(146, "small");
+                    __builder.AddContent(147, $"🏢 {proposal.Customer.Company}");
+                    __builder.CloseElement(); // small
                     __builder.CloseElement(); // p
                 }
 
                 if (proposal.Skill != null)
                 {
-                    __builder.OpenElement(15, "p");
-                    __builder.AddAttribute(16, "class", "mb-1");
-                    __builder.AddContent(17, $"Required Skill: {proposal.Skill?.Name ?? "N/A"} {(!string.IsNullOrEmpty(proposal.Skill?.Area) ? $"({proposal.Skill.Area})" : "")}");
-                    __builder.CloseElement(); // p
-                }
-                else
-                {
-                        __builder.OpenElement(15, "p");
-                    __builder.AddAttribute(16, "class", "mb-1");
-                    __builder.AddContent(17, $"Required Skill ID: {proposal.SkillId}"); // Fallback if Skill object not loaded
+                    __builder.OpenElement(148, "p");
+                    __builder.AddAttribute(149, "class", "text-muted mb-1");
+                    __builder.OpenElement(150, "small");
+                    __builder.AddContent(151, $"🔧 {proposal.Skill.Name}");
+                    __builder.CloseElement(); // small
                     __builder.CloseElement(); // p
                 }
 
-
-                __builder.OpenElement(18, "p");
-                __builder.AddAttribute(19, "class", "mb-1");
-                __builder.AddContent(20, proposal.Description);
+                __builder.OpenElement(152, "p");
+                __builder.AddAttribute(153, "class", "text-muted mb-0");
+                __builder.OpenElement(154, "small");
+                __builder.AddContent(155, $"⏱️ {proposal.TotalHours} hours");
+                __builder.CloseElement(); // small
                 __builder.CloseElement(); // p
 
-                __builder.OpenElement(21, "small");
-                __builder.AddContent(22, $"Total Hours: {proposal.TotalHours}");
-                __builder.CloseElement(); // small
+                __builder.CloseElement(); // card-body
 
-                // You could add an "Apply" or "View Details" button here
-                // __builder.OpenElement(23, "button");
-                // __builder.AddAttribute(24, "class", "btn btn-primary btn-sm float-end");
-                // __builder.AddContent(25, "View Details");
-                // __builder.CloseElement(); // button
+                __builder.OpenElement(156, "div");
+                __builder.AddAttribute(157, "class", "card-footer");
+                __builder.OpenElement(158, "button");
+                __builder.AddAttribute(159, "class", "btn btn-outline-primary btn-sm");
+                __builder.AddContent(160, "View Details");
+                __builder.CloseElement(); // button
+                __builder.CloseElement(); // card-footer
 
-                __builder.CloseElement(); // list-group-item
+                __builder.CloseElement(); // card
+                __builder.CloseElement(); // col
             }
-            __builder.CloseElement(); // list-group
+            __builder.CloseElement(); // row
         }
+
+        // Pagination
+        if (jobProposalsResult.TotalPages > 1)
+        {
+            __builder.OpenElement(161, "nav");
+            __builder.AddAttribute(162, "aria-label", "Page navigation");
+            __builder.OpenElement(163, "ul");
+            __builder.AddAttribute(164, "class", "pagination justify-content-center mt-4");
+
+            // Previous button
+            __builder.OpenElement(165, "li");
+            __builder.AddAttribute(166, "class", jobProposalsResult.HasPreviousPage ? "page-item" : "page-item disabled");
+            __builder.OpenElement(167, "button");
+            __builder.AddAttribute(168, "class", "page-link");
+            __builder.AddAttribute(169, "onclick", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, async () => {
+                if (jobProposalsResult.HasPreviousPage)
+                    await LoadJobProposalsPageAsync(jobProposalsResult.Page - 1);
+            }));
+            __builder.AddContent(170, "Previous");
+            __builder.CloseElement(); // button
+            __builder.CloseElement(); // li
+
+            // Page numbers
+            var startPage = Math.Max(1, jobProposalsResult.Page - 2);
+            var endPage = Math.Min(jobProposalsResult.TotalPages, jobProposalsResult.Page + 2);
+
+            for (int i = startPage; i <= endPage; i++)
+            {
+                var pageNum = i;
+                __builder.OpenElement(171, "li");
+                __builder.AddAttribute(172, "class", i == jobProposalsResult.Page ? "page-item active" : "page-item");
+                __builder.OpenElement(173, "button");
+                __builder.AddAttribute(174, "class", "page-link");
+                __builder.AddAttribute(175, "onclick", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, async () => {
+                    await LoadJobProposalsPageAsync(pageNum);
+                }));
+                __builder.AddContent(176, i.ToString());
+                __builder.CloseElement(); // button
+                __builder.CloseElement(); // li
+            }
+
+            // Next button
+            __builder.OpenElement(177, "li");
+            __builder.AddAttribute(178, "class", jobProposalsResult.HasNextPage ? "page-item" : "page-item disabled");
+            __builder.OpenElement(179, "button");
+            __builder.AddAttribute(180, "class", "page-link");
+            __builder.AddAttribute(181, "onclick", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, async () => {
+                if (jobProposalsResult.HasNextPage)
+                    await LoadJobProposalsPageAsync(jobProposalsResult.Page + 1);
+            }));
+            __builder.AddContent(182, "Next");
+            __builder.CloseElement(); // button
+            __builder.CloseElement(); // li
+
+            __builder.CloseElement(); // ul
+            __builder.CloseElement(); // nav
+        }
+
+        __builder.CloseElement(); // col
+        __builder.CloseElement(); // row
+        __builder.CloseElement(); // container-fluid
     };
 
-    private RenderFragment CustomerFeed(IEnumerable<Talent>? currentTalents) => __builder => // Renamed parameter to avoid conflict
+    // Customer Feed with Search (for when user is a Customer viewing Talents)
+    private RenderFragment CustomerFeedWithSearch() => __builder =>
     {
-        Logger.LogInformation("Rendering CustomerFeed. Talents parameter is null: {isParamNull}. Talents parameter count: {paramCount}",
-            currentTalents == null, currentTalents?.Count() ?? 0);
+        __builder.OpenElement(0, "div");
+        __builder.AddAttribute(1, "class", "container-fluid");
 
-        __builder.OpenElement(0, "h2");
-        __builder.AddContent(1, "Available Talents");
+        // Header
+        __builder.OpenElement(2, "div");
+        __builder.AddAttribute(3, "class", "row mb-4");
+        __builder.OpenElement(4, "div");
+        __builder.AddAttribute(5, "class", "col-12");
+        __builder.OpenElement(6, "h2");
+        __builder.AddAttribute(7, "class", "mb-3");
+        __builder.AddContent(8, "👥 Available Talents");
         __builder.CloseElement(); // h2
+        __builder.CloseElement(); // col
+        __builder.CloseElement(); // row
 
-        if (currentTalents == null || !currentTalents.Any())
+        // Search and Filter Section
+        __builder.OpenElement(9, "div");
+        __builder.AddAttribute(10, "class", "row mb-4");
+        __builder.OpenElement(11, "div");
+        __builder.AddAttribute(12, "class", "col-12");
+        __builder.OpenElement(13, "div");
+        __builder.AddAttribute(14, "class", "card search-card");
+        __builder.OpenElement(15, "div");
+        __builder.AddAttribute(16, "class", "card-header");
+        __builder.OpenElement(17, "h5");
+        __builder.AddAttribute(18, "class", "mb-0");
+        __builder.AddContent(19, "🔍 Search & Filter Talents");
+        __builder.CloseElement(); // h5
+        __builder.CloseElement(); // card-header
+
+        __builder.OpenElement(20, "div");
+        __builder.AddAttribute(21, "class", "card-body");
+
+        // Search Text Input
+        __builder.OpenElement(22, "div");
+        __builder.AddAttribute(23, "class", "row mb-3");
+        __builder.OpenElement(24, "div");
+        __builder.AddAttribute(25, "class", "col-md-6");
+        __builder.OpenElement(26, "label");
+        __builder.AddAttribute(27, "class", "form-label");
+        __builder.AddContent(28, "Search");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(29, "input");
+        __builder.AddAttribute(30, "type", "text");
+        __builder.AddAttribute(31, "class", "form-control");
+        __builder.AddAttribute(32, "placeholder", "Search talents by name, country, or email...");
+        __builder.AddAttribute(33, "value", talentSearchDto.SearchText);
+        __builder.AddAttribute(34, "oninput", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            talentSearchDto.SearchText = e.Value?.ToString();
+        }));
+        __builder.CloseElement(); // input
+        __builder.CloseElement(); // col
+
+        // Country Filter
+        __builder.OpenElement(35, "div");
+        __builder.AddAttribute(36, "class", "col-md-3");
+        __builder.OpenElement(37, "label");
+        __builder.AddAttribute(38, "class", "form-label");
+        __builder.AddContent(39, "Country");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(40, "select");
+        __builder.AddAttribute(41, "class", "form-select");
+        __builder.AddAttribute(42, "value", talentSearchDto.Country);
+        __builder.AddAttribute(43, "onchange", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            talentSearchDto.Country = e.Value?.ToString();
+        }));
+        __builder.OpenElement(44, "option");
+        __builder.AddAttribute(45, "value", "");
+        __builder.AddContent(46, "All Countries");
+        __builder.CloseElement(); // option
+        foreach (var country in availableCountries)
         {
-            Logger.LogInformation("CustomerFeed: No talents to display.");
-            __builder.OpenElement(2, "p");
-            __builder.OpenElement(3, "em");
-            __builder.AddContent(4, "No talents found matching your criteria, or the platform is just getting started!");
-            __builder.CloseElement(); // em
-            __builder.CloseElement(); // p
+            __builder.OpenElement(47, "option");
+            __builder.AddAttribute(48, "value", country);
+            __builder.AddContent(49, country);
+            __builder.CloseElement(); // option
+        }
+        __builder.CloseElement(); // select
+        __builder.CloseElement(); // col
+
+        // Search Button
+        __builder.OpenElement(50, "div");
+        __builder.AddAttribute(51, "class", "col-md-3 d-flex align-items-end");
+        __builder.OpenElement(52, "button");
+        __builder.AddAttribute(53, "class", "btn btn-primary btn-search w-100");
+        __builder.AddAttribute(54, "onclick", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, SearchTalentsAsync));
+        __builder.AddContent(55, "Search");
+        __builder.CloseElement(); // button
+        __builder.CloseElement(); // col
+        __builder.CloseElement(); // row
+
+        // Filters Row
+        __builder.OpenElement(56, "div");
+        __builder.AddAttribute(57, "class", "row");
+
+        // Hourly Rate Range
+        __builder.OpenElement(58, "div");
+        __builder.AddAttribute(59, "class", "col-md-3");
+        __builder.OpenElement(60, "label");
+        __builder.AddAttribute(61, "class", "form-label");
+        __builder.AddContent(62, "Min Rate (€/h)");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(63, "input");
+        __builder.AddAttribute(64, "type", "number");
+        __builder.AddAttribute(65, "class", "form-control");
+        __builder.AddAttribute(66, "placeholder", "Min rate");
+        __builder.AddAttribute(67, "step", "0.01");
+        __builder.AddAttribute(68, "value", talentSearchDto.MinHourlyRate);
+        __builder.AddAttribute(69, "oninput", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            if (decimal.TryParse(e.Value?.ToString(), out decimal minRate))
+                talentSearchDto.MinHourlyRate = minRate;
+            else
+                talentSearchDto.MinHourlyRate = null;
+        }));
+        __builder.CloseElement(); // input
+        __builder.CloseElement(); // col
+
+        __builder.OpenElement(70, "div");
+        __builder.AddAttribute(71, "class", "col-md-3");
+        __builder.OpenElement(72, "label");
+        __builder.AddAttribute(73, "class", "form-label");
+        __builder.AddContent(74, "Max Rate (€/h)");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(75, "input");
+        __builder.AddAttribute(76, "type", "number");
+        __builder.AddAttribute(77, "class", "form-control");
+        __builder.AddAttribute(78, "placeholder", "Max rate");
+        __builder.AddAttribute(79, "step", "0.01");
+        __builder.AddAttribute(80, "value", talentSearchDto.MaxHourlyRate);
+        __builder.AddAttribute(81, "oninput", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            if (decimal.TryParse(e.Value?.ToString(), out decimal maxRate))
+                talentSearchDto.MaxHourlyRate = maxRate;
+            else
+                talentSearchDto.MaxHourlyRate = null;
+        }));
+        __builder.CloseElement(); // input
+        __builder.CloseElement(); // col
+
+        // Sort By
+        __builder.OpenElement(82, "div");
+        __builder.AddAttribute(83, "class", "col-md-3");
+        __builder.OpenElement(84, "label");
+        __builder.AddAttribute(85, "class", "form-label");
+        __builder.AddContent(86, "Sort By");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(87, "select");
+        __builder.AddAttribute(88, "class", "form-select");
+        __builder.AddAttribute(89, "value", talentSearchDto.SortBy);
+        __builder.AddAttribute(90, "onchange", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            talentSearchDto.SortBy = e.Value?.ToString();
+        }));
+        __builder.OpenElement(91, "option");
+        __builder.AddAttribute(92, "value", "name");
+        __builder.AddContent(93, "Name");
+        __builder.CloseElement(); // option
+        __builder.OpenElement(94, "option");
+        __builder.AddAttribute(95, "value", "country");
+        __builder.AddContent(96, "Country");
+        __builder.CloseElement(); // option
+        __builder.OpenElement(97, "option");
+        __builder.AddAttribute(98, "value", "hourlyrate");
+        __builder.AddContent(99, "Hourly Rate");
+        __builder.CloseElement(); // option
+        __builder.CloseElement(); // select
+        __builder.CloseElement(); // col
+
+        // Sort Direction
+        __builder.OpenElement(100, "div");
+        __builder.AddAttribute(101, "class", "col-md-3");
+        __builder.OpenElement(102, "label");
+        __builder.AddAttribute(103, "class", "form-label");
+        __builder.AddContent(104, "Direction");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(105, "select");
+        __builder.AddAttribute(106, "class", "form-select");
+        __builder.AddAttribute(107, "value", talentSearchDto.SortDirection);
+        __builder.AddAttribute(108, "onchange", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            talentSearchDto.SortDirection = e.Value?.ToString() ?? "asc";
+        }));
+        __builder.OpenElement(109, "option");
+        __builder.AddAttribute(110, "value", "asc");
+        __builder.AddContent(111, "Ascending");
+        __builder.CloseElement(); // option
+        __builder.OpenElement(112, "option");
+        __builder.AddAttribute(113, "value", "desc");
+        __builder.AddContent(114, "Descending");
+        __builder.CloseElement(); // option
+        __builder.CloseElement(); // select
+        __builder.CloseElement(); // col
+        __builder.CloseElement(); // row
+
+        __builder.CloseElement(); // card-body
+        __builder.CloseElement(); // card
+        __builder.CloseElement(); // col
+        __builder.CloseElement(); // row
+
+        // Results Section
+        __builder.OpenElement(115, "div");
+        __builder.AddAttribute(116, "class", "row");
+        __builder.OpenElement(117, "div");
+        __builder.AddAttribute(118, "class", "col-12");
+
+        // Results Info
+        __builder.OpenElement(119, "div");
+        __builder.AddAttribute(120, "class", "results-header d-flex justify-content-between align-items-center");
+        __builder.OpenElement(121, "h5");
+        __builder.AddAttribute(122, "class", "mb-0");
+        __builder.AddContent(123, $"Found {talentsResult.TotalItems} talents");
+        __builder.CloseElement(); // h5
+
+        // Pagination Info
+        if (talentsResult.TotalPages > 1)
+        {
+            __builder.OpenElement(124, "span");
+            __builder.AddAttribute(125, "class", "text-muted");
+            __builder.AddContent(126, $"Page {talentsResult.Page} of {talentsResult.TotalPages}");
+            __builder.CloseElement(); // span
+        }
+        __builder.CloseElement(); // d-flex
+
+        // Talents List
+        if (!talentsResult.Items.Any())
+        {
+            __builder.OpenElement(127, "div");
+            __builder.AddAttribute(128, "class", "alert alert-info");
+            __builder.AddContent(129, "No talents found matching your criteria. Try adjusting your search filters.");
+            __builder.CloseElement(); // alert
         }
         else
         {
-            Logger.LogInformation("CustomerFeed: Rendering {count} talents.", currentTalents.Count());
-            __builder.OpenElement(5, "div");
-            __builder.AddAttribute(6, "class", "list-group");
-            foreach (var talent in currentTalents)
+            __builder.OpenElement(130, "div");
+            __builder.AddAttribute(131, "class", "row");
+            foreach (var talent in talentsResult.Items)
             {
-                __builder.OpenElement(7, "div");
-                __builder.AddAttribute(8, "class", "list-group-item mb-3 shadow-sm"); // Added some styling
+                __builder.OpenElement(132, "div");
+                __builder.AddAttribute(133, "class", "col-md-6 col-lg-4 mb-4");
+                __builder.OpenElement(134, "div");
+                __builder.AddAttribute(135, "class", "card feed-card talent-card h-100");
 
-                __builder.OpenElement(9, "h5");
-                __builder.AddAttribute(10, "class", "mb-1");
-                __builder.AddContent(11, talent.Name);
-                __builder.CloseElement(); // h5
+                __builder.OpenElement(136, "div");
+                __builder.AddAttribute(137, "class", "card-header");
+                __builder.OpenElement(138, "h6");
+                __builder.AddAttribute(139, "class", "mb-0 text-white");
+                __builder.AddContent(140, talent.Name);
+                __builder.CloseElement(); // h6
+                __builder.CloseElement(); // card-header
 
-                // CORRECTED BLOCK:
+                __builder.OpenElement(141, "div");
+                __builder.AddAttribute(142, "class", "card-body");
+
+                __builder.OpenElement(143, "p");
+                __builder.AddAttribute(144, "class", "text-muted mb-2");
+                __builder.OpenElement(145, "small");
+                __builder.AddContent(146, $"🌍 {talent.Country}");
+                __builder.CloseElement(); // small
+                __builder.CloseElement(); // p
+
+                __builder.OpenElement(147, "p");
+                __builder.AddAttribute(148, "class", "text-muted mb-2");
+                __builder.OpenElement(149, "small");
+                __builder.AddContent(150, $"📧 {talent.Email}");
+                __builder.CloseElement(); // small
+                __builder.CloseElement(); // p
+
                 if (talent.TalentCategory != null)
                 {
-                        __builder.OpenElement(12, "p");
-                        __builder.AddAttribute(13, "class", "mb-1");
-                        __builder.AddContent(14, $"Category: {talent.TalentCategory.Name ?? "N/A"}"); // Assuming Name is required or handled
-                        __builder.CloseElement(); //p
-                }
-                else // Fallback to show ID if TalentCategory object not loaded
-                {
-                    __builder.OpenElement(12, "p");
-                    __builder.AddAttribute(13, "class", "mb-1");
-                    __builder.AddContent(14, $"Category ID: {talent.TalentCategoryId}"); // Directly use int value
-                    __builder.CloseElement(); //p
+                    __builder.OpenElement(151, "p");
+                    __builder.AddAttribute(152, "class", "text-muted mb-2");
+                    __builder.OpenElement(153, "small");
+                    __builder.AddContent(154, $"🏷️ {talent.TalentCategory.Name}");
+                    __builder.CloseElement(); // small
+                    __builder.CloseElement(); // p
                 }
 
+                __builder.OpenElement(155, "p");
+                __builder.AddAttribute(156, "class", "h5 text-primary mb-0");
+                __builder.AddContent(157, $"{talent.HourlyRate:C}/hour");
+                __builder.CloseElement(); // p
 
-                __builder.OpenElement(15, "p");
-                __builder.AddAttribute(16, "class", "mb-1");
-                __builder.AddContent(17, $"Country: {talent.Country}");
-                __builder.CloseElement(); //p
+                __builder.CloseElement(); // card-body
 
-                __builder.OpenElement(18, "p");
-                __builder.AddAttribute(19, "class", "mb-1");
-                __builder.AddContent(20, $"Email: {talent.Email}");
-                __builder.CloseElement(); //p
+                __builder.OpenElement(158, "div");
+                __builder.AddAttribute(159, "class", "card-footer");
+                __builder.OpenElement(160, "button");
+                __builder.AddAttribute(161, "class", "btn btn-outline-success btn-sm me-2");
+                __builder.AddContent(162, "View Profile");
+                __builder.CloseElement(); // button
+                __builder.OpenElement(163, "button");
+                __builder.AddAttribute(164, "class", "btn btn-success btn-sm");
+                __builder.AddContent(165, "Hire");
+                __builder.CloseElement(); // button
+                __builder.CloseElement(); // card-footer
 
-                __builder.OpenElement(21, "small");
-                __builder.AddAttribute(22, "class", "text-muted"); // Added class for styling
-                __builder.AddContent(23, $"Rate: {talent.HourlyRate:C}/hour");
-                __builder.CloseElement(); // small
-
-                // You could add a "View Profile" or "Propose Job" button here
-                // __builder.OpenElement(24, "button");
-                // __builder.AddAttribute(25, "class", "btn btn-info btn-sm float-end");
-                // __builder.AddContent(26, "View Profile");
-                // __builder.CloseElement(); // button
-
-                __builder.CloseElement(); // list-group-item
+                __builder.CloseElement(); // card
+                __builder.CloseElement(); // col
             }
-            __builder.CloseElement(); // list-group
+            __builder.CloseElement(); // row
         }
+
+        // Pagination
+        if (talentsResult.TotalPages > 1)
+        {
+            __builder.OpenElement(166, "nav");
+            __builder.AddAttribute(167, "aria-label", "Page navigation");
+            __builder.OpenElement(168, "ul");
+            __builder.AddAttribute(169, "class", "pagination justify-content-center mt-4");
+
+            // Previous button
+            __builder.OpenElement(170, "li");
+            __builder.AddAttribute(171, "class", talentsResult.HasPreviousPage ? "page-item" : "page-item disabled");
+            __builder.OpenElement(172, "button");
+            __builder.AddAttribute(173, "class", "page-link");
+            __builder.AddAttribute(174, "onclick", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, async () => {
+                if (talentsResult.HasPreviousPage)
+                    await LoadTalentsPageAsync(talentsResult.Page - 1);
+            }));
+            __builder.AddContent(175, "Previous");
+            __builder.CloseElement(); // button
+            __builder.CloseElement(); // li
+
+            // Page numbers
+            var startPage = Math.Max(1, talentsResult.Page - 2);
+            var endPage = Math.Min(talentsResult.TotalPages, talentsResult.Page + 2);
+
+            for (int i = startPage; i <= endPage; i++)
+            {
+                var pageNum = i;
+                __builder.OpenElement(176, "li");
+                __builder.AddAttribute(177, "class", i == talentsResult.Page ? "page-item active" : "page-item");
+                __builder.OpenElement(178, "button");
+                __builder.AddAttribute(179, "class", "page-link");
+                __builder.AddAttribute(180, "onclick", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, async () => {
+                    await LoadTalentsPageAsync(pageNum);
+                }));
+                __builder.AddContent(181, i.ToString());
+                __builder.CloseElement(); // button
+                __builder.CloseElement(); // li
+            }
+
+            // Next button
+            __builder.OpenElement(182, "li");
+            __builder.AddAttribute(183, "class", talentsResult.HasNextPage ? "page-item" : "page-item disabled");
+            __builder.OpenElement(184, "button");
+            __builder.AddAttribute(185, "class", "page-link");
+            __builder.AddAttribute(186, "onclick", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, async () => {
+                if (talentsResult.HasNextPage)
+                    await LoadTalentsPageAsync(talentsResult.Page + 1);
+            }));
+            __builder.AddContent(187, "Next");
+            __builder.CloseElement(); // button
+            __builder.CloseElement(); // li
+
+            __builder.CloseElement(); // ul
+            __builder.CloseElement(); // nav
+        }
+
+        __builder.CloseElement(); // col
+        __builder.CloseElement(); // row
+        __builder.CloseElement(); // container-fluid
     };
 }

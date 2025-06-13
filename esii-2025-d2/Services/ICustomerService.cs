@@ -7,5 +7,6 @@ namespace esii_2025_d2.Services
     {
         Task<Customer?> GetCustomerByUserIdAsync(string userId);
         Task<(bool Success, string? ErrorMessage)> SaveCustomerAsync(Customer customer);
+        Task<List<Customer>> GetAllCustomersAsync();
     }
 }

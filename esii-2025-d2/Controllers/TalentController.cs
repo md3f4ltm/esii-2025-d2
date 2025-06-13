@@ -1,6 +1,8 @@
 // esii-2025-d2/Controllers/TalentController.cs
 using esii_2025_d2.Models;
 using esii_2025_d2.Data; // Namespace for your DbContext and User
+using esii_2025_d2.DTOs;
+using esii_2025_d2.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -16,10 +18,12 @@ namespace esii_2025_d2.Controllers;
 public class TalentController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
+    private readonly ITalentService _talentService;
 
-    public TalentController(ApplicationDbContext context)
+    public TalentController(ApplicationDbContext context, ITalentService talentService)
     {
         _context = context;
+        _talentService = talentService;
     }
 
     // GET: api/Talent
@@ -41,6 +45,82 @@ public class TalentController : ControllerBase
         return await _context.Talents.ToListAsync(); // Simple version for now
     }
     // *** END: NEW ENDPOINT FOR FEED ***
+
+    // POST: api/Talent/search
+    [HttpPost("search")]
+    public async Task<ActionResult<PaginatedResult<Talent>>> SearchTalents([FromBody] TalentSearchDto searchDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            var result = await _talentService.SearchTalentsAsync(searchDto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while searching talents.", error = ex.Message });
+        }
+    }
+
+    // GET: api/Talent/search
+    [HttpGet("search")]
+    public async Task<ActionResult<PaginatedResult<Talent>>> SearchTalentsGet([FromQuery] TalentSearchDto searchDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            var result = await _talentService.SearchTalentsAsync(searchDto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while searching talents.", error = ex.Message });
+        }
+    }
+
+    // GET: api/Talent/filter-options
+    [HttpGet("filter-options")]
+    public async Task<ActionResult<object>> GetFilterOptions()
+    {
+        try
+        {
+            var talentCategories = await _context.TalentCategories
+                .Select(tc => new { Id = tc.Id, Name = tc.Name })
+                .OrderBy(tc => tc.Name)
+                .ToListAsync();
+
+            var skills = await _context.Skills
+                .Select(s => new { Id = s.Id, Name = s.Name })
+                .OrderBy(s => s.Name)
+                .ToListAsync();
+
+            var countries = await _context.Talents
+                .Where(t => !string.IsNullOrEmpty(t.Country))
+                .Select(t => t.Country)
+                .Distinct()
+                .OrderBy(c => c)
+                .ToListAsync();
+
+            return Ok(new
+            {
+                TalentCategories = talentCategories,
+                Skills = skills,
+                Countries = countries
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while fetching filter options.", error = ex.Message });
+        }
+    }
 
     // GET: api/Talent/mytalents
     [HttpGet("mytalents")]

@@ -2,6 +2,7 @@
 using esii_2025_d2.Models;
 using esii_2025_d2.Data;
 using esii_2025_d2.Services;
+using esii_2025_d2.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -73,6 +74,80 @@ public class JobProposalController : ControllerBase
             .Include(jp => jp.TalentCategory)
             .Include(jp => jp.Customer)
             .ToListAsync();
+    }
+
+    // POST: api/JobProposal/search
+    [HttpPost("search")]
+    public async Task<ActionResult<PaginatedResult<JobProposal>>> SearchJobProposals([FromBody] JobProposalSearchDto searchDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            var result = await _jobProposalService.SearchJobProposalsAsync(searchDto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while searching job proposals.", error = ex.Message });
+        }
+    }
+
+    // GET: api/JobProposal/search
+    [HttpGet("search")]
+    public async Task<ActionResult<PaginatedResult<JobProposal>>> SearchJobProposalsGet([FromQuery] JobProposalSearchDto searchDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            var result = await _jobProposalService.SearchJobProposalsAsync(searchDto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while searching job proposals.", error = ex.Message });
+        }
+    }
+
+    // GET: api/JobProposal/filter-options
+    [HttpGet("filter-options")]
+    public async Task<ActionResult<object>> GetFilterOptions()
+    {
+        try
+        {
+            var skills = await _context.Skills
+                .Select(s => new { Id = s.Id, Name = s.Name })
+                .OrderBy(s => s.Name)
+                .ToListAsync();
+
+            var talentCategories = await _context.TalentCategories
+                .Select(tc => new { Id = tc.Id, Name = tc.Name })
+                .OrderBy(tc => tc.Name)
+                .ToListAsync();
+
+            var customers = await _context.Customers
+                .Select(c => new { Id = c.Id, Name = c.Company })
+                .OrderBy(c => c.Name)
+                .ToListAsync();
+
+            return Ok(new
+            {
+                Skills = skills,
+                TalentCategories = talentCategories,
+                Customers = customers
+            });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = "An error occurred while fetching filter options.", error = ex.Message });
+        }
     }
 
     // GET: api/JobProposal/{id}/eligibletalents

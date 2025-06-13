@@ -14,6 +14,8 @@ using esii_2025_d2.Components.Account;
 
 using esii_2025_d2.Data;
 
+using static esii_2025_d2.Data.SeedData;
+
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 
@@ -110,6 +112,8 @@ builder.Services.AddScoped<esii_2025_d2.Services.ITalentService, esii_2025_d2.Se
 builder.Services.AddScoped<esii_2025_d2.Services.IExperienceService, esii_2025_d2.Services.ExperienceService>();
 builder.Services.AddScoped<esii_2025_d2.Services.IJobProposalService, esii_2025_d2.Services.JobProposalService>();
 builder.Services.AddScoped<esii_2025_d2.Services.IReportsService, esii_2025_d2.Services.ReportsService>();
+builder.Services.AddScoped<esii_2025_d2.Services.ISkillService, esii_2025_d2.Services.SkillService>();
+builder.Services.AddScoped<esii_2025_d2.Services.ITalentCategoryService, esii_2025_d2.Services.TalentCategoryService>();
 
 
 
@@ -214,6 +218,22 @@ using (var scope = app.Services.CreateScope())
 }
 
 // --->>> FIM DO CÓDIGO PARA CRIAR ROLES <<<---
+
+// --->>> SEED DATA <<<---
+// Seed test data for development
+if (app.Environment.IsDevelopment())
+{
+    try
+    {
+        await SeedData.SeedAsync(app.Services);
+    }
+    catch (Exception ex)
+    {
+        var logger = app.Services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
+}
+// --->>> FIM DO SEED DATA <<<---
 
 
 

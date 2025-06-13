@@ -20,6 +20,13 @@ namespace esii_2025_d2.Services
             return await _context.Customers.FirstOrDefaultAsync(c => c.UserId == userId);
         }
 
+        public async Task<List<Customer>> GetAllCustomersAsync()
+        {
+            return await _context.Customers
+                .OrderBy(c => c.Company)
+                .ToListAsync();
+        }
+
         public async Task<(bool Success, string? ErrorMessage)> SaveCustomerAsync(Customer customer)
         {
             if (string.IsNullOrWhiteSpace(customer.UserId))
