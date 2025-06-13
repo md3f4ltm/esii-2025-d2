@@ -122,6 +122,8 @@ public class TalentController : ControllerBase
         }
     }
 
+
+
     // GET: api/Talent/mytalents
     [HttpGet("mytalents")]
     [Authorize]

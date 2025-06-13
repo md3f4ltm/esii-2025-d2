@@ -634,62 +634,96 @@
         __builder.CloseElement(); // input
         __builder.CloseElement(); // col
 
-        // Country Filter
+        // Category Filter
         __builder.OpenElement(35, "div");
         __builder.AddAttribute(36, "class", "col-md-3");
         __builder.OpenElement(37, "label");
         __builder.AddAttribute(38, "class", "form-label");
-        __builder.AddContent(39, "Country");
+        __builder.AddContent(39, "Category");
         __builder.CloseElement(); // label
         __builder.OpenElement(40, "select");
         __builder.AddAttribute(41, "class", "form-select");
-        __builder.AddAttribute(42, "value", talentSearchDto.Country);
+        __builder.AddAttribute(42, "value", talentSearchDto.TalentCategoryId);
         __builder.AddAttribute(43, "onchange", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
-            talentSearchDto.Country = e.Value?.ToString();
+            if (int.TryParse(e.Value?.ToString(), out int categoryId))
+                talentSearchDto.TalentCategoryId = categoryId;
+            else
+                talentSearchDto.TalentCategoryId = null;
         }));
         __builder.OpenElement(44, "option");
         __builder.AddAttribute(45, "value", "");
-        __builder.AddContent(46, "All Countries");
+        __builder.AddContent(46, "All Categories");
         __builder.CloseElement(); // option
-        foreach (var country in availableCountries)
+        foreach (var category in availableTalentCategories)
         {
             __builder.OpenElement(47, "option");
-            __builder.AddAttribute(48, "value", country);
-            __builder.AddContent(49, country);
+            __builder.AddAttribute(48, "value", category.Id);
+            __builder.AddContent(49, category.Name);
             __builder.CloseElement(); // option
         }
         __builder.CloseElement(); // select
         __builder.CloseElement(); // col
 
-        // Search Button
+        // Country Filter
         __builder.OpenElement(50, "div");
-        __builder.AddAttribute(51, "class", "col-md-3 d-flex align-items-end");
-        __builder.OpenElement(52, "button");
-        __builder.AddAttribute(53, "class", "btn btn-primary btn-search w-100");
-        __builder.AddAttribute(54, "onclick", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, SearchTalentsAsync));
-        __builder.AddContent(55, "Search");
+        __builder.AddAttribute(51, "class", "col-md-3");
+        __builder.OpenElement(52, "label");
+        __builder.AddAttribute(53, "class", "form-label");
+        __builder.AddContent(54, "Country");
+        __builder.CloseElement(); // label
+        __builder.OpenElement(55, "select");
+        __builder.AddAttribute(56, "class", "form-select");
+        __builder.AddAttribute(57, "value", talentSearchDto.Country);
+        __builder.AddAttribute(58, "onchange", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+            talentSearchDto.Country = e.Value?.ToString();
+        }));
+        __builder.OpenElement(59, "option");
+        __builder.AddAttribute(60, "value", "");
+        __builder.AddContent(61, "All Countries");
+        __builder.CloseElement(); // option
+        foreach (var country in availableCountries)
+        {
+            __builder.OpenElement(62, "option");
+            __builder.AddAttribute(63, "value", country);
+            __builder.AddContent(64, country);
+            __builder.CloseElement(); // option
+        }
+        __builder.CloseElement(); // select
+        __builder.CloseElement(); // col
+
+        __builder.CloseElement(); // row
+
+        // Second Row - Search Button
+        __builder.OpenElement(65, "div");
+        __builder.AddAttribute(66, "class", "row mb-3");
+        __builder.OpenElement(67, "div");
+        __builder.AddAttribute(68, "class", "col-12 d-flex justify-content-center");
+        __builder.OpenElement(69, "button");
+        __builder.AddAttribute(70, "class", "btn btn-primary btn-search");
+        __builder.AddAttribute(71, "onclick", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.Web.MouseEventArgs>(this, SearchTalentsAsync));
+        __builder.AddContent(72, "🔍 Search Talents");
         __builder.CloseElement(); // button
         __builder.CloseElement(); // col
         __builder.CloseElement(); // row
 
         // Filters Row
-        __builder.OpenElement(56, "div");
-        __builder.AddAttribute(57, "class", "row");
+        __builder.OpenElement(73, "div");
+        __builder.AddAttribute(74, "class", "row");
 
         // Hourly Rate Range
-        __builder.OpenElement(58, "div");
-        __builder.AddAttribute(59, "class", "col-md-3");
-        __builder.OpenElement(60, "label");
-        __builder.AddAttribute(61, "class", "form-label");
-        __builder.AddContent(62, "Min Rate (€/h)");
+        __builder.OpenElement(75, "div");
+        __builder.AddAttribute(76, "class", "col-md-3");
+        __builder.OpenElement(77, "label");
+        __builder.AddAttribute(78, "class", "form-label");
+        __builder.AddContent(79, "Min Rate (€/h)");
         __builder.CloseElement(); // label
-        __builder.OpenElement(63, "input");
-        __builder.AddAttribute(64, "type", "number");
-        __builder.AddAttribute(65, "class", "form-control");
-        __builder.AddAttribute(66, "placeholder", "Min rate");
-        __builder.AddAttribute(67, "step", "0.01");
-        __builder.AddAttribute(68, "value", talentSearchDto.MinHourlyRate);
-        __builder.AddAttribute(69, "oninput", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+        __builder.OpenElement(80, "input");
+        __builder.AddAttribute(81, "type", "number");
+        __builder.AddAttribute(82, "class", "form-control");
+        __builder.AddAttribute(83, "placeholder", "Min rate");
+        __builder.AddAttribute(84, "step", "0.01");
+        __builder.AddAttribute(85, "value", talentSearchDto.MinHourlyRate);
+        __builder.AddAttribute(86, "oninput", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
             if (decimal.TryParse(e.Value?.ToString(), out decimal minRate))
                 talentSearchDto.MinHourlyRate = minRate;
             else
@@ -698,19 +732,19 @@
         __builder.CloseElement(); // input
         __builder.CloseElement(); // col
 
-        __builder.OpenElement(70, "div");
-        __builder.AddAttribute(71, "class", "col-md-3");
-        __builder.OpenElement(72, "label");
-        __builder.AddAttribute(73, "class", "form-label");
-        __builder.AddContent(74, "Max Rate (€/h)");
+        __builder.OpenElement(87, "div");
+        __builder.AddAttribute(88, "class", "col-md-3");
+        __builder.OpenElement(89, "label");
+        __builder.AddAttribute(90, "class", "form-label");
+        __builder.AddContent(91, "Max Rate (€/h)");
         __builder.CloseElement(); // label
-        __builder.OpenElement(75, "input");
-        __builder.AddAttribute(76, "type", "number");
-        __builder.AddAttribute(77, "class", "form-control");
-        __builder.AddAttribute(78, "placeholder", "Max rate");
-        __builder.AddAttribute(79, "step", "0.01");
-        __builder.AddAttribute(80, "value", talentSearchDto.MaxHourlyRate);
-        __builder.AddAttribute(81, "oninput", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+        __builder.OpenElement(92, "input");
+        __builder.AddAttribute(93, "type", "number");
+        __builder.AddAttribute(94, "class", "form-control");
+        __builder.AddAttribute(95, "placeholder", "Max rate");
+        __builder.AddAttribute(96, "step", "0.01");
+        __builder.AddAttribute(97, "value", talentSearchDto.MaxHourlyRate);
+        __builder.AddAttribute(98, "oninput", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
             if (decimal.TryParse(e.Value?.ToString(), out decimal maxRate))
                 talentSearchDto.MaxHourlyRate = maxRate;
             else
@@ -720,53 +754,57 @@
         __builder.CloseElement(); // col
 
         // Sort By
-        __builder.OpenElement(82, "div");
-        __builder.AddAttribute(83, "class", "col-md-3");
-        __builder.OpenElement(84, "label");
-        __builder.AddAttribute(85, "class", "form-label");
-        __builder.AddContent(86, "Sort By");
+        __builder.OpenElement(99, "div");
+        __builder.AddAttribute(100, "class", "col-md-3");
+        __builder.OpenElement(101, "label");
+        __builder.AddAttribute(102, "class", "form-label");
+        __builder.AddContent(103, "Sort By");
         __builder.CloseElement(); // label
-        __builder.OpenElement(87, "select");
-        __builder.AddAttribute(88, "class", "form-select");
-        __builder.AddAttribute(89, "value", talentSearchDto.SortBy);
-        __builder.AddAttribute(90, "onchange", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+        __builder.OpenElement(104, "select");
+        __builder.AddAttribute(105, "class", "form-select");
+        __builder.AddAttribute(106, "value", talentSearchDto.SortBy);
+        __builder.AddAttribute(107, "onchange", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
             talentSearchDto.SortBy = e.Value?.ToString();
         }));
-        __builder.OpenElement(91, "option");
-        __builder.AddAttribute(92, "value", "name");
-        __builder.AddContent(93, "Name");
+        __builder.OpenElement(108, "option");
+        __builder.AddAttribute(109, "value", "name");
+        __builder.AddContent(110, "Name");
         __builder.CloseElement(); // option
-        __builder.OpenElement(94, "option");
-        __builder.AddAttribute(95, "value", "country");
-        __builder.AddContent(96, "Country");
+        __builder.OpenElement(111, "option");
+        __builder.AddAttribute(112, "value", "country");
+        __builder.AddContent(113, "Country");
         __builder.CloseElement(); // option
-        __builder.OpenElement(97, "option");
-        __builder.AddAttribute(98, "value", "hourlyrate");
-        __builder.AddContent(99, "Hourly Rate");
+        __builder.OpenElement(114, "option");
+        __builder.AddAttribute(115, "value", "hourlyrate");
+        __builder.AddContent(116, "Hourly Rate");
+        __builder.CloseElement(); // option
+        __builder.OpenElement(117, "option");
+        __builder.AddAttribute(118, "value", "category");
+        __builder.AddContent(119, "Category");
         __builder.CloseElement(); // option
         __builder.CloseElement(); // select
         __builder.CloseElement(); // col
 
         // Sort Direction
-        __builder.OpenElement(100, "div");
-        __builder.AddAttribute(101, "class", "col-md-3");
-        __builder.OpenElement(102, "label");
-        __builder.AddAttribute(103, "class", "form-label");
-        __builder.AddContent(104, "Direction");
+        __builder.OpenElement(120, "div");
+        __builder.AddAttribute(121, "class", "col-md-3");
+        __builder.OpenElement(122, "label");
+        __builder.AddAttribute(123, "class", "form-label");
+        __builder.AddContent(124, "Direction");
         __builder.CloseElement(); // label
-        __builder.OpenElement(105, "select");
-        __builder.AddAttribute(106, "class", "form-select");
-        __builder.AddAttribute(107, "value", talentSearchDto.SortDirection);
-        __builder.AddAttribute(108, "onchange", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
+        __builder.OpenElement(125, "select");
+        __builder.AddAttribute(126, "class", "form-select");
+        __builder.AddAttribute(127, "value", talentSearchDto.SortDirection);
+        __builder.AddAttribute(128, "onchange", Microsoft.AspNetCore.Components.EventCallback.Factory.Create<Microsoft.AspNetCore.Components.ChangeEventArgs>(this, async (e) => {
             talentSearchDto.SortDirection = e.Value?.ToString() ?? "asc";
         }));
-        __builder.OpenElement(109, "option");
-        __builder.AddAttribute(110, "value", "asc");
-        __builder.AddContent(111, "Ascending");
+        __builder.OpenElement(129, "option");
+        __builder.AddAttribute(130, "value", "asc");
+        __builder.AddContent(131, "Ascending");
         __builder.CloseElement(); // option
-        __builder.OpenElement(112, "option");
-        __builder.AddAttribute(113, "value", "desc");
-        __builder.AddContent(114, "Descending");
+        __builder.OpenElement(132, "option");
+        __builder.AddAttribute(133, "value", "desc");
+        __builder.AddContent(134, "Descending");
         __builder.CloseElement(); // option
         __builder.CloseElement(); // select
         __builder.CloseElement(); // col
@@ -845,15 +883,19 @@
                 __builder.CloseElement(); // small
                 __builder.CloseElement(); // p
 
+                __builder.OpenElement(151, "p");
+                __builder.AddAttribute(152, "class", "text-muted mb-2");
+                __builder.OpenElement(153, "small");
                 if (talent.TalentCategory != null)
                 {
-                    __builder.OpenElement(151, "p");
-                    __builder.AddAttribute(152, "class", "text-muted mb-2");
-                    __builder.OpenElement(153, "small");
                     __builder.AddContent(154, $"🏷️ {talent.TalentCategory.Name}");
-                    __builder.CloseElement(); // small
-                    __builder.CloseElement(); // p
                 }
+                else
+                {
+                    __builder.AddContent(154, $"🏷️ Category ID: {talent.TalentCategoryId}");
+                }
+                __builder.CloseElement(); // small
+                __builder.CloseElement(); // p
 
                 __builder.OpenElement(155, "p");
                 __builder.AddAttribute(156, "class", "h5 text-primary mb-0");

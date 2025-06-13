@@ -33,7 +33,9 @@ namespace esii_2025_d2.Services
 
         public async Task<List<Talent>> GetAllTalentsAsync()
         {
-            return await _context.Talents.ToListAsync();
+            return await _context.Talents
+                .Include(t => t.TalentCategory)
+                .ToListAsync();
         }
 
         public async Task<PaginatedResult<Talent>> SearchTalentsAsync(TalentSearchDto searchDto)
