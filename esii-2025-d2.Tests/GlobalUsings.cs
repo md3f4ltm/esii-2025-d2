@@ -1,0 +1,10 @@
+global using NUnit.Framework;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
+global using esii_2025_d2.Models;
+global using esii_2025_d2.Data;
+global using esii_2025_d2.Controllers;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Threading.Tasks;
