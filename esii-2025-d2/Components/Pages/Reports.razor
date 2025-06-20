@@ -1,0 +1,199 @@
+@page "/reports"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
+@using System.Globalization
+@using esii_2025_d2.Services
+@using esii_2025_d2.Models
+@inject IReportsService ReportsService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime JSRuntime
+
+@rendermode InteractiveServer
+<h3>Reports</h3>
+@if (!string.IsNullOrEmpty(statusMessage))
+{
+    <div class="@statusClass">
+        @statusMessage
+        <button type="button" class="btn-close float-end" @onclick="() => statusMessage = string.Empty"></button>
+    </div>
+}
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h4>Monthly Average Price Reports</h4>
+                <div>
+                    <button class="btn btn-primary" @onclick="LoadReports">
+                        <i class="fas fa-sync-alt"></i> Refresh Data
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-5">
+                    <h5>Average Monthly Rate by Talent Category and Country (176h)</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Country</th>
+                                    <th>Average Monthly Rate (176h)</th>
+                                    <th>Number of Talents</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (categoryCountryReport == null)
+                                {
+                                    <tr>
+                                        <td colspan="4">Loading data...</td>
+                                    </tr>
+                                }
+                                else if (!categoryCountryReport.Any())
+                                {
+                                    <tr>
+                                        <td colspan="4">No data available</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var item in categoryCountryReport)
+                                    {
+                                        <tr>
+                                            <td>@item.CategoryName</td>
+                                            <td>@item.Country</td>
+                                            <td>@item.AverageMonthlyRate.ToString("C", CultureInfo.CurrentCulture)</td>
+                                            <td>@item.TalentCount</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <h5>Average Monthly Rate by Skill (176h)</h5>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Skill</th>
+                                    <th>Professional Area</th>
+                                    <th>Average Monthly Rate (176h)</th>
+                                    <th>Number of Talents</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (skillReport == null)
+                                {
+                                    <tr>
+                                        <td colspan="4">Loading data...</td>
+                                    </tr>
+                                }
+                                else if (!skillReport.Any())
+                                {
+                                    <tr>
+                                        <td colspan="4">No data available</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var item in skillReport)
+                                    {
+                                        <tr>
+                                            <td>@item.SkillName</td>
+                                            <td>@item.Area</td>
+                                            <td>@item.AverageMonthlyRate.ToString("C", CultureInfo.CurrentCulture)</td>
+                                            <td>@item.TalentCount</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private const int STANDARD_MONTHLY_HOURS = 176;
+
+    private List<CategoryCountryReport>? categoryCountryReport;
+    private List<SkillReport>? skillReport;
+
+    private string statusMessage = string.Empty;
+    private string statusClass = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadReports();
+    }
+
+    private async Task LoadReports()
+    {
+        try
+        {
+            // Load reports
+            await LoadCategoryCountryReport();
+            await LoadSkillReport();
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to load reports: {ex.Message}");
+        }
+    }
+
+    private async Task LoadCategoryCountryReport()
+    {
+        try
+        {
+            categoryCountryReport = await ReportsService.GetCategoryCountryReportAsync();
+
+            if (categoryCountryReport == null)
+            {
+                categoryCountryReport = new List<CategoryCountryReport>();
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to load category/country report: {ex.Message}");
+            categoryCountryReport = new List<CategoryCountryReport>();
+        }
+    }
+
+    private async Task LoadSkillReport()
+    {
+        try
+        {
+            skillReport = await ReportsService.GetSkillReportAsync();
+
+            if (skillReport == null)
+            {
+                skillReport = new List<SkillReport>();
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to load skill report: {ex.Message}");
+            skillReport = new List<SkillReport>();
+        }
+    }
+
+    private void ShowSuccessMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-success";
+    }
+
+    private void ShowErrorMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-danger";
+    }
+}

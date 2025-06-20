@@ -1,0 +1,409 @@
+@page "/talentskills"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
+@using esii_2025_d2.Services
+@using esii_2025_d2.Models
+@using esii_2025_d2.DTOs
+@inject ICurrentUserTalentService CurrentUserTalentService
+@inject ITalentSkillService TalentSkillService
+@inject ISkillService SkillService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime JSRuntime
+@attribute [Authorize(Roles = "Talent")]
+
+@rendermode InteractiveServer
+<h3>Manage Your Skills</h3>
+@if (!string.IsNullOrEmpty(statusMessage))
+{
+    <div class="@statusClass">
+        @statusMessage
+        <button type="button" class="btn-close float-end" @onclick="() => statusMessage = string.Empty"></button>
+    </div>
+}
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Your Talents</h5>
+            </div>
+            <div class="card-body">
+                @if (talents == null)
+                {
+                    <p>Loading talents...</p>
+                }
+                else if (!talents.Any())
+                {
+                    <p>You haven't created any talent profiles yet.</p>
+                    <a href="/talents" class="btn btn-primary">Create Talent Profile</a>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <label>Select a Talent Profile</label>
+                        <select class="form-select" @onchange="OnTalentSelectionChanged">
+                            <option value="0">-- Select Talent Profile --</option>
+                            @foreach (var talent in talents)
+                            {
+                                <option value="@talent.Id">@talent.Name</option>
+                            }
+                        </select>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (selectedTalentId > 0)
+{
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5>Current Skills</h5>
+                    <button class="btn btn-primary btn-sm" @onclick="ShowAddModal">Add Skill</button>
+                </div>
+                <div class="card-body">
+                    @if (talentSkills == null)
+                    {
+                        <p>Loading skills...</p>
+                    }
+                    else if (!talentSkills.Any())
+                    {
+                        <p>No skills associated with this talent profile yet.</p>
+                    }
+                    else
+                    {
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Skill Name</th>
+                                    <th>Area</th>
+                                    <th>Years of Experience</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var talentSkill in talentSkills)
+                                {
+                                    <tr>
+                                        <td>@talentSkill.Skill?.Name</td>
+                                        <td>@talentSkill.Skill?.Area</td>
+                                        <td>@talentSkill.YearsOfExperience</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-warning"
+                                                @onclick="() => ShowEditModal(talentSkill)">Edit</button>
+                                            <button class="btn btn-sm btn-danger"
+                                                @onclick="() => ShowDeleteConfirm(talentSkill)">Remove</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Add/Edit Modal -->
+@if (showModal)
+{
+    <div class="modal enhanced-modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@modalTitle</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="editingTalentSkill" OnValidSubmit="SaveTalentSkill">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="mb-3">
+                            <label>Skill</label>
+                            @if (isEditing)
+                            {
+                                <input type="text" class="form-control" value="@editingTalentSkill.Skill?.Name" disabled />
+                            }
+                            else
+                            {
+                                <InputSelect class="form-select" @bind-Value="editingTalentSkill.SkillId">
+                                    <option value="0">-- Select Skill --</option>
+                                    @if (availableSkills != null)
+                                    {
+                                        @foreach (var skill in availableSkills)
+                                        {
+                                            <option value="@skill.Id">@skill.Name (@skill.Area)</option>
+                                        }
+                                    }
+                                </InputSelect>
+                                <ValidationMessage For="@(() => editingTalentSkill.SkillId)" />
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Years of Experience</label>
+                            <InputNumber class="form-control" @bind-Value="editingTalentSkill.YearsOfExperience" />
+                            <ValidationMessage For="@(() => editingTalentSkill.YearsOfExperience)" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary ms-2" @onclick="CloseModal">Cancel</button>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Delete Confirmation Modal -->
+@if (showDeleteConfirm)
+{
+    <div class="modal enhanced-modal modal-sm show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Confirm Remove
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="CancelDelete"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to remove the skill "@deletingTalentSkill?.Skill?.Name" from this talent
+                        profile?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
+                    <button type="button" class="btn btn-danger" @onclick="ConfirmDelete">Remove</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<esii_2025_d2.Models.Talent>? talents;
+    private List<esii_2025_d2.DTOs.TalentSkillDto>? talentSkills;
+    private List<esii_2025_d2.Models.Skill>? availableSkills;
+    private int selectedTalentId = 0;
+    private esii_2025_d2.DTOs.TalentSkillDto editingTalentSkill = new();
+    private esii_2025_d2.DTOs.TalentSkillDto? deletingTalentSkill;
+    private bool showModal = false;
+    private bool showDeleteConfirm = false;
+    private bool isEditing = false;
+    private string modalTitle = string.Empty;
+    private string statusMessage = string.Empty;
+    private string statusClass = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadUserTalents();
+        await LoadSkills();
+    }
+
+    private async Task LoadUserTalents()
+    {
+        try
+        {
+            talents = await CurrentUserTalentService.GetMyTalentsAsync();
+            if (talents == null)
+            {
+                talents = new List<esii_2025_d2.Models.Talent>();
+                ShowErrorMessage("No talents data received.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to load talents: {ex.Message}");
+            talents = new List<esii_2025_d2.Models.Talent>();
+        }
+    }
+
+    private async Task LoadSkills()
+    {
+        try
+        {
+            availableSkills = await SkillService.GetAllSkillsAsync();
+            if (availableSkills == null)
+            {
+                availableSkills = new List<esii_2025_d2.Models.Skill>();
+                ShowErrorMessage("No skills data received.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to load skills: {ex.Message}");
+            availableSkills = new List<esii_2025_d2.Models.Skill>();
+        }
+    }
+
+    private async Task OnTalentSelectionChanged(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out int talentId))
+        {
+            selectedTalentId = talentId;
+            if (selectedTalentId > 0)
+            {
+                await LoadTalentSkills();
+            }
+            else
+            {
+                talentSkills = new List<TalentSkillDto>();
+            }
+        }
+    }
+
+    private async Task LoadTalentSkills()
+    {
+        if (selectedTalentId <= 0) return;
+
+        try
+        {
+            talentSkills = await TalentSkillService.GetTalentSkillsAsync(selectedTalentId);
+            if (talentSkills == null)
+            {
+                talentSkills = new List<esii_2025_d2.DTOs.TalentSkillDto>();
+                ShowErrorMessage("No talent skills data received.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to load talent skills: {ex.Message}");
+            talentSkills = new List<esii_2025_d2.DTOs.TalentSkillDto>();
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        if (availableSkills == null || !availableSkills.Any())
+        {
+            ShowErrorMessage("No skills available to add. Please create skills first.");
+            return;
+        }
+
+        // Filter out skills already associated with this talent
+        var existingSkillIds = talentSkills?.Select(ts => ts.SkillId).ToList() ?? new List<int>();
+        availableSkills = availableSkills.Where(s => !existingSkillIds.Contains(s.Id)).ToList();
+
+        if (!availableSkills.Any())
+        {
+            ShowErrorMessage("All available skills have already been added to this talent profile.");
+            return;
+        }
+
+        editingTalentSkill = new esii_2025_d2.DTOs.TalentSkillDto
+        {
+            TalentId = selectedTalentId,
+            SkillId = 0,
+            YearsOfExperience = 1 // Default value
+        };
+        modalTitle = "Add Skill to Talent Profile";
+        isEditing = false;
+        showModal = true;
+    }
+
+    private void ShowEditModal(esii_2025_d2.DTOs.TalentSkillDto talentSkill)
+    {
+        editingTalentSkill = new esii_2025_d2.DTOs.TalentSkillDto
+        {
+            TalentId = talentSkill.TalentId,
+            SkillId = talentSkill.SkillId,
+            YearsOfExperience = talentSkill.YearsOfExperience,
+            Skill = talentSkill.Skill
+        };
+        modalTitle = "Edit Years of Experience";
+        isEditing = true;
+        showModal = true;
+    }
+
+    private void ShowDeleteConfirm(esii_2025_d2.DTOs.TalentSkillDto talentSkill)
+    {
+        deletingTalentSkill = talentSkill;
+        showDeleteConfirm = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private void CancelDelete()
+    {
+        showDeleteConfirm = false;
+        deletingTalentSkill = null;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (deletingTalentSkill != null)
+        {
+            await DeleteTalentSkill(deletingTalentSkill);
+            showDeleteConfirm = false;
+            deletingTalentSkill = null;
+        }
+    }
+
+    private async Task SaveTalentSkill()
+    {
+        try
+        {
+            bool isEditing = editingTalentSkill.TalentId > 0 && editingTalentSkill.SkillId > 0;
+
+            var talentSkillDto = editingTalentSkill;
+
+            if (isEditing)
+            {
+                // Update existing talent skill
+                await TalentSkillService.UpdateTalentSkillAsync(talentSkillDto);
+            }
+            else
+            {
+                // Create new talent skill
+                await TalentSkillService.CreateTalentSkillAsync(talentSkillDto);
+            }
+
+            await LoadTalentSkills();
+            CloseModal();
+            ShowSuccessMessage(isEditing ? "Skill updated successfully!" : "Skill added successfully!");
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"An error occurred: {ex.Message}");
+        }
+    }
+
+    private async Task DeleteTalentSkill(esii_2025_d2.DTOs.TalentSkillDto talentSkill)
+    {
+        try
+        {
+            await TalentSkillService.DeleteTalentSkillAsync(talentSkill.TalentId, talentSkill.SkillId);
+            await LoadTalentSkills();
+            ShowSuccessMessage("Skill removed successfully!");
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"An error occurred: {ex.Message}");
+        }
+    }
+
+    private void ShowSuccessMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-success";
+    }
+
+    private void ShowErrorMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-danger";
+    }
+
+
+}

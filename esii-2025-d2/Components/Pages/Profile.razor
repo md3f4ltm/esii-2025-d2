@@ -1,0 +1,189 @@
+@page "/profile"
+@using esii_2025_d2.Controllers
+@using esii_2025_d2.Data
+@using esii_2025_d2.Models
+@using Microsoft.AspNetCore.Identity
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
+@rendermode InteractiveServer
+
+<PageTitle>User Profile</PageTitle>
+
+<h3>User Profile</h3>
+
+@if (user == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h4>
+        Name: 
+        <input type="text" @bind="user.Name" placeholder="Enter your name" />
+    </h4>
+
+    @if (user != null)
+    {
+        <h4>Skills:</h4>
+        <ul>
+            @foreach (var skill in user.Skills)
+            {
+                <li>@skill.Name</li>
+            }
+        </ul>
+
+        <button @onclick="ShowAddSkillDropdowns">Add Skill</button>
+    }
+    else
+    {
+        <p>You are a customer. Skills are only available for talents.</p>
+    }
+
+    <button @onclick="SaveProfile" class="save-button">Save</button>
+}
+
+@if (showSkillForm)
+{
+    <div>
+        <label for="area">Select Area:</label>
+        <select id="area" value="@selectedArea" @onchange="OnAreaChanged" class="dropdown">
+            <option value="">-- Select Area --</option>
+            @foreach (var area in distinctAreas)
+            {
+                <option value="@area">@area</option>
+            }
+        </select>
+
+        @if (filteredSkills != null && filteredSkills.Count > 0)
+        {
+            <label for="nome">Select Skill Name:</label>
+            <select id="nome" @bind="selectedSkillNome" class="dropdown">
+                <option value="">-- Select Skill Name --</option>
+                @foreach (var skill in filteredSkills)
+                {
+                    <option value="@skill.Name">@skill.Name</option>
+                }
+            </select>
+
+            <button @onclick="AddSkill" class="add-skill-button">Add Selected Skill</button>
+        }
+    </div>
+}
+
+@code {
+    private ApplicationUser? user;
+    private List<Skill> skills = new List<Skill>();
+    private List<Skill> filteredSkills = new List<Skill>();
+    private List<string> distinctAreas = new List<string>();
+    private string selectedArea = string.Empty;
+    private string selectedSkillNome = string.Empty;
+    private bool showSkillForm;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Get the authentication state
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        // Get the current user from the authentication state
+        var currentUser = authState.User;
+
+        // If the user is authenticated, get the user details
+        if (currentUser.Identity.IsAuthenticated)
+        {
+            user = await UserManager.GetUserAsync(currentUser); // Get user based on currentUser
+        }
+
+        // Fetch the list of skills and distinct areas
+        skills = await Http.GetFromJsonAsync<List<Skill>>("api/skill");
+        if (skills != null)
+        {
+            distinctAreas = skills.Select(s => s.Area).Distinct().ToList();
+        }
+    }
+
+    private void ShowAddSkillDropdowns()
+    {
+        showSkillForm = true;
+    }
+
+    private void OnAreaChanged(ChangeEventArgs e)
+    {
+        selectedArea = e.Value?.ToString() ?? string.Empty;
+
+        if (!string.IsNullOrEmpty(selectedArea))
+        {
+            filteredSkills = skills.Where(s => s.Area == selectedArea).ToList();
+        }
+        else
+        {
+            filteredSkills.Clear();
+        }
+
+        selectedSkillNome = string.Empty;
+    }
+
+    private async Task AddSkill()
+    {
+        if (!string.IsNullOrEmpty(selectedSkillNome))
+        {
+            var selectedSkill = skills.FirstOrDefault(s => s.Name == selectedSkillNome);
+            if (selectedSkill != null)
+            {
+                try
+                {
+                    // Associate the selected skill with the current talent user
+                    var response = await Http.PostAsJsonAsync($"api/user/{user.Id}/skills", selectedSkill);
+
+                    // Log the status code and response content
+                    Console.WriteLine($"Response Status Code: {response.StatusCode}");
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Response Content: {responseContent}");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Update the user's skills after adding the new skill
+                        user.Skills.Add(selectedSkill);
+                        showSkillForm = false;
+                        selectedArea = string.Empty;
+                        selectedSkillNome = string.Empty;
+                    }
+                    else
+                    {
+                        Console.Error.WriteLine("Failed to add the skill.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine($"An error occurred: {ex.Message}");
+                }
+            }
+        }
+    }
+
+    private async Task SaveProfile()
+    {
+        try
+        {
+            var response = await Http.PutAsJsonAsync($"api/user/{user.Id}", new UserInfoDto
+            {
+                Id = user.Id,
+                Name = user.Name // Sending the updated name
+            });
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Name updated successfully!");
+            }
+            else
+            {
+                Console.Error.WriteLine("Failed to update the name.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"An error occurred while saving the profile: {ex.Message}");
+        }
+    }
+}
+

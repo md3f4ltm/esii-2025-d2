@@ -1,0 +1,259 @@
+﻿@page "/teste"
+@using esii_2025_d2.Models
+@inject HttpClient Http
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Talent")]
+
+<PageTitle>Manage Skills</PageTitle>
+
+<h3>Available Skills</h3>
+
+@if (skills == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ul>
+        @foreach (var skill in skills)
+        {
+            <li>@skill.Name - @skill.Area</li>
+        }
+    </ul>
+}
+
+<h3>Create a Skill</h3>
+<button @onclick="ShowCreateSkillForm">Create Skill</button>
+
+@if (showCreateSkillForm)
+{
+    <div>
+        <label for="create-area">Select Area:</label>
+        <select id="create-area" value="@selectedCreateArea" @onchange="OnCreateAreaChanged" class="dropdown">
+            <option value="">-- Select Area --</option>
+            @foreach (var area in distinctAreas)
+            {
+                <option value="@area">@area</option>
+            }
+        </select>
+
+        <label for="create-name">Skill Name:</label>
+        <input id="create-name" @bind="newSkillName" type="text" placeholder="Enter skill name" class="input-text" />
+
+        <button @onclick="CreateSkill" class="add-skill-button">Create Skill</button>
+    </div>
+}
+
+<h3>Delete a Skill</h3>
+<button @onclick="ShowDeleteSkillForm">Delete Skill</button>
+
+@if (showDeleteSkillForm)
+{
+    <div>
+        <label for="delete-area">Select Area:</label>
+        <select id="delete-area" value="@selectedDeleteArea" @onchange="OnDeleteAreaChanged" class="dropdown">
+            <option value="">-- Select Area --</option>
+            @foreach (var area in distinctAreas)
+            {
+                <option value="@area">@area</option>
+            }
+        </select>
+
+        @if (filteredSkills != null && filteredSkills.Count > 0)
+        {
+            <label for="delete-skill">Select Skill:</label>
+            <select id="delete-skill" @bind="selectedDeleteSkillName" class="dropdown">
+                <option value="">-- Select Skill --</option>
+                @foreach (var skill in filteredSkills)
+                {
+                    <option value="@skill.Name">@skill.Name</option>
+                }
+            </select>
+
+            <button @onclick="DeleteSkill" class="delete-skill-button">Delete Selected Skill</button>
+        }
+    </div>
+}
+
+@code {
+    private List<Skill> skills = new List<Skill>();
+    private List<Skill> filteredSkills = new List<Skill>();
+    private List<string> distinctAreas = new List<string>();
+    private string selectedCreateArea = string.Empty;
+    private string selectedDeleteArea = string.Empty;
+    private string newSkillName = string.Empty;
+    private string selectedDeleteSkillName = string.Empty;
+    private bool showCreateSkillForm = false;
+    private bool showDeleteSkillForm = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        skills = await Http.GetFromJsonAsync<List<Skill>>("api/skill");
+
+        if (skills != null)
+        {
+            // Extract distinct areas from skills
+            distinctAreas = skills.Select(s => s.Area).Distinct().ToList();
+        }
+    }
+
+    private void ShowCreateSkillForm()
+    {
+        showCreateSkillForm = true;
+        showDeleteSkillForm = false; // Hide delete form if creating
+    }
+
+    private void ShowDeleteSkillForm()
+    {
+        showDeleteSkillForm = true;
+        showCreateSkillForm = false; // Hide create form if deleting
+    }
+
+    private void OnCreateAreaChanged(ChangeEventArgs e)
+    {
+        selectedCreateArea = e.Value?.ToString() ?? string.Empty;
+    }
+
+    private void OnDeleteAreaChanged(ChangeEventArgs e)
+    {
+        selectedDeleteArea = e.Value?.ToString() ?? string.Empty;
+
+        // Filter skills based on selected area for deletion
+        if (!string.IsNullOrEmpty(selectedDeleteArea))
+        {
+            filteredSkills = skills.Where(s => s.Area == selectedDeleteArea).ToList();
+        }
+        else
+        {
+            filteredSkills.Clear(); // Clear filteredSkills if no area is selected
+        }
+
+        selectedDeleteSkillName = string.Empty; // Reset selected skill name
+    }
+
+    private async Task CreateSkill()
+    {
+        Console.WriteLine($"CreateSkill method triggered with: Name = {newSkillName}, Area = {selectedCreateArea}");
+
+        if (!string.IsNullOrEmpty(newSkillName) && !string.IsNullOrEmpty(selectedCreateArea))
+        {
+            var newSkill = new Skill
+            {
+                Name = newSkillName,
+                Area = selectedCreateArea
+            };
+
+            try
+            {
+                var response = await Http.PostAsJsonAsync("api/skill", newSkill);
+
+                Console.WriteLine($"HTTP Status Code: {response.StatusCode}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Skill successfully created.");
+                    skills = await Http.GetFromJsonAsync<List<Skill>>("api/skill");
+                    distinctAreas = skills.Select(s => s.Area).Distinct().ToList();
+                    showCreateSkillForm = false;
+                    selectedCreateArea = string.Empty;
+                    newSkillName = string.Empty;
+                }
+                else
+                {
+                    Console.Error.WriteLine($"Failed to create the skill. Status Code: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+        else
+        {
+            Console.Error.WriteLine("New skill name or area is missing.");
+        }
+    }
+
+
+
+    private async Task DeleteSkill()
+    {
+        if (!string.IsNullOrEmpty(selectedDeleteSkillName))
+        {
+            var skillToDelete = skills.FirstOrDefault(s => s.Name == selectedDeleteSkillName && s.Area == selectedDeleteArea);
+
+            if (skillToDelete != null)
+            {
+                try
+                {
+                    var response = await Http.DeleteAsync($"api/skill/{skillToDelete.Id}");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Reload skills after deletion
+                        skills = await Http.GetFromJsonAsync<List<Skill>>("api/skill");
+                        distinctAreas = skills.Select(s => s.Area).Distinct().ToList();
+                        showDeleteSkillForm = false;
+                        selectedDeleteArea = string.Empty;
+                        selectedDeleteSkillName = string.Empty;
+                    }
+                    else
+                    {
+                        Console.Error.WriteLine("Failed to delete the skill.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine($"An error occurred: {ex.Message}");
+                }
+            }
+        }
+    }
+}
+
+<style>
+    .dropdown {
+        width: 200px;
+        padding: 5px;
+        margin: 5px 0;
+        font-size: 1rem;
+        display: inline-block;
+    }
+
+    .input-text {
+        width: 200px;
+        padding: 5px;
+        margin: 5px 0;
+        font-size: 1rem;
+    }
+
+    .add-skill-button, .delete-skill-button {
+        width: 200px;
+        padding: 8px 15px;
+        font-size: 1rem;
+        margin-top: 10px;
+        display: inline-block;
+    }
+
+    .delete-skill-button {
+        background-color: red;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .delete-skill-button:hover {
+        background-color: darkred;
+    }
+
+    label {
+        font-size: 1.1rem;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 8px 15px;
+        font-size: 1rem;
+    }
+</style>

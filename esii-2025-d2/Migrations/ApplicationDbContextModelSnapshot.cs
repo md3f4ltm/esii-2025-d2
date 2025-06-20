@@ -333,6 +333,9 @@ namespace esii2025d2.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("text");
+
                     b.Property<string>("Area")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
@@ -343,6 +346,8 @@ namespace esii2025d2.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Skills");
                 });
@@ -368,12 +373,15 @@ namespace esii2025d2.Migrations
                     b.Property<decimal>("HourlyRate")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("character varying(150)");
 
-                    b.Property<int?>("TalentCategoryId")
+                    b.Property<int>("TalentCategoryId")
                         .HasColumnType("integer");
 
                     b.Property<string>("UserId")
@@ -521,11 +529,20 @@ namespace esii2025d2.Migrations
                     b.Navigation("TalentCategory");
                 });
 
+            modelBuilder.Entity("esii_2025_d2.Models.Skill", b =>
+                {
+                    b.HasOne("esii_2025_d2.Data.ApplicationUser", null)
+                        .WithMany("Skills")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
             modelBuilder.Entity("esii_2025_d2.Models.Talent", b =>
                 {
                     b.HasOne("esii_2025_d2.Models.TalentCategory", "TalentCategory")
                         .WithMany("Talents")
-                        .HasForeignKey("TalentCategoryId");
+                        .HasForeignKey("TalentCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("esii_2025_d2.Data.ApplicationUser", "User")
                         .WithMany("Talents")
@@ -560,6 +577,8 @@ namespace esii2025d2.Migrations
             modelBuilder.Entity("esii_2025_d2.Data.ApplicationUser", b =>
                 {
                     b.Navigation("Customers");
+
+                    b.Navigation("Skills");
 
                     b.Navigation("Talents");
                 });

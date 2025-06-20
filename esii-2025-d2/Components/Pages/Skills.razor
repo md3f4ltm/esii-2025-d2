@@ -1,0 +1,339 @@
+@page "/skills"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
+@inject HttpClient Http
+@inject AuthenticationStateProvider AuthStateProvider
+@inject IJSRuntime JSRuntime
+
+@rendermode InteractiveServer
+
+<h3>Skills Management</h3>
+@if (!string.IsNullOrEmpty(statusMessage))
+{
+    <div class="@statusClass">
+        @statusMessage
+        <button type="button" class="btn-close float-end" @onclick="() => statusMessage = string.Empty"></button>
+    </div>
+}
+
+<button class="btn btn-primary mb-3" @onclick="ShowAddModal">Create New Skill</button>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Professional Area</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (skills == null)
+        {
+            <tr>
+                <td colspan="3">Loading...</td>
+            </tr>
+        }
+        else if (!skills.Any())
+        {
+            <tr>
+                <td colspan="3">No skills found.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var skill in skills)
+            {
+                <tr>
+                    <td>@skill.Name</td>
+                    <td>@skill.Area</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" @onclick="() => ShowEditModal(skill)">Edit</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => ShowDeleteConfirm(skill)">Delete</button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<!-- Edit/Add Modal -->
+@if (showModal)
+{
+    <div class="modal enhanced-modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@((editingSkill.Id == 0) ? "Add New Skill" : "Edit Skill")</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                </div>
+                <EditForm Model="editingSkill" OnValidSubmit="SaveSkill">
+                    <DataAnnotationsValidator />
+                    <div class="modal-body">
+                        <ValidationSummary class="alert alert-danger" />
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-tag me-2"></i>Skill Name *
+                            </label>
+                            <InputText class="form-control" @bind-Value="editingSkill.Name"
+                                placeholder="Enter skill name" />
+                            <ValidationMessage For="@(() => editingSkill.Name)" class="text-danger" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-briefcase me-2"></i>Professional Area *
+                            </label>
+                            <InputSelect class="form-control" @bind-Value="editingSkill.Area">
+                                <option value="">-- Select Professional Area --</option>
+                                @foreach (var area in professionalAreas)
+                                {
+                                    <option value="@area">@area</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => editingSkill.Area)" class="text-danger" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CloseModal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>@((editingSkill.Id == 0) ? "Add Skill" : "Update Skill")
+                        </button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Delete Confirmation Modal -->
+@if (showDeleteConfirm)
+{
+    <div class="modal enhanced-modal modal-sm show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="CancelDelete"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the skill "<strong>@deletingSkill?.Name</strong>"?</p>
+                    @if (isSkillInUse)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            This skill cannot be deleted because it is currently associated with one or more talent profiles.
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CancelDelete">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger" @onclick="ConfirmDelete" disabled="@isSkillInUse">
+                        <i class="fas fa-trash me-2"></i>Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Skill>? skills;
+    private Skill editingSkill = new();
+    private bool showModal = false;
+    private string statusMessage = string.Empty;
+    private string statusClass = string.Empty;
+    private bool showDeleteConfirm = false;
+    private Skill? deletingSkill = null;
+    private bool isSkillInUse = false;
+
+    // Predefined list of professional areas
+    private List<string> professionalAreas = new List<string>
+{
+"Developer",
+"Design",
+"Product Manager",
+"Project Manager",
+"Marketing",
+"Sales",
+"Human Resources",
+"Finance",
+"Legal",
+"Customer Support",
+"Data Science",
+"DevOps",
+"Quality Assurance"
+};
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSkills();
+    }
+
+    private async Task LoadSkills()
+    {
+        try
+        {
+            skills = await Http.GetFromJsonAsync<List<Skill>>("api/skill");
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to load skills: {ex.Message}");
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        editingSkill = new Skill();
+        showModal = true;
+    }
+
+    private void ShowEditModal(Skill skill)
+    {
+        editingSkill = new Skill
+        {
+            Id = skill.Id,
+            Name = skill.Name,
+            Area = skill.Area
+        };
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task SaveSkill()
+    {
+        try
+        {
+            if (editingSkill.Id == 0)
+            {
+                // Create new skill
+                var response = await Http.PostAsJsonAsync("api/skill", editingSkill);
+                if (response.IsSuccessStatusCode)
+                {
+                    await LoadSkills();
+                    CloseModal();
+                    ShowSuccessMessage("Skill created successfully!");
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    ShowErrorMessage($"Error creating skill: {error}");
+                }
+            }
+            else
+            {
+                // Update existing skill
+                var response = await Http.PutAsJsonAsync($"api/skill/{editingSkill.Id}", editingSkill);
+                if (response.IsSuccessStatusCode)
+                {
+                    await LoadSkills();
+                    CloseModal();
+                    ShowSuccessMessage("Skill updated successfully!");
+                }
+                else
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    ShowErrorMessage($"Error updating skill: {error}");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"An error occurred: {ex.Message}");
+        }
+    }
+
+    private async Task ShowDeleteConfirm(Skill skill)
+    {
+        deletingSkill = skill;
+
+        // Check if skill is in use by any talent
+        try
+        {
+            var response = await Http.GetAsync($"api/skill/{skill.Id}/inuse");
+            isSkillInUse = await response.Content.ReadFromJsonAsync<bool>();
+        }
+        catch
+        {
+            // Default to true as a safety mechanism if the check fails
+            isSkillInUse = true;
+        }
+
+        showDeleteConfirm = true;
+    }
+
+    private void CancelDelete()
+    {
+        deletingSkill = null;
+        showDeleteConfirm = false;
+        isSkillInUse = false;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (deletingSkill != null && !isSkillInUse)
+        {
+            await DeleteSkill(deletingSkill.Id);
+            showDeleteConfirm = false;
+            deletingSkill = null;
+        }
+    }
+
+    private async Task DeleteSkill(int id)
+    {
+        try
+        {
+            var response = await Http.DeleteAsync($"api/skill/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                await LoadSkills();
+                ShowSuccessMessage("Skill deleted successfully!");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                ShowErrorMessage($"Error deleting skill: {error}");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"An error occurred: {ex.Message}");
+        }
+    }
+
+    private void ShowSuccessMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-success";
+    }
+
+    private void ShowErrorMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-danger";
+    }
+
+    public class Skill
+    {
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "Name is required")]
+        [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters")]
+        public string Name { get; set; } = "";
+
+        [Required(ErrorMessage = "Professional area is required")]
+        public string? Area { get; set; }
+}
+}

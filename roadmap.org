@@ -1,0 +1,43 @@
+#+TITLE: Projeto Plataforma de Gestão de Currículos IT
+#+DATE: Friday, May 16, 2025
+
+* Gestão de Utilizadores e Autenticação [2/2]
+  - [X] Implementar criação de conta de utilizador
+  - [X] Implementar sistema de login para utilizadores
+
+* Gestão de Skills [4/4]
+  - [X] Permitir que utilizadores criem skills (nome, área profissional)
+    - [X] Definir áreas profissionais (developer, design, product manager, project manager, etc.)
+  - [X] Permitir que utilizadores editem skills existentes
+  - [X] Permitir apagar skills (apenas se não associadas a nenhum profissional)
+  - [X] Garantir que as skills são partilhadas entre todos os utilizadores
+
+* Gestão de Perfis de Talento [2/4]
+  - [X] Permitir que utilizadores criem perfis de talento (nome, país, e-mail, preço/hora)
+  - [X] Implementar opção de perfil público ou privado
+  - [ ] Associar múltiplas skills a um perfil de talento
+    - [ ] Indicar número de anos de experiência para cada skill associada
+  - [ ] Adicionar detalhes de experiência profissional ao perfil
+    - [ ] Campos: título, nome da empresa, ano de começo, ano de término (opcional)
+    - [ ] Implementar validação para não sobreposição de experiências no mesmo ano
+
+* Gestão de Clientes [2/2]
+  - [X] Permitir que utilizadores criem clientes na plataforma
+  - [X] Permitir que utilizadores apresentem talentos a clientes
+
+* Funcionalidades de Pesquisa e Matching [0/3]
+  - [ ] Permitir pesquisar talentos por combinação de skills
+    - [ ] Ordenar resultados da pesquisa por nome do talento
+  - [ ] Listar talentos elegíveis para uma proposta de trabalho
+    - [ ] Ordenar talentos elegíveis por valor total (preço/hora * horas da proposta)
+
+* Gestão de Propostas de Trabalho [0/4]
+  - [ ] Permitir que utilizadores registem propostas de trabalho para clientes
+    - [ ] Campos: nome, categoria de talento, skills necessárias, nº mínimo de anos de experiência por skill, nº total de horas, descrição
+  - [ ] Permitir atualização de propostas de trabalho
+  - [ ] Permitir remoção de propostas de trabalho
+
+* Relatórios [0/3]
+  - [ ] Gerar relatório: preço médio mensal (176h) por categoria de talento e por país
+  - [ ] Gerar relatório: preço médio mensal (176h) por skill
+  - [ ] Definir mecanismo para cálculo de preço médio considerando os dados disponíveis

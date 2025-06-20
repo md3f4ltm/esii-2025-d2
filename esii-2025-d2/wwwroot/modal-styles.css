@@ -1,0 +1,292 @@
+/* Enhanced Modal Styles for Better UX - Consistent with App Design */
+.enhanced-modal {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    padding: 20px !important;
+    overflow-y: auto !important;
+    min-height: 100vh !important;
+}
+
+.enhanced-modal .modal-dialog {
+    margin: 0 auto !important;
+    width: 100% !important;
+    max-width: 900px !important;
+    min-height: auto !important;
+    max-height: none !important;
+}
+
+.enhanced-modal .modal-content {
+    border: 1px solid #dee2e6 !important;
+    border-radius: 0.375rem !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: visible !important;
+    min-height: auto !important;
+    max-height: none !important;
+}
+
+.enhanced-modal .modal-body {
+    padding: 2rem !important;
+    overflow-y: visible !important;
+    max-height: none !important;
+    min-height: auto !important;
+}
+
+.enhanced-modal .modal-header {
+    padding: 1rem 2rem !important;
+    border-bottom: 1px solid #dee2e6 !important;
+    background-color: #f8f9fa !important;
+    color: #495057 !important;
+    flex-shrink: 0 !important;
+    border-radius: 0.375rem 0.375rem 0 0 !important;
+}
+
+.enhanced-modal .modal-header .modal-title {
+    font-weight: 500 !important;
+    font-size: 1.25rem !important;
+    margin-bottom: 0 !important;
+    line-height: 1.5 !important;
+}
+
+.enhanced-modal .modal-header .btn-close {
+    font-size: 1rem !important;
+    opacity: 0.5 !important;
+}
+
+.enhanced-modal .modal-header .btn-close:hover {
+    opacity: 0.75 !important;
+}
+
+.enhanced-modal .modal-footer {
+    padding: 1rem 2rem !important;
+    border-top: 1px solid #dee2e6 !important;
+    background-color: #f8f9fa !important;
+    flex-shrink: 0 !important;
+    border-radius: 0 0 0.375rem 0.375rem !important;
+}
+
+/* Keep form elements consistent with Bootstrap defaults */
+.enhanced-modal .form-label {
+    margin-bottom: 0.5rem !important;
+    font-weight: 700 !important;
+    color: #212529 !important;
+}
+
+.enhanced-modal .form-control {
+    display: block !important;
+    width: 100% !important;
+    padding: 0.375rem 0.75rem !important;
+    font-size: 1rem !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #212529 !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 0.375rem !important;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+
+.enhanced-modal .form-control:focus {
+    color: #212529 !important;
+    background-color: #fff !important;
+    border-color: #86b7fe !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+}
+
+/* Keep buttons consistent with Bootstrap theme */
+.enhanced-modal .btn-primary {
+    color: #fff !important;
+    background-color: #1b6ec2 !important;
+    border-color: #1861ac !important;
+    font-weight: 400 !important;
+    font-size: 1rem !important;
+    padding: 0.375rem 0.75rem !important;
+    border-radius: 0.375rem !important;
+}
+
+.enhanced-modal .btn-primary:hover {
+    color: #fff !important;
+    background-color: #1861ac !important;
+    border-color: #1a5a96 !important;
+}
+
+.enhanced-modal .btn-secondary {
+    color: #fff !important;
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    font-weight: 400 !important;
+    font-size: 1rem !important;
+    padding: 0.375rem 0.75rem !important;
+    border-radius: 0.375rem !important;
+}
+
+.enhanced-modal .btn-secondary:hover {
+    color: #fff !important;
+    background-color: #565e64 !important;
+    border-color: #565e64 !important;
+}
+
+.enhanced-modal .btn-danger {
+    color: #fff !important;
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    font-weight: 400 !important;
+    font-size: 1rem !important;
+    padding: 0.375rem 0.75rem !important;
+    border-radius: 0.375rem !important;
+}
+
+.enhanced-modal .btn-danger:hover {
+    color: #fff !important;
+    background-color: #bb2d3b !important;
+    border-color: #b02a37 !important;
+}
+
+.enhanced-modal .btn-warning {
+    color: #000 !important;
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    font-weight: 400 !important;
+    font-size: 1rem !important;
+    padding: 0.375rem 0.75rem !important;
+    border-radius: 0.375rem !important;
+}
+
+.enhanced-modal .btn-warning:hover {
+    color: #000 !important;
+    background-color: #ffca2c !important;
+    border-color: #ffc720 !important;
+}
+
+.enhanced-modal .alert {
+    padding: 0.75rem 1.25rem !important;
+    margin-bottom: 1rem !important;
+    border: 1px solid transparent !important;
+    border-radius: 0.375rem !important;
+}
+
+/* Modal sizing variations */
+/* Small modal for simple confirmations */
+.enhanced-modal.modal-sm .modal-dialog {
+    max-width: 450px !important;
+}
+
+/* Medium modal (default) */
+.enhanced-modal .modal-dialog {
+    max-width: 900px !important;
+}
+
+/* Large modal for complex forms */
+.enhanced-modal.modal-lg .modal-dialog {
+    max-width: 1100px !important;
+}
+
+/* Extra large modal for very complex forms */
+.enhanced-modal.modal-xl .modal-dialog {
+    max-width: 1300px !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .enhanced-modal {
+        padding: 10px !important;
+        align-items: flex-start !important;
+    }
+
+    .enhanced-modal .modal-dialog {
+        max-width: 95vw !important;
+        margin-top: 10px !important;
+    }
+
+    .enhanced-modal .modal-body {
+        padding: 1.5rem !important;
+    }
+
+    .enhanced-modal .modal-header {
+        padding: 1rem 1.5rem !important;
+    }
+
+    .enhanced-modal .modal-footer {
+        padding: 1rem 1.5rem !important;
+    }
+}
+
+/* Icon spacing - keep Font Awesome integration */
+.fas,
+.fa {
+    margin-right: 0.5rem;
+}
+
+/* Job Details Modal Specific Styles */
+#jobDetailsModal .modal-header {
+    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%) !important;
+    border-bottom: none !important;
+}
+
+#jobDetailsModal .modal-header .modal-title {
+    color: white !important;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+}
+
+#jobDetailsModal .card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out !important;
+    border-width: 2px !important;
+}
+
+#jobDetailsModal .card:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+#jobDetailsModal .card-body {
+    padding: 1.5rem !important;
+}
+
+#jobDetailsModal .card .fa-2x {
+    font-size: 2.5rem !important;
+}
+
+#jobDetailsModal .text-primary {
+    color: #0d6efd !important;
+}
+
+#jobDetailsModal .text-success {
+    color: #198754 !important;
+}
+
+#jobDetailsModal .text-info {
+    color: #0dcaf0 !important;
+}
+
+#jobDetailsModal .text-warning {
+    color: #ffc107 !important;
+}
+
+#jobDetailsModal .bg-light {
+    background-color: #f8f9fa !important;
+}
+
+#jobDetailsModal .border-primary {
+    border-color: #0d6efd !important;
+}
+
+#jobDetailsModal .border-success {
+    border-color: #198754 !important;
+}
+
+#jobDetailsModal .border-info {
+    border-color: #0dcaf0 !important;
+}
+
+#jobDetailsModal .border-warning {
+    border-color: #ffc107 !important;
+}
+
+#jobDetailsModal .border-dark {
+    border-color: #212529 !important;
+}
