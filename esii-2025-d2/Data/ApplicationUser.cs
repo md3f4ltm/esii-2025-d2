@@ -1,31 +1,31 @@
-// esii-2025-d2/Data/User.cs
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using System; // For DateOnly
-using System.Collections.Generic; // For ICollection
-using esii_2025_d2.Models; // Required for Customer, Talent models
+using System;
+using System.Collections.Generic;
+using esii_2025_d2.Models;
 
-namespace esii_2025_d2.Data; // Adjust namespace if needed
-
-// Inherit from IdentityUser
-public class ApplicationUser : IdentityUser
+namespace esii_2025_d2.Data
 {
-    
-    public List<Skill> Skills { get; set; } = new List<Skill>();
-    // Custom properties from old Utilizador, renamed
-    [StringLength(100)]
-    public string? Name { get; set; } // Was 'nome'
+    public class ApplicationUser : IdentityUser
+    {
+        // Propriedades do Perfil que já estavam ou foram adicionadas
+        public string? Description { get; set; }
+        public string? ProfilePictureUrl { get; set; }
+        public string? Area { get; set; }
+        
+        // Alteração de 'List' para 'virtual ICollection' (boa prática, não remove funcionalidade)
+        public virtual ICollection<Skill> Skills { get; set; } = new List<Skill>();
 
-    // Use DateOnly or DateTime depending on your needs
-    [Required]
-    [DataType(DataType.Date)]
-    [Display(Name="Date of Birth")]
-    public DateOnly DateOfBirth { get; set; } // Was 'datanascimento'
+        [StringLength(100)]
+        public string? Name { get; set; }
 
-    // Email, UserName, PasswordHash etc. are inherited from IdentityUser
 
-    // Navigation properties from old Utilizador, renamed
-    public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>(); // Was 'Clientes'
+        [DataType(DataType.Date)]
+        [Display(Name="Date of Birth")]
+        public DateOnly? DateOfBirth { get; set; } 
 
-    public virtual ICollection<Talent> Talents { get; set; } = new List<Talent>(); // Was 'Talentos'
+        // As suas coleções foram mantidas como pediu.
+        public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
+        public virtual ICollection<Talent> Talents { get; set; } = new List<Talent>();
+    }
 }
