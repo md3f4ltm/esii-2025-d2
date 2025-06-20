@@ -46,7 +46,6 @@
                 <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
             </div>
 
-            @* --- Adicionar Seleção de Role --- *@
             <div class="form-floating mb-3">
                  <InputSelect @bind-Value="Input.SelectedRole" id="role" class="form-select" aria-required="true">
                      <option value="">-- Select Role --</option> @* Opção padrão para forçar escolha *@
@@ -58,18 +57,9 @@
                  <label for="role">Register as</label>
                  <ValidationMessage For="() => Input.SelectedRole" class="text-danger" />
             </div>
-            @* --- Fim da Seleção de Role --- *@
-
 
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
-    </div>
-    <div class="col-lg-4 col-lg-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            <ExternalLoginPicker />
-        </section>
     </div>
 </div>
 
