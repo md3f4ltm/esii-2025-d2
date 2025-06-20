@@ -1,90 +1,53 @@
-using Microsoft.AspNetCore.Components.Authorization;
-
-using Microsoft.AspNetCore.Identity;
-
-using Microsoft.EntityFrameworkCore;
-
-using Microsoft.OpenApi.Models;
-
 using esii_2025_d2.Client.Pages;
-
 using esii_2025_d2.Components;
-
 using esii_2025_d2.Components.Account;
-
 using esii_2025_d2.Data;
-
-using static esii_2025_d2.Data.SeedData;
-
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-
-
+using esii_2025_d2.Models;
+using esii_2025_d2.Services;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.OpenApi.Models;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-// Add services to the container.
+// --- Adicionar serviços ao contentor ---
 
 builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents()
+    .AddInteractiveWebAssemblyComponents();
 
-  .AddInteractiveServerComponents()
-
-  .AddInteractiveWebAssemblyComponents()
-
-  .AddAuthenticationStateSerialization();
-
-
-
-// --->>> ADD CONTROLLER SERVICES <<<---
-
-builder.Services.AddControllers(); // Registers services for API Controllers
-
-
+builder.Services.AddControllers();
 
 builder.Services.AddCascadingAuthenticationState();
-
 builder.Services.AddScoped<IdentityUserAccessor>();
-
 builder.Services.AddScoped<IdentityRedirectManager>();
-
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
-// Add HTTP context accessor for cookie authentication
-builder.Services.AddHttpContextAccessor();
-
-// Configure HttpClient for authenticated API calls
-builder.Services.AddScoped<HttpClient>(sp =>
-{
-    var httpClient = new HttpClient { BaseAddress = new Uri("http://localhost:5112/") };
-    return httpClient;
-});
-
-
-
-
-
 builder.Services.AddAuthentication(options =>
-
-  {
-
-      options.DefaultScheme = IdentityConstants.ApplicationScheme;
-
-      options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-
-  })
-
-  .AddIdentityCookies();
-
-
+    {
+        options.DefaultScheme = IdentityConstants.ApplicationScheme;
+        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+    })
+    .AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-
-  options.UseNpgsql(connectionString));
-
+    options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddSignInManager()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
 
 
 
@@ -119,112 +82,74 @@ builder.Services.AddScoped<esii_2025_d2.Services.ICurrentUserTalentService, esii
 
 
 
-// Swagger Service Configuration
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<CookieHandler>();
 
-builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddSwaggerGen(c =>
-
+// Registar o HttpClient para uso nos componentes Blazor
+builder.Services.AddHttpClient("API", (serviceProvider, client) =>
 {
-
-    c.SwaggerDoc("v1", new OpenApiInfo
-
+    // A alteração chave está aqui. Usamos o IHttpContextAccessor para
+    // descobrir o endereço base da aplicação a partir do pedido atual do utilizador.
+    var httpContextAccessor = serviceProvider.GetRequiredService<IHttpContextAccessor>();
+    var request = httpContextAccessor.HttpContext?.Request;
+    if (request != null)
     {
+        client.BaseAddress = new Uri($"{request.Scheme}://{request.Host}");
+    }
+})
+.AddHttpMessageHandler<CookieHandler>();
 
-        Title = "esii_2025_d2 API",
+// Criar uma factory para que os componentes possam obter o HttpClient configurado
+builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("API"));
 
-        Version = "v1",
+// --- FIM DA CORREÇÃO DO HTTPCLIENT ---
+// ==========================================================================================
 
-        Description = "API documentation for the esii_2025_d2 application"
+// Registar os seus serviços de aplicação
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<ITalentService, TalentService>();
+builder.Services.AddScoped<IExperienceService, ExperienceService>();
+builder.Services.AddScoped<IJobProposalService, JobProposalService>();
+builder.Services.AddScoped<IReportsService, ReportsService>();
+builder.Services.AddScoped<ISkillService, SkillService>();
+builder.Services.AddScoped<ITalentCategoryService, TalentCategoryService>();
 
-    });
-
+// Configuração do Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "esii_2025_d2 API", Version = "v1" });
 });
 
-builder.Services.AddScoped<esii_2025_d2.Services.ICustomerService, esii_2025_d2.Services.CustomerService>();
-
 // --- Construção da Aplicação ---
-
 var app = builder.Build();
 
-
-
-// --->>> CÓDIGO PARA CRIAR ROLES <<<---
-
-// Coloque este bloco DEPOIS de 'var app = builder.Build();'
-
+// --- Seed de Roles e Dados ---
 using (var scope = app.Services.CreateScope())
-
 {
-
     var services = scope.ServiceProvider;
-
+    // ... (O seu código de seed de roles continua aqui)
     try
-
     {
-
-        // Pega no RoleManager a partir dos serviços configurados
-
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-
-
-        // Lista das roles que quer garantir que existem
-
-        string[] roleNames = { "Admin", "Talent", "Customer" };
-
-        IdentityResult roleResult;
-
-
-
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        string[] roleNames = { "Admin", "Talent", "Customer" };
         foreach (var roleName in roleNames)
-
         {
-
-            // Verifica se a role já existe na base de dados
-
-            var roleExist = await roleManager.RoleExistsAsync(roleName);
-
-            if (!roleExist)
-
+            if (!await roleManager.RoleExistsAsync(roleName))
             {
-
-                // Se não existir, cria a role
-
-                roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
-
-                // (Opcional: pode adicionar logging aqui para saber se a role foi criada)
-
-                // if (roleResult.Succeeded) { Console.WriteLine($"Role '{roleName}' created successfully."); }
-
-                // else { /* Log errors */ }
-
-            }
-
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
         }
-
     }
-
     catch (Exception ex)
-
     {
-
-        // (Opcional: Adicionar logging para capturar erros durante a criação de roles)
-
-        var logger = services.GetRequiredService<ILogger<Program>>();
-
+        var logger = services.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "An error occurred while seeding the database roles.");
-
     }
-
 }
-
-// --->>> FIM DO CÓDIGO PARA CRIAR ROLES <<<---
-
-// --->>> SEED DATA <<<---
-// Seed test data for development
 if (app.Environment.IsDevelopment())
 {
+    // ... (O seu código de seed de dados continua aqui)
     try
     {
         await SeedData.SeedAsync(app.Services);
@@ -235,86 +160,60 @@ if (app.Environment.IsDevelopment())
         logger.LogError(ex, "An error occurred while seeding the database.");
     }
 }
-// --->>> FIM DO SEED DATA <<<---
 
-
-
-
-
-// Configure the HTTP request pipeline.
-
+// --- Configuração do Pipeline de Pedidos HTTP ---
 if (app.Environment.IsDevelopment())
-
 {
-
     app.UseWebAssemblyDebugging();
-
     app.UseMigrationsEndPoint();
-
-
-
-    // Swagger Middleware
-
-    app.UseSwagger();
-
-    app.UseSwaggerUI(c =>
-
-    {
-
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "esii_2025_d2 API V1");
-
-        // c.RoutePrefix = string.Empty; // Uncomment to serve Swagger UI at root
-
-    });
-
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "esii_2025_d2 API V1"));
 }
-
 else
-
 {
-
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-
     app.UseHsts();
-
 }
-
-
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "wwwroot", "uploads")),
+    RequestPath = "/uploads"
+});
 
+app.UseRouting(); // Adicionar UseRouting se não existir
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseAntiforgery(); // Mover UseAntiforgery para depois da autorização
 
-
-app.UseStaticFiles(); // Certifique-se que isto está antes de UseAntiforgery se aplicável
-
-app.UseAntiforgery();
-
-
-
-// --->>> MAP CONTROLLER ROUTES <<<---
-
-// Mapeia rotas para API Controllers ANTES de mapear componentes Blazor
-
-app.MapControllers(); // Garante que as rotas da API são reconhecidas
-
-
+app.MapControllers();
 
 app.MapRazorComponents<App>()
-
-  .AddInteractiveServerRenderMode()
-
-  .AddInteractiveWebAssemblyRenderMode()
-
-  .AddAdditionalAssemblies(typeof(esii_2025_d2.Client._Imports).Assembly);
-
-
-
-// Add additional endpoints required by the Identity /Account Razor components.
+    .AddInteractiveServerRenderMode()
+    .AddInteractiveWebAssemblyRenderMode()
+    .AddAdditionalAssemblies(typeof(esii_2025_d2.Client._Imports).Assembly);
 
 app.MapAdditionalIdentityEndpoints();
 
-
-
-
-
 app.Run();
+
+// A classe do Cookie Handler no final do ficheiro
+public class CookieHandler : DelegatingHandler
+{
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public CookieHandler(IHttpContextAccessor httpContextAccessor)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
+    protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+    {
+        var httpContext = _httpContextAccessor.HttpContext;
+        if (httpContext != null && httpContext.Request.Cookies.TryGetValue(".AspNetCore.Identity.Application", out var cookieValue))
+        {
+            request.Headers.Add("Cookie", $".AspNetCore.Identity.Application={cookieValue}");
+        }
+        return base.SendAsync(request, cancellationToken);
+    }
+}

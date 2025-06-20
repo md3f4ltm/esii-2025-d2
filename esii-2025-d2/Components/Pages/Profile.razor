@@ -1,189 +1,244 @@
 @page "/profile"
-@using esii_2025_d2.Controllers
+@page "/profile/{UserId}"
+
+@using System.ComponentModel.DataAnnotations
 @using esii_2025_d2.Data
 @using esii_2025_d2.Models
+@using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.AspNetCore.Identity
 @inject HttpClient Http
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject UserManager<ApplicationUser> UserManager
+@inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
 <PageTitle>User Profile</PageTitle>
 
-<h3>User Profile</h3>
-
-@if (user == null)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <h4>
-        Name: 
-        <input type="text" @bind="user.Name" placeholder="Enter your name" />
-    </h4>
-
-    @if (user != null)
+<div class="profile-container">
+    @if (isLoading)
     {
-        <h4>Skills:</h4>
-        <ul>
-            @foreach (var skill in user.Skills)
-            {
-                <li>@skill.Name</li>
-            }
-        </ul>
+        <div class="loading-spinner"></div>
+        <p>Loading profile...</p>
+    }
+    else if (userProfile != null)
+    {
+        <div class="profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    @if (!string.IsNullOrEmpty(userProfile.ProfilePictureUrl))
+                    {
+                        <img src="@(userProfile.ProfilePictureUrl + "?v=" + Guid.NewGuid())" alt="User Avatar" />
+                    }
+                    else
+                    {
+                        <div class="initials-avatar">
+                            <span>@GetInitials(userProfile.Name)</span>
+                        </div>
+                    }
+                </div>
+                
+                @if (canEditProfile)
+                {
+                    <InputFile OnChange="HandleFileSelected" accept="image/*" class="file-input" />
+                }
+            </div>
 
-        <button @onclick="ShowAddSkillDropdowns">Add Skill</button>
+            <div class="profile-body">
+                <div class="profile-info">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input id="name" type="text" @bind="userProfile.Name" class="form-control" readonly="@(!canEditProfile)" />
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Bio / Description</label>
+                        <textarea id="description" @bind="userProfile.Description" class="form-control" rows="4" readonly="@(!canEditProfile)"></textarea>
+                    </div>
+                </div>
+
+                @if (userProfile.Roles.Contains("Talent"))
+                {
+                    <div class="skills-section">
+                        <h4>Skills</h4>
+                        @if (userProfile.Skills.Any())
+                        {
+                            <ul class="skills-list">
+                                @foreach (var skill in userProfile.Skills) { <li class="skill-tag">@skill.Name</li> }
+                            </ul>
+                        }
+                        else { <p>No skills added yet.</p> }
+                        @if (canEditProfile) { <button @onclick="ShowAddSkillDropdowns" class="btn btn-secondary">+ Add Skill</button> }
+                    </div>
+                    @if (showSkillForm && canEditProfile)
+                    {
+                        <div class="add-skill-form"><hr /><h5>Add a new skill</h5>
+                            <div class="form-group">
+                                <label for="area">Select Area:</label>
+                                <select id="area" @onchange="OnAreaChanged" class="form-control">
+                                    <option value="">-- Select Area --</option>
+                                    @foreach (var area in distinctAreas) { <option value="@area">@area</option> }
+                                </select>
+                            </div>
+                            @if (filteredSkills.Any())
+                            {
+                                <div class="form-group">
+                                    <label for="nome">Select Skill:</label>
+                                    <select id="nome" @bind="selectedSkillId" class="form-control">
+                                        <option value="0">-- Select Skill Name --</option>
+                                        @foreach (var skill in filteredSkills) { <option value="@skill.Id">@skill.Name</option> }
+                                    </select>
+                                </div>
+                                <button @onclick="AddSkill" class="btn btn-primary" disabled="@(selectedSkillId == 0)">Add Selected Skill</button>
+                            }
+                        </div>
+                    }
+                }
+
+                @if (userProfile.Roles.Contains("Customer"))
+                {
+                    <div class="area-section">
+                        <h4>Business Area</h4>
+                         <div class="form-group">
+                            <label for="area">Area of Interest</label>
+                            <select id="area" @bind="userProfile.Area" class="form-control" disabled="@(!canEditProfile)">
+                                <option value="">-- Select your area --</option>
+                                @foreach (var area in distinctAreas) { <option value="@area">@area</option> }
+                            </select>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            @if(canEditProfile)
+            {
+                <div class="profile-footer">
+                    <button @onclick="SaveProfile" class="btn btn-success">Save Profile</button>
+                    @if (!string.IsNullOrEmpty(statusMessage))
+                    {
+                        <span class="status-message @(isError ? "error" : "success")">@statusMessage</span>
+                    }
+                </div>
+            }
+        </div>
     }
     else
     {
-        <p>You are a customer. Skills are only available for talents.</p>
+        <div class="alert alert-danger" role="alert">
+            <h4>Failed to Load Profile</h4>
+            <p>@statusMessage</p>
+        </div>
     }
-
-    <button @onclick="SaveProfile" class="save-button">Save</button>
-}
-
-@if (showSkillForm)
-{
-    <div>
-        <label for="area">Select Area:</label>
-        <select id="area" value="@selectedArea" @onchange="OnAreaChanged" class="dropdown">
-            <option value="">-- Select Area --</option>
-            @foreach (var area in distinctAreas)
-            {
-                <option value="@area">@area</option>
-            }
-        </select>
-
-        @if (filteredSkills != null && filteredSkills.Count > 0)
-        {
-            <label for="nome">Select Skill Name:</label>
-            <select id="nome" @bind="selectedSkillNome" class="dropdown">
-                <option value="">-- Select Skill Name --</option>
-                @foreach (var skill in filteredSkills)
-                {
-                    <option value="@skill.Name">@skill.Name</option>
-                }
-            </select>
-
-            <button @onclick="AddSkill" class="add-skill-button">Add Selected Skill</button>
-        }
-    </div>
-}
+</div>
 
 @code {
-    private ApplicationUser? user;
-    private List<Skill> skills = new List<Skill>();
-    private List<Skill> filteredSkills = new List<Skill>();
-    private List<string> distinctAreas = new List<string>();
-    private string selectedArea = string.Empty;
-    private string selectedSkillNome = string.Empty;
+    [Parameter] public string? UserId { get; set; }
+
+    // --- DTOs definidos localmente para eliminar erros de compilação ---
+    private UserProfileDto? userProfile;
+    public class UserProfileDto { public string Id { get; set; } = null!; public string Name { get; set; } = string.Empty; public string? Description { get; set; } public string? ProfilePictureUrl { get; set; } public ICollection<SkillDto> Skills { get; set; } = new List<SkillDto>(); public string? Area { get; set; } public IList<string> Roles { get; set; } = new List<string>(); }
+    public class UserUpdateDto { public string Id { get; set; } = null!; public string Name { get; set; } = null!; public string? Description { get; set; } public string? Area { get; set; } }
+    public class SkillDto { public int Id { get; set; } public string Name { get; set; } = null!; public string Area { get; set; } = null!; }
+
+    private bool isLoading = true;
+    private bool canEditProfile = false;
+    private string statusMessage = string.Empty;
+    private bool isError = false;
+    private List<SkillDto> allSkills = new();
+    private List<SkillDto> filteredSkills = new();
+    private List<string> distinctAreas = new();
+    private int selectedSkillId;
     private bool showSkillForm;
 
     protected override async Task OnInitializedAsync()
     {
-        // Get the authentication state
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-
-        // Get the current user from the authentication state
-        var currentUser = authState.User;
-
-        // If the user is authenticated, get the user details
-        if (currentUser.Identity.IsAuthenticated)
-        {
-            user = await UserManager.GetUserAsync(currentUser); // Get user based on currentUser
-        }
-
-        // Fetch the list of skills and distinct areas
-        skills = await Http.GetFromJsonAsync<List<Skill>>("api/skill");
-        if (skills != null)
-        {
-            distinctAreas = skills.Select(s => s.Area).Distinct().ToList();
-        }
-    }
-
-    private void ShowAddSkillDropdowns()
-    {
-        showSkillForm = true;
-    }
-
-    private void OnAreaChanged(ChangeEventArgs e)
-    {
-        selectedArea = e.Value?.ToString() ?? string.Empty;
-
-        if (!string.IsNullOrEmpty(selectedArea))
-        {
-            filteredSkills = skills.Where(s => s.Area == selectedArea).ToList();
-        }
-        else
-        {
-            filteredSkills.Clear();
-        }
-
-        selectedSkillNome = string.Empty;
-    }
-
-    private async Task AddSkill()
-    {
-        if (!string.IsNullOrEmpty(selectedSkillNome))
-        {
-            var selectedSkill = skills.FirstOrDefault(s => s.Name == selectedSkillNome);
-            if (selectedSkill != null)
-            {
-                try
-                {
-                    // Associate the selected skill with the current talent user
-                    var response = await Http.PostAsJsonAsync($"api/user/{user.Id}/skills", selectedSkill);
-
-                    // Log the status code and response content
-                    Console.WriteLine($"Response Status Code: {response.StatusCode}");
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"Response Content: {responseContent}");
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Update the user's skills after adding the new skill
-                        user.Skills.Add(selectedSkill);
-                        showSkillForm = false;
-                        selectedArea = string.Empty;
-                        selectedSkillNome = string.Empty;
-                    }
-                    else
-                    {
-                        Console.Error.WriteLine("Failed to add the skill.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.Error.WriteLine($"An error occurred: {ex.Message}");
-                }
-            }
-        }
-    }
-
-    private async Task SaveProfile()
-    {
+        isLoading = true;
         try
         {
-            var response = await Http.PutAsJsonAsync($"api/user/{user.Id}", new UserInfoDto
+            string? loggedInUserId = null;
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+            if (user.Identity?.IsAuthenticated ?? false)
             {
-                Id = user.Id,
-                Name = user.Name // Sending the updated name
-            });
+                loggedInUserId = user.FindFirst(c => c.Type.Contains("nameidentifier"))?.Value;
+            }
 
-            if (response.IsSuccessStatusCode)
+            string? userIdToLoad = UserId ?? loggedInUserId;
+            canEditProfile = (userIdToLoad == loggedInUserId && loggedInUserId != null);
+            
+            if (userIdToLoad != null)
             {
-                Console.WriteLine("Name updated successfully!");
+                // --- A chamada HttpClient com a correção para o deadlock ---
+                var response = await Http.GetAsync($"api/user/{userIdToLoad}").ConfigureAwait(false);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    userProfile = await response.Content.ReadFromJsonAsync<UserProfileDto>();
+                    if (userProfile != null && (userProfile.Roles.Contains("Talent") || userProfile.Roles.Contains("Customer")))
+                    {
+                        var allSkillsFromApi = await Http.GetFromJsonAsync<List<SkillDto>>("api/skill").ConfigureAwait(false) ?? new();
+                        allSkills = allSkillsFromApi;
+                        distinctAreas = allSkills.Select(s => s.Area).Distinct().OrderBy(a => a).ToList();
+                    }
+                }
+                else
+                {
+                    isError = true;
+                    statusMessage = $"Failed to load profile. Status: {response.StatusCode}";
+                }
             }
             else
             {
-                Console.Error.WriteLine("Failed to update the name.");
+                await InvokeAsync(() => NavigationManager.NavigateTo("/Account/Login"));
             }
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine($"An error occurred while saving the profile: {ex.Message}");
+            statusMessage = $"Error loading profile: {ex.Message}";
+            isError = true;
+        }
+        finally
+        {
+            isLoading = false;
+            // Forçar a atualização da UI a partir do contexto correto
+            await InvokeAsync(StateHasChanged);
         }
     }
+
+    private async Task SaveProfile() { if (userProfile == null || !canEditProfile) return; var userToUpdate = new UserUpdateDto { Id = userProfile.Id, Name = userProfile.Name, Description = userProfile.Description, Area = userProfile.Area }; var response = await Http.PutAsJsonAsync($"api/user/{userProfile.Id}", userToUpdate); if (response.IsSuccessStatusCode) SetStatusMessage("Profile saved successfully!", isError: false); else SetStatusMessage($"Failed to save profile: {await response.Content.ReadAsStringAsync()}", isError: true); }
+    private void ShowAddSkillDropdowns() { showSkillForm = !showSkillForm; statusMessage = string.Empty; }
+    private void OnAreaChanged(ChangeEventArgs e) { var selectedArea = e.Value?.ToString() ?? string.Empty; filteredSkills = string.IsNullOrEmpty(selectedArea) ? new() : allSkills.Where(s => s.Area == selectedArea).ToList(); selectedSkillId = 0; }
+    private async Task AddSkill() { if (selectedSkillId == 0 || userProfile == null) return; var skillToAddDto = new SkillDto { Id = selectedSkillId }; if (userProfile.Skills.Any(s => s.Id == selectedSkillId)) return; var response = await Http.PostAsJsonAsync($"api/user/{userProfile.Id}/skills", skillToAddDto); if (response.IsSuccessStatusCode) { var addedSkill = await response.Content.ReadFromJsonAsync<SkillDto>(); if (addedSkill != null) userProfile.Skills.Add(addedSkill); showSkillForm = false; SetStatusMessage("Skill added successfully!", isError: false); } else { SetStatusMessage($"Failed to add skill: {await response.Content.ReadAsStringAsync()}", isError: true); } }
+    private async Task HandleFileSelected(InputFileChangeEventArgs e) { if (userProfile == null) return; var file = e.File; if (file.Size > 5 * 1024 * 1024) { SetStatusMessage("File size exceeds 5MB.", true); return; } using var content = new MultipartFormDataContent(); content.Add(new StreamContent(file.OpenReadStream(file.Size)), "file", file.Name); var response = await Http.PostAsync($"api/user/{userProfile.Id}/avatar", content); if (response.IsSuccessStatusCode) { userProfile.ProfilePictureUrl = await response.Content.ReadAsStringAsync(); SetStatusMessage("Profile picture updated!", isError: false); await InvokeAsync(StateHasChanged); } else { SetStatusMessage($"Failed to upload image: {await response.Content.ReadAsStringAsync()}", isError: true); await InvokeAsync(StateHasChanged); } }
+    private void SetStatusMessage(string message, bool isError) { this.statusMessage = message; this.isError = isError; }
+    private string GetInitials(string name) { if (string.IsNullOrEmpty(name)) return "??"; var parts = name.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); return parts.Length > 1 ? $"{parts[0][0]}{parts[^1][0]}".ToUpper() : (name.Length > 1 ? name.Substring(0, 2).ToUpper() : name.ToUpper()); }
 }
 
+<style>
+    /* O seu CSS completo aqui */
+    .profile-container { max-width: 800px; margin: 2rem auto; padding: 1rem; }
+    .profile-card { background-color: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); overflow: hidden; }
+    .profile-header { background-color: #f7f9fc; padding: 2rem; text-align: center; position: relative; }
+    .profile-avatar { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 1rem; background-color: #e9ecef; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 4px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .profile-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .initials-avatar { font-size: 2.5rem; color: #495057; font-weight: bold; }
+    .file-input { margin-top: 10px; }
+    .profile-body { padding: 1.5rem 2rem; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-control { width: 100%; padding: 0.75rem 1rem; border: 1px solid #ced4da; border-radius: 8px; font-size: 1rem; transition: border-color 0.2s, box-shadow 0.2s; }
+    .form-control[readonly], .form-control:disabled { background-color: #e9ecef; cursor: not-allowed; }
+    .form-control:focus { border-color: #80bdff; outline: 0; box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); }
+    .skills-section, .area-section { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #eee; }
+    .skills-section h4, .area-section h4 { margin-bottom: 1rem; }
+    .skills-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag { background-color: #e2e8f0; color: #4a5568; padding: 0.4rem 0.8rem; border-radius: 16px; font-size: 0.9rem; font-weight: 500; }
+    .add-skill-form { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e9ecef; }
+    .profile-footer { padding: 1rem 2rem; background-color: #f7f9fc; text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 1rem; }
+    .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background-color 0.2s, transform 0.1s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background-color: #007bff; color: white; }
+    .btn-secondary { background-color: #6c757d; color: white; }
+    .btn-success { background-color: #28a745; color: white; }
+    .status-message { font-weight: 500; }
+    .status-message.success { color: #28a745; }
+    .status-message.error { color: #dc3545; }
+    .loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 2rem auto; }
+    @@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+</style>
