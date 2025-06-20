@@ -39,8 +39,8 @@ public class ExperienceControllerTests
         // Arrange
         var experiences = new List<Experience>
         {
-            new Experience { Title = "Developer", CompanyName = "Company A", StartYear = 2020, TalentId = 1 },
-            new Experience { Title = "Analyst", CompanyName = "Company B", StartYear = 2021, TalentId = 2 }
+            new Experience { Title = "Senior React Developer", CompanyName = "TechFlow Solutions", StartYear = 2020, TalentId = 1 },
+            new Experience { Title = "DevOps Engineer", CompanyName = "CloudSync Innovations", StartYear = 2021, TalentId = 2 }
         };
 
         _context.Experiences.AddRange(experiences);
@@ -70,8 +70,8 @@ public class ExperienceControllerTests
         // Arrange
         var newExperience = new Experience
         {
-            Title = "Developer",
-            CompanyName = "Company",
+            Title = "Full Stack Developer",
+            CompanyName = "NextGen Software",
             StartYear = 2023,
             TalentId = 999 // Non-existent talent
         };
@@ -90,10 +90,10 @@ public class ExperienceControllerTests
         var talent = new Talent
         {
             UserId = "user1",
-            Name = "John Doe",
+            Name = "Ana Silva",
             Country = "Portugal",
-            Email = "john@example.com",
-            HourlyRate = 25.00m,
+            Email = "ana@techflow.com",
+            HourlyRate = 65.00m,
             TalentCategoryId = 1
         };
         _context.Talents.Add(talent);
@@ -101,8 +101,8 @@ public class ExperienceControllerTests
 
         var newExperience = new Experience
         {
-            Title = "Developer",
-            CompanyName = "Company",
+            Title = "Backend Developer",
+            CompanyName = "DataMind Technologies",
             StartYear = 2023,
             EndYear = 2020, // End year before start year
             TalentId = talent.Id
