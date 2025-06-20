@@ -4,7 +4,12 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.ComponentModel.DataAnnotations
 @using System.Security.Claims
-@inject HttpClient Http
+@using esii_2025_d2.Services
+@using esii_2025_d2.Models
+@using esii_2025_d2.DTOs
+@inject ICurrentUserTalentService CurrentUserTalentService
+@inject ITalentSkillService TalentSkillService
+@inject ISkillService SkillService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IJSRuntime JSRuntime
 @attribute [Authorize(Roles = "Talent")]
@@ -13,10 +18,10 @@
 <h3>Manage Your Skills</h3>
 @if (!string.IsNullOrEmpty(statusMessage))
 {
-<div class="@statusClass">
-@statusMessage
-<button type="button" class="btn-close float-end" @onclick="() => statusMessage = string.Empty"></button>
-</div>
+    <div class="@statusClass">
+        @statusMessage
+        <button type="button" class="btn-close float-end" @onclick="() => statusMessage = string.Empty"></button>
+    </div>
 }
 
 <div class="row mb-4">
@@ -90,8 +95,10 @@
                                         <td>@talentSkill.Skill?.Area</td>
                                         <td>@talentSkill.YearsOfExperience</td>
                                         <td>
-                                            <button class="btn btn-sm btn-warning" @onclick="() => ShowEditModal(talentSkill)">Edit</button>
-                                            <button class="btn btn-sm btn-danger" @onclick="() => ShowDeleteConfirm(talentSkill)">Remove</button>
+                                            <button class="btn btn-sm btn-warning"
+                                                @onclick="() => ShowEditModal(talentSkill)">Edit</button>
+                                            <button class="btn btn-sm btn-danger"
+                                                @onclick="() => ShowDeleteConfirm(talentSkill)">Remove</button>
                                         </td>
                                     </tr>
                                 }
@@ -107,7 +114,7 @@
 <!-- Add/Edit Modal -->
 @if (showModal)
 {
-    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal enhanced-modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -159,15 +166,18 @@
 <!-- Delete Confirmation Modal -->
 @if (showDeleteConfirm)
 {
-    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal enhanced-modal modal-sm show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Confirm Remove</h5>
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Confirm Remove
+                    </h5>
                     <button type="button" class="btn-close" @onclick="CancelDelete"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to remove the skill "@deletingTalentSkill?.Skill?.Name" from this talent profile?</p>
+                    <p>Are you sure you want to remove the skill "@deletingTalentSkill?.Skill?.Name" from this talent
+                        profile?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
@@ -179,13 +189,12 @@
 }
 
 @code {
-    private string currentUserId = string.Empty;
-    private List<Talent>? talents;
-    private List<TalentSkillDto>? talentSkills;
-    private List<Skill>? availableSkills;
+    private List<esii_2025_d2.Models.Talent>? talents;
+    private List<esii_2025_d2.DTOs.TalentSkillDto>? talentSkills;
+    private List<esii_2025_d2.Models.Skill>? availableSkills;
     private int selectedTalentId = 0;
-    private TalentSkillDto editingTalentSkill = new();
-    private TalentSkillDto? deletingTalentSkill;
+    private esii_2025_d2.DTOs.TalentSkillDto editingTalentSkill = new();
+    private esii_2025_d2.DTOs.TalentSkillDto? deletingTalentSkill;
     private bool showModal = false;
     private bool showDeleteConfirm = false;
     private bool isEditing = false;
@@ -195,54 +204,25 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-        currentUserId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
-
-        if (!string.IsNullOrEmpty(currentUserId))
-        {
-            await LoadUserTalents();
-            await LoadSkills();
-        }
+        await LoadUserTalents();
+        await LoadSkills();
     }
 
     private async Task LoadUserTalents()
     {
         try
         {
-            var response = await Http.GetAsync("api/Talent/mytalents");
-            
-            if (response.IsSuccessStatusCode)
+            talents = await CurrentUserTalentService.GetMyTalentsAsync();
+            if (talents == null)
             {
-                try 
-                {
-                    talents = await response.Content.ReadFromJsonAsync<List<Talent>>();
-                    if (talents == null)
-                    {
-                        talents = new List<Talent>();
-                    }
-                }
-                catch (System.Text.Json.JsonException jsonEx)
-                {
-                    ShowErrorMessage($"Failed to parse talents data: {jsonEx.Message}");
-                    talents = new List<Talent>();
-                }
+                talents = new List<esii_2025_d2.Models.Talent>();
+                ShowErrorMessage("No talents data received.");
             }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                ShowErrorMessage($"Failed to load talents: HTTP {(int)response.StatusCode} - {response.ReasonPhrase}. {errorContent}");
-                talents = new List<Talent>();
-            }
-        }
-        catch (HttpRequestException httpEx)
-        {
-            ShowErrorMessage($"Failed to load talents: Network error - {httpEx.Message}");
-            talents = new List<Talent>();
         }
         catch (Exception ex)
         {
             ShowErrorMessage($"Failed to load talents: {ex.Message}");
-            talents = new List<Talent>();
+            talents = new List<esii_2025_d2.Models.Talent>();
         }
     }
 
@@ -250,40 +230,17 @@
     {
         try
         {
-            var response = await Http.GetAsync("api/Skill");
-            
-            if (response.IsSuccessStatusCode)
+            availableSkills = await SkillService.GetAllSkillsAsync();
+            if (availableSkills == null)
             {
-                try 
-                {
-                    availableSkills = await response.Content.ReadFromJsonAsync<List<Skill>>();
-                    if (availableSkills == null)
-                    {
-                        availableSkills = new List<Skill>();
-                    }
-                }
-                catch (System.Text.Json.JsonException jsonEx)
-                {
-                    ShowErrorMessage($"Failed to parse skills data: {jsonEx.Message}");
-                    availableSkills = new List<Skill>();
-                }
+                availableSkills = new List<esii_2025_d2.Models.Skill>();
+                ShowErrorMessage("No skills data received.");
             }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                ShowErrorMessage($"Failed to load skills: HTTP {(int)response.StatusCode} - {response.ReasonPhrase}. {errorContent}");
-                availableSkills = new List<Skill>();
-            }
-        }
-        catch (HttpRequestException httpEx)
-        {
-            ShowErrorMessage($"Failed to load skills: Network error - {httpEx.Message}");
-            availableSkills = new List<Skill>();
         }
         catch (Exception ex)
         {
             ShowErrorMessage($"Failed to load skills: {ex.Message}");
-            availableSkills = new List<Skill>();
+            availableSkills = new List<esii_2025_d2.Models.Skill>();
         }
     }
 
@@ -309,40 +266,17 @@
 
         try
         {
-            var response = await Http.GetAsync($"api/TalentSkill/talent/{selectedTalentId}");
-            
-            if (response.IsSuccessStatusCode)
+            talentSkills = await TalentSkillService.GetTalentSkillsAsync(selectedTalentId);
+            if (talentSkills == null)
             {
-                try 
-                {
-                    talentSkills = await response.Content.ReadFromJsonAsync<List<TalentSkillDto>>();
-                    if (talentSkills == null)
-                    {
-                        talentSkills = new List<TalentSkillDto>();
-                    }
-                }
-                catch (System.Text.Json.JsonException jsonEx)
-                {
-                    ShowErrorMessage($"Failed to parse talent skills data: {jsonEx.Message}");
-                    talentSkills = new List<TalentSkillDto>();
-                }
+                talentSkills = new List<esii_2025_d2.DTOs.TalentSkillDto>();
+                ShowErrorMessage("No talent skills data received.");
             }
-            else
-            {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                ShowErrorMessage($"Failed to load talent skills: HTTP {(int)response.StatusCode} - {response.ReasonPhrase}. {errorContent}");
-                talentSkills = new List<TalentSkillDto>();
-            }
-        }
-        catch (HttpRequestException httpEx)
-        {
-            ShowErrorMessage($"Failed to load talent skills: Network error - {httpEx.Message}");
-            talentSkills = new List<TalentSkillDto>();
         }
         catch (Exception ex)
         {
             ShowErrorMessage($"Failed to load talent skills: {ex.Message}");
-            talentSkills = new List<TalentSkillDto>();
+            talentSkills = new List<esii_2025_d2.DTOs.TalentSkillDto>();
         }
     }
 
@@ -364,9 +298,10 @@
             return;
         }
 
-        editingTalentSkill = new TalentSkillDto
+        editingTalentSkill = new esii_2025_d2.DTOs.TalentSkillDto
         {
             TalentId = selectedTalentId,
+            SkillId = 0,
             YearsOfExperience = 1 // Default value
         };
         modalTitle = "Add Skill to Talent Profile";
@@ -374,9 +309,9 @@
         showModal = true;
     }
 
-    private void ShowEditModal(TalentSkillDto talentSkill)
+    private void ShowEditModal(esii_2025_d2.DTOs.TalentSkillDto talentSkill)
     {
-        editingTalentSkill = new TalentSkillDto
+        editingTalentSkill = new esii_2025_d2.DTOs.TalentSkillDto
         {
             TalentId = talentSkill.TalentId,
             SkillId = talentSkill.SkillId,
@@ -388,7 +323,7 @@
         showModal = true;
     }
 
-    private void ShowDeleteConfirm(TalentSkillDto talentSkill)
+    private void ShowDeleteConfirm(esii_2025_d2.DTOs.TalentSkillDto talentSkill)
     {
         deletingTalentSkill = talentSkill;
         showDeleteConfirm = true;
@@ -419,30 +354,24 @@
     {
         try
         {
-            HttpResponseMessage response;
+            bool isEditing = editingTalentSkill.TalentId > 0 && editingTalentSkill.SkillId > 0;
+
+            var talentSkillDto = editingTalentSkill;
 
             if (isEditing)
             {
                 // Update existing talent skill
-                response = await Http.PutAsJsonAsync($"api/TalentSkill/{editingTalentSkill.TalentId}/{editingTalentSkill.SkillId}", editingTalentSkill);
+                await TalentSkillService.UpdateTalentSkillAsync(talentSkillDto);
             }
             else
             {
                 // Create new talent skill
-                response = await Http.PostAsJsonAsync("api/TalentSkill", editingTalentSkill);
+                await TalentSkillService.CreateTalentSkillAsync(talentSkillDto);
             }
 
-            if (response.IsSuccessStatusCode)
-            {
-                await LoadTalentSkills();
-                CloseModal();
-                ShowSuccessMessage(isEditing ? "Skill updated successfully!" : "Skill added successfully!");
-            }
-            else
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                ShowErrorMessage($"Error {(isEditing ? "updating" : "adding")} skill: {error}");
-            }
+            await LoadTalentSkills();
+            CloseModal();
+            ShowSuccessMessage(isEditing ? "Skill updated successfully!" : "Skill added successfully!");
         }
         catch (Exception ex)
         {
@@ -450,22 +379,13 @@
         }
     }
 
-    private async Task DeleteTalentSkill(TalentSkillDto talentSkill)
+    private async Task DeleteTalentSkill(esii_2025_d2.DTOs.TalentSkillDto talentSkill)
     {
         try
         {
-            var response = await Http.DeleteAsync($"api/TalentSkill/{talentSkill.TalentId}/{talentSkill.SkillId}");
-            
-            if (response.IsSuccessStatusCode)
-            {
-                await LoadTalentSkills();
-                ShowSuccessMessage("Skill removed successfully!");
-            }
-            else
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                ShowErrorMessage($"Error removing skill: {error}");
-            }
+            await TalentSkillService.DeleteTalentSkillAsync(talentSkill.TalentId, talentSkill.SkillId);
+            await LoadTalentSkills();
+            ShowSuccessMessage("Skill removed successfully!");
         }
         catch (Exception ex)
         {
@@ -485,31 +405,5 @@
         statusClass = "alert alert-danger";
     }
 
-    public class Talent
-    {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-    }
 
-    public class Skill
-    {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string? Area { get; set; }
-    }
-
-    public class TalentSkillDto
-    {
-        public int TalentId { get; set; }
-        
-        [Required(ErrorMessage = "Skill is required")]
-        [Range(1, int.MaxValue, ErrorMessage = "Please select a skill")]
-        public int SkillId { get; set; }
-        
-        [Required(ErrorMessage = "Years of experience is required")]
-        [Range(1, 50, ErrorMessage = "Years of experience must be between 1 and 50")]
-        public int YearsOfExperience { get; set; }
-        
-        public Skill? Skill { get; set; }
-    }
 }

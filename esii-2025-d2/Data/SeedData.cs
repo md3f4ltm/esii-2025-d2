@@ -72,6 +72,14 @@ namespace esii_2025_d2.Data
                     EmailConfirmed = true
                 };
                 await userManager.CreateAsync(testTalentUser, "Test123!");
+
+                // Ensure email is confirmed
+                var confirmToken = await userManager.GenerateEmailConfirmationTokenAsync(testTalentUser);
+                await userManager.ConfirmEmailAsync(testTalentUser, confirmToken);
+
+                // Disable two-factor authentication
+                await userManager.SetTwoFactorEnabledAsync(testTalentUser, false);
+
                 await userManager.AddToRoleAsync(testTalentUser, "Talent");
             }
 
@@ -85,6 +93,14 @@ namespace esii_2025_d2.Data
                     EmailConfirmed = true
                 };
                 await userManager.CreateAsync(testCustomerUser, "Test123!");
+
+                // Ensure email is confirmed
+                var confirmToken = await userManager.GenerateEmailConfirmationTokenAsync(testCustomerUser);
+                await userManager.ConfirmEmailAsync(testCustomerUser, confirmToken);
+
+                // Disable two-factor authentication
+                await userManager.SetTwoFactorEnabledAsync(testCustomerUser, false);
+
                 await userManager.AddToRoleAsync(testCustomerUser, "Customer");
             }
 

@@ -3,9 +3,10 @@
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.ComponentModel.DataAnnotations
-@using System.Security.Claims
-@inject HttpClient Http
-@inject AuthenticationStateProvider AuthStateProvider
+@using esii_2025_d2.Services
+@using esii_2025_d2.Models
+@inject ICurrentUserTalentService CurrentUserTalentService
+@inject ITalentCategoryService TalentCategoryService
 @inject IJSRuntime JSRuntime
 @attribute [Authorize(Roles = "Talent")]
 
@@ -13,312 +14,295 @@
 <h3>Talents</h3>
 @if (!string.IsNullOrEmpty(statusMessage))
 {
-<div class="@statusClass">
-@statusMessage
-<button type="button" class="btn-close float-end" @onclick="() => statusMessage = string.Empty"></button>
-</div>
+    <div class="@statusClass">
+        @statusMessage
+        <button type="button" class="btn-close float-end" @onclick="() => statusMessage = string.Empty"></button>
+    </div>
 }
 
 <button class="btn btn-primary mb-3" @onclick="ShowAddModal">Add New Talent</button>
 
-<table class="table table-striped"> <thead> <tr> <th>Name</th> <th>Country</th> <th>Email</th> <th>Hourly Rate</th> <th>Category</th> <th>Visibility</th> <th>Actions</th> </tr> </thead> <tbody> @if (talents == null) { <tr><td colspan="7">Loading...</td></tr> } else if (!talents.Any()) { <tr><td colspan="7">No talents found.</td></tr> } else { @foreach (var talent in talents) { <tr> <td>@talent.Name</td> <td>@talent.Country</td> <td>@talent.Email</td> <td>@talent.HourlyRate</td> <td>@talent.TalentCategory?.Name</td> <td>@(talent.IsPublic ? "Public" : "Private")</td> <td> <button class="btn btn-sm btn-warning" @onclick="() => ShowEditModal(talent)">Edit</button> <button class="btn btn-sm btn-danger" @onclick="() => ShowDeleteConfirm(talent)">Delete</button> </td> </tr> } } </tbody> </table>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Country</th>
+            <th>Email</th>
+            <th>Hourly Rate</th>
+            <th>Category</th>
+            <th>Visibility</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (talents == null)
+        {
+            <tr>
+                <td colspan="7">Loading...</td>
+            </tr>
+        }
+        else if (!talents.Any())
+        {
+            <tr>
+                <td colspan="7">No talents found.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var talent in talents)
+            {
+                <tr>
+                    <td>@talent.Name</td>
+                    <td>@talent.Country</td>
+                    <td>@talent.Email</td>
+                    <td>@talent.HourlyRate</td>
+                    <td>@talent.TalentCategory?.Name</td>
+                    <td>@(talent.IsPublic ? "Public" : "Private")</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" @onclick="() => ShowEditModal(talent)">Edit</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => ShowDeleteConfirm(talent)">Delete</button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
 @if (showModal)
 {
-<div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<h5 class="modal-title">@((editingTalent.Id == 0) ? "Add Talent" : "Edit Talent")</h5>
-<button type="button" class="btn-close" @onclick="CloseModal"></button>
-</div>
-<div class="modal-body">
-<EditForm Model="editingTalent" OnValidSubmit="SaveTalent">
-<DataAnnotationsValidator />
-<ValidationSummary />
-                    <div class="mb-3">
-                        <label>Name</label>
-                        <InputText class="form-control" @bind-Value="editingTalent.Name" />
-                        <ValidationMessage For="@(() => editingTalent.Name)" />
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label>Country</label>
-                        <InputText class="form-control" @bind-Value="editingTalent.Country" />
-                        <ValidationMessage For="@(() => editingTalent.Country)" />
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label>Email</label>
-                        <InputText type="email" class="form-control" @bind-Value="editingTalent.Email" />
-                        <ValidationMessage For="@(() => editingTalent.Email)" />
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label>Hourly Rate</label>
-                        <InputNumber class="form-control" @bind-Value="editingTalent.HourlyRate" />
-                        <ValidationMessage For="@(() => editingTalent.HourlyRate)" />
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label>Talent Category</label>
-                        <InputSelect class="form-control" @bind-Value="editingTalent.TalentCategoryId">
-                            <option value="">-- Select Category --</option>
-                            @if (categories != null)
-                            {
-                                @foreach (var category in categories)
-                                {
-                                    <option value="@category.Id">@category.Name</option>
-                                }
-                            }
-                        </InputSelect>
-                        <ValidationMessage For="@(() => editingTalent.TalentCategoryId)" />
-                    </div>
-                    
-                    <div class="mb-3 form-check">
-                        <InputCheckbox class="form-check-input" @bind-Value="editingTalent.IsPublic" id="isPublic" />
-                        <label class="form-check-label" for="isPublic">Public Profile</label>
-                        <div class="form-text">Make your profile visible to all users</div>
-                    </div>
+    <div class="modal enhanced-modal modal-lg show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@((editingTalent.Id == 0) ? "Add Talent" : "Edit Talent")</h5>
+                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="editingTalent" OnValidSubmit="SaveTalent">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <div class="mb-3">
+                            <label class="form-label">Name *</label>
+                            <InputText class="form-control" @bind-Value="editingTalent.Name" />
+                            <ValidationMessage For="@(() => editingTalent.Name)" class="text-danger" />
+                        </div>
 
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-secondary ms-2" @onclick="CloseModal">Cancel</button>
-                </EditForm>
+                        <div class="mb-3">
+                            <label class="form-label">Country *</label>
+                            <InputText class="form-control" @bind-Value="editingTalent.Country" />
+                            <ValidationMessage For="@(() => editingTalent.Country)" class="text-danger" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email *</label>
+                            <InputText type="email" class="form-control" @bind-Value="editingTalent.Email" />
+                            <ValidationMessage For="@(() => editingTalent.Email)" class="text-danger" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Hourly Rate *</label>
+                            <InputNumber class="form-control" @bind-Value="editingTalent.HourlyRate" />
+                            <ValidationMessage For="@(() => editingTalent.HourlyRate)" class="text-danger" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Talent Category *</label>
+                            <InputSelect class="form-control" @bind-Value="editingTalent.TalentCategoryId">
+                                <option value="">-- Select Category --</option>
+                                @if (categories != null)
+                                {
+                                    @foreach (var category in categories)
+                                    {
+                                        <option value="@category.Id">@category.Name</option>
+                                    }
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => editingTalent.TalentCategoryId)" class="text-danger" />
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <InputCheckbox class="form-check-input" @bind-Value="editingTalent.IsPublic" id="isPublic" />
+                            <label class="form-check-label" for="isPublic">Public Profile</label>
+                            <div class="form-text">Make your profile visible to all users</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="button" class="btn btn-secondary ms-2" @onclick="CloseModal">Cancel</button>
+                    </EditForm>
+                </div>
             </div>
         </div>
     </div>
-</div>
 }
 
 <!-- Delete Confirmation Modal -->
 @if (showDeleteConfirm)
 {
-<div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header">
-<h5 class="modal-title">Confirm Delete</h5>
-<button type="button" class="btn-close" @onclick="CancelDelete"></button>
-</div>
-<div class="modal-body">
-<p>Are you sure you want to delete the talent "@deletingTalent?.Name"?</p>
-</div>
-<div class="modal-footer">
-<button type="button" class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
-<button type="button" class="btn btn-danger" @onclick="ConfirmDelete">Delete</button>
-</div>
-</div>
-</div>
-</div>
+    <div class="modal enhanced-modal modal-sm show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close" @onclick="CancelDelete"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete the talent "@deletingTalent?.Name"?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
+                    <button type="button" class="btn btn-danger" @onclick="ConfirmDelete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 @code {
-private List<Talent>? talents;
-private List<TalentCategory>? categories;
-private Talent editingTalent = new();
-private bool showModal = false;
-private string currentUserId = string.Empty;
-private string statusMessage = string.Empty;
-private string statusClass = string.Empty;
-private bool showDeleteConfirm = false;
-private Talent? deletingTalent = null;
-protected override async Task OnInitializedAsync()
-{
-    var authState = await AuthStateProvider.GetAuthenticationStateAsync();
-    currentUserId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
-    
-    await LoadCategories();
-    await LoadTalents();
-}
+    private List<Talent>? talents;
+    private List<TalentCategory>? categories;
+    private Talent editingTalent = new();
+    private bool showModal = false;
+    private string statusMessage = string.Empty;
+    private string statusClass = string.Empty;
+    private bool showDeleteConfirm = false;
+    private Talent? deletingTalent = null;
 
-private async Task LoadCategories()
-{
-    try {
-        categories = await Http.GetFromJsonAsync<List<TalentCategory>>("api/TalentCategory");
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadCategories();
+        await LoadTalents();
     }
-    catch (Exception ex) {
-        ShowErrorMessage($"Failed to load categories: {ex.Message}");
-    }
-}
 
-private async Task LoadTalents()
-{
-    try {
-        // Get all talents from API
-        var allTalents = await Http.GetFromJsonAsync<List<Talent>>("api/talent");
-        
-        // Filter to only show talents for the current user
-        if (allTalents != null)
+    private async Task LoadCategories()
+    {
+        try
         {
-            talents = allTalents.Where(t => t.UserId == currentUserId).ToList();
+            categories = await TalentCategoryService.GetAllTalentCategoriesAsync();
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to load categories: {ex.Message}");
         }
     }
-    catch (Exception ex) {
-        ShowErrorMessage($"Failed to load talents: {ex.Message}");
-    }
-}
 
-private void ShowAddModal()
-{
-    // Create new talent with current user ID already set
-    editingTalent = new Talent { UserId = currentUserId };
-    showModal = true;
-}
-
-private void ShowEditModal(Talent talent)
-{
-    editingTalent = new Talent
+    private async Task LoadTalents()
     {
-        Id = talent.Id,
-        Name = talent.Name,
-        Country = talent.Country,
-        Email = talent.Email,
-        HourlyRate = talent.HourlyRate,
-        TalentCategoryId = talent.TalentCategoryId,
-        UserId = talent.UserId,
-        IsPublic = talent.IsPublic
-    };
-    showModal = true;
-}
-
-private void CloseModal()
-{
-    showModal = false;
-}
-
-private async Task SaveTalent()
-{
-    try
-    {
-        // Always ensure the UserID is set to current user
-        editingTalent.UserId = currentUserId;
-        
-        if (editingTalent.Id == 0)
+        try
         {
-            // Create new talent
-            var response = await Http.PostAsJsonAsync("api/talent", editingTalent);
-            if (response.IsSuccessStatusCode)
+            // Get talents for current user using dedicated service (server-side filtered)
+            talents = await CurrentUserTalentService.GetMyTalentsAsync();
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to load talents: {ex.Message}");
+        }
+    }
+
+    private void ShowAddModal()
+    {
+        // Create new talent (UserId will be set by service)
+        editingTalent = new Talent();
+        showModal = true;
+    }
+
+    private void ShowEditModal(Talent talent)
+    {
+        editingTalent = new Talent
+        {
+            Id = talent.Id,
+            Name = talent.Name,
+            Country = talent.Country,
+            Email = talent.Email,
+            HourlyRate = talent.HourlyRate,
+            TalentCategoryId = talent.TalentCategoryId,
+            UserId = talent.UserId,
+            IsPublic = talent.IsPublic
+        };
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task SaveTalent()
+    {
+        try
+        {
+            if (editingTalent.Id == 0)
             {
+                // Create new talent using service
+                await CurrentUserTalentService.CreateTalentAsync(editingTalent);
                 await LoadTalents();
                 CloseModal();
                 ShowSuccessMessage("Talent created successfully!");
             }
             else
             {
-                var error = await response.Content.ReadAsStringAsync();
-                ShowErrorMessage($"Error creating talent: {error}");
-            }
-        }
-        else
-        {
-            // Update existing talent
-            var response = await Http.PutAsJsonAsync($"api/talent/{editingTalent.Id}", editingTalent);
-            if (response.IsSuccessStatusCode)
-            {
+                // Update existing talent using service
+                await CurrentUserTalentService.UpdateTalentAsync(editingTalent);
                 await LoadTalents();
                 CloseModal();
                 ShowSuccessMessage("Talent updated successfully!");
             }
-            else
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                ShowErrorMessage($"Error updating talent: {error}");
-            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"An error occurred: {ex.Message}");
         }
     }
-    catch (Exception ex)
+
+    private void ShowDeleteConfirm(Talent talent)
     {
-        ShowErrorMessage($"An error occurred: {ex.Message}");
+        deletingTalent = talent;
+        showDeleteConfirm = true;
     }
-}
 
-private void ShowDeleteConfirm(Talent talent)
-{
-    deletingTalent = talent;
-    showDeleteConfirm = true;
-}
-
-private void CancelDelete()
-{
-    deletingTalent = null;
-    showDeleteConfirm = false;
-}
-
-private async Task ConfirmDelete()
-{
-    if (deletingTalent != null)
+    private void CancelDelete()
     {
-        await DeleteTalent(deletingTalent.Id);
-        showDeleteConfirm = false;
         deletingTalent = null;
+        showDeleteConfirm = false;
     }
-}
 
-private async Task DeleteTalent(int id)
-{
-    try
+    private async Task ConfirmDelete()
     {
-        var response = await Http.DeleteAsync($"api/talent/{id}");
-        if (response.IsSuccessStatusCode)
+        if (deletingTalent != null)
         {
+            await DeleteTalent(deletingTalent.Id);
+            showDeleteConfirm = false;
+            deletingTalent = null;
+        }
+    }
+
+    private async Task DeleteTalent(int id)
+    {
+        try
+        {
+            await CurrentUserTalentService.DeleteTalentAsync(id);
             await LoadTalents();
             ShowSuccessMessage("Talent deleted successfully!");
         }
-        else
+        catch (Exception ex)
         {
-            var error = await response.Content.ReadAsStringAsync();
-            ShowErrorMessage($"Error deleting talent: {error}");
+            ShowErrorMessage($"An error occurred: {ex.Message}");
         }
     }
-    catch (Exception ex)
+
+    private void ShowSuccessMessage(string message)
     {
-        ShowErrorMessage($"An error occurred: {ex.Message}");
+        statusMessage = message;
+        statusClass = "alert alert-success";
     }
-}
 
-private void ShowSuccessMessage(string message)
-{
-    statusMessage = message;
-    statusClass = "alert alert-success";
-}
+    private void ShowErrorMessage(string message)
+    {
+        statusMessage = message;
+        statusClass = "alert alert-danger";
+    }
 
-private void ShowErrorMessage(string message)
-{
-    statusMessage = message;
-    statusClass = "alert alert-danger";
-}
 
-public class Talent
-{
-    public int Id { get; set; }
-    
-    [Required(ErrorMessage = "Name is required")]
-    [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters")]
-    public string Name { get; set; } = "";
-    
-    [Required(ErrorMessage = "Country is required")]
-    public string Country { get; set; } = "";
-    
-    [Required(ErrorMessage = "Email is required")]
-    [EmailAddress(ErrorMessage = "Invalid email format")]
-    public string Email { get; set; } = "";
-    
-    [Required(ErrorMessage = "Hourly rate is required")]
-    [Range(1, 1000, ErrorMessage = "Hourly rate must be between 1 and 1000")]
-    public decimal HourlyRate { get; set; }
-    
-    [Required(ErrorMessage = "Please select a category")]
-    public int TalentCategoryId { get; set; }
-    
-    public string UserId { get; set; } = "";
-    
-    public bool IsPublic { get; set; } = true;
-    
-    public TalentCategory? TalentCategory { get; set; }
-}
-
-public class TalentCategory
-{
-    public int Id { get; set; }
-    public string Name { get; set; } = "";
-}
 }
