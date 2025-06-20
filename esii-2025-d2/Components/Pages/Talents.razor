@@ -204,7 +204,10 @@
     private void ShowAddModal()
     {
         // Create new talent (UserId will be set by service)
-        editingTalent = new Talent();
+        editingTalent = new Talent
+        {
+            UserId = "temp" // Temporary value to pass validation, will be overridden by service
+        };
         showModal = true;
     }
 
