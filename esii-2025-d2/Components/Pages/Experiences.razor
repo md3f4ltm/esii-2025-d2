@@ -58,85 +58,76 @@
 
 @if (showModal)
 {
-    <div class="modal enhanced-modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
-        <div class="modal-dialog">
+    <div class="modal enhanced-modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">@((editingExperience.Id == 0) ? "Add New Experience" : "Edit Experience")</h5>
-                    <button type="button" class="btn-close" @onclick="CloseModal"></button>
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-briefcase me-2"></i>@((editingExperience.Id == 0) ? "Add New Experience" : "Edit Experience")
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="CloseModal"></button>
                 </div>
                 <EditForm Model="editingExperience" OnValidSubmit="SaveExperience">
                     <DataAnnotationsValidator />
                     <div class="modal-body">
                         <ValidationSummary class="alert alert-danger" />
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">
-                                    <i class="fas fa-briefcase me-2"></i>Job Title *
-                                </label>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fas fa-briefcase me-2"></i>Job Title *</label>
                                 <InputText class="form-control" @bind-Value="editingExperience.Title" placeholder="Enter your job title" />
                                 <ValidationMessage For="@(() => editingExperience.Title)" class="text-danger" />
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">
-                                    <i class="fas fa-building me-2"></i>Company Name *
-                                </label>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fas fa-building me-2"></i>Company Name *</label>
                                 <InputText class="form-control" @bind-Value="editingExperience.CompanyName" placeholder="Enter company name" />
                                 <ValidationMessage For="@(() => editingExperience.CompanyName)" class="text-danger" />
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">
-                                    <i class="fas fa-calendar-alt me-2"></i>Start Year *
-                                </label>
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fas fa-calendar-alt me-2"></i>Start Year *</label>
                                 <InputNumber class="form-control" @bind-Value="editingExperience.StartYear" placeholder="e.g., 2020" />
                                 <ValidationMessage For="@(() => editingExperience.StartYear)" class="text-danger" />
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">
-                                    <i class="fas fa-calendar-check me-2"></i>End Year
-                                </label>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fas fa-calendar-check me-2"></i>End Year</label>
                                 <InputNumber class="form-control" @bind-Value="editingExperience.EndYear" placeholder="Leave empty if current" />
                                 <small class="form-text text-muted">Leave empty if this is your current position</small>
                                 <ValidationMessage For="@(() => editingExperience.EndYear)" class="text-danger" />
                             </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">
-                                <i class="fas fa-user me-2"></i>Talent Profile *
-                            </label>
-                            @if (talents == null && !initialLoadAttempted) 
-                            {
-                                <div class="d-flex align-items-center">
-                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                    <span class="text-muted">Loading talent profiles...</span>
-                                </div>
-                            } 
-                            else if (talents == null || !talents.Any()) 
-                            {
-                                <div class="alert alert-warning">
-                                    <i class="fas fa-exclamation-triangle me-2"></i>
-                                    No talent profiles available. @(string.IsNullOrWhiteSpace(apiError) ? "You may need to create one first." : $"Error: {apiError}")
-                                </div>
-                                <InputSelect class="form-control" @bind-Value="editingExperience.TalentId" disabled>
-                                     <option value="">-- No talents available --</option>
-                                </InputSelect>
-                            } 
-                            else 
-                            {
-                                <InputSelect class="form-control" @bind-Value="editingExperience.TalentId">
-                                    <option value="0">-- Select Talent Profile --</option>
-                                    @foreach (var t in talents)
-                                    {
-                                        <option value="@t.Id">@t.Name (@t.Email)</option>
-                                    }
-                                </InputSelect>
-                                <ValidationMessage For="@(() => editingExperience.TalentId)" class="text-danger" />
-                            }
+                        <div class="row g-3 mt-2">
+                            <div class="col-12">
+                                <label class="form-label"><i class="fas fa-user me-2"></i>Talent Profile *</label>
+                                @if (talents == null && !initialLoadAttempted)
+                                {
+                                    <div class="d-flex align-items-center">
+                                        <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                                        <span class="text-muted">Loading talent profiles...</span>
+                                    </div>
+                                }
+                                else if (talents == null || !talents.Any())
+                                {
+                                    <div class="alert alert-warning">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        No talent profiles available. @(string.IsNullOrWhiteSpace(apiError) ? "You may need to create one first." : $"Error: {apiError}")
+                                    </div>
+                                    <InputSelect class="form-control" @bind-Value="editingExperience.TalentId" disabled>
+                                         <option value="">-- No talents available --</option>
+                                    </InputSelect>
+                                }
+                                else
+                                {
+                                    <InputSelect class="form-control" @bind-Value="editingExperience.TalentId">
+                                        <option value="0">-- Select Talent Profile --</option>
+                                        @foreach (var t in talents)
+                                        {
+                                            <option value="@t.Id">@t.Name (@t.Email)</option>
+                                        }
+                                    </InputSelect>
+                                    <ValidationMessage For="@(() => editingExperience.TalentId)" class="text-danger" />
+                                }
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">

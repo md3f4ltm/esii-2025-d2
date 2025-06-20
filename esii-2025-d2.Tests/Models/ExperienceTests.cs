@@ -13,8 +13,8 @@ public class ExperienceTests
         var experience = new Experience
         {
             Id = 1,
-            Title = "Software Developer",
-            CompanyName = "Tech Company",
+            Title = "Senior Full Stack Developer",
+            CompanyName = "TechFlow Solutions",
             StartYear = 2020,
             EndYear = 2023,
             TalentId = 1
@@ -22,8 +22,8 @@ public class ExperienceTests
 
         // Assert
         Assert.That(experience.Id, Is.EqualTo(1));
-        Assert.That(experience.Title, Is.EqualTo("Software Developer"));
-        Assert.That(experience.CompanyName, Is.EqualTo("Tech Company"));
+        Assert.That(experience.Title, Is.EqualTo("Senior Full Stack Developer"));
+        Assert.That(experience.CompanyName, Is.EqualTo("TechFlow Solutions"));
         Assert.That(experience.StartYear, Is.EqualTo(2020));
         Assert.That(experience.EndYear, Is.EqualTo(2023));
         Assert.That(experience.TalentId, Is.EqualTo(1));
