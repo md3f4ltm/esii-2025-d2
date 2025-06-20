@@ -28,10 +28,19 @@ public class TalentController : ControllerBase
 
     // GET: api/Talent
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Talent>>> GetTalents() // Existing method
+    [Authorize(Roles = "Talent")]
+    public async Task<ActionResult<IEnumerable<Talent>>> GetTalents() // Only returns current user's talents
     {
-        // Use English DbSet name
-        return await _context.Talents.ToListAsync();
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
+        return await _context.Talents
+            .Include(t => t.TalentCategory)
+            .Where(t => t.UserId == userId)
+            .ToListAsync();
     }
 
     // *** START: NEW ENDPOINT FOR FEED ***
@@ -126,7 +135,7 @@ public class TalentController : ControllerBase
 
     // GET: api/Talent/mytalents
     [HttpGet("mytalents")]
-    [Authorize]
+    [Authorize(Roles = "Talent")]
     public async Task<ActionResult<IEnumerable<Talent>>> GetMyTalents()
     {
         // Get the current user's ID from the claims
@@ -138,6 +147,7 @@ public class TalentController : ControllerBase
 
         // Find all talents belonging to the current user
         var talents = await _context.Talents
+            .Include(t => t.TalentCategory)
             .Where(t => t.UserId == userId)
             .ToListAsync();
 
@@ -146,10 +156,18 @@ public class TalentController : ControllerBase
 
     // GET: api/Talent/5
     [HttpGet("{id}")]
+    [Authorize(Roles = "Talent")]
     public async Task<ActionResult<Talent>> GetTalent(int id) // Method name singularized
     {
-        // Use English DbSet name
-        var talent = await _context.Talents.FindAsync(id);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
+        var talent = await _context.Talents
+            .Include(t => t.TalentCategory)
+            .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
 
         if (talent == null)
         {
@@ -162,6 +180,7 @@ public class TalentController : ControllerBase
     // PUT: api/Talent/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
+    [Authorize(Roles = "Talent")]
     public async Task<IActionResult> PutTalent(int id, Talent talent)
     {
         if (id != talent.Id)
@@ -169,8 +188,23 @@ public class TalentController : ControllerBase
             return BadRequest();
         }
 
-        // Use English DbSet name
-        _context.Entry(talent).State = EntityState.Modified;
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
+        // Ensure the talent belongs to the current user
+        var existingTalent = await _context.Talents.FindAsync(id);
+        if (existingTalent == null || existingTalent.UserId != userId)
+        {
+            return NotFound();
+        }
+
+        // Always set the UserId to current user to prevent tampering
+        talent.UserId = userId;
+
+        _context.Entry(existingTalent).CurrentValues.SetValues(talent);
 
         try
         {
@@ -194,28 +228,41 @@ public class TalentController : ControllerBase
     // POST: api/Talent
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
+    [Authorize(Roles = "Talent")]
     public async Task<ActionResult<Talent>> PostTalent(Talent talent)
     {
-        // Use English DbSet name
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
+        // Always set the UserId to current user
+        talent.UserId = userId;
+
         _context.Talents.Add(talent);
         await _context.SaveChangesAsync();
 
-        // Use English property name (assuming Id)
         return CreatedAtAction("GetTalent", new { id = talent.Id }, talent);
     }
 
     // DELETE: api/Talent/5
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Talent")]
     public async Task<IActionResult> DeleteTalent(int id)
     {
-        // Use English DbSet name
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
         var talent = await _context.Talents.FindAsync(id);
-        if (talent == null)
+        if (talent == null || talent.UserId != userId)
         {
             return NotFound();
         }
 
-        // Use English DbSet name
         _context.Talents.Remove(talent);
         await _context.SaveChangesAsync();
 
@@ -224,7 +271,7 @@ public class TalentController : ControllerBase
 
     private bool TalentExists(int id)
     {
-        // Use English DbSet name
-        return _context.Talents.Any(e => e.Id == id);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return _context.Talents.Any(e => e.Id == id && e.UserId == userId);
     }
 }

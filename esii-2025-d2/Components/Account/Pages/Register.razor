@@ -46,7 +46,6 @@
                 <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
             </div>
 
-            @* --- Adicionar Seleção de Role --- *@
             <div class="form-floating mb-3">
                  <InputSelect @bind-Value="Input.SelectedRole" id="role" class="form-select" aria-required="true">
                      <option value="">-- Select Role --</option> @* Opção padrão para forçar escolha *@
@@ -58,18 +57,9 @@
                  <label for="role">Register as</label>
                  <ValidationMessage For="() => Input.SelectedRole" class="text-danger" />
             </div>
-            @* --- Fim da Seleção de Role --- *@
-
 
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
-    </div>
-    <div class="col-lg-4 col-lg-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            <ExternalLoginPicker />
-        </section>
     </div>
 </div>
 
@@ -107,6 +97,13 @@
 
         Logger.LogInformation("User '{UserId}' created a new account with password.", await UserManager.GetUserIdAsync(user));
 
+        // Automatically confirm the email without requiring user interaction
+        var confirmResult = await UserManager.ConfirmEmailAsync(user, await UserManager.GenerateEmailConfirmationTokenAsync(user));
+        if (!confirmResult.Succeeded)
+        {
+            Logger.LogWarning("Failed to auto-confirm email for user '{UserId}'.", await UserManager.GetUserIdAsync(user));
+        }
+
         // --- Adicionar Utilizador à Role Selecionada ---
         // Validar se a role selecionada é uma das permitidas
         if (!string.IsNullOrEmpty(Input.SelectedRole) && selectableRoles.Contains(Input.SelectedRole))
@@ -143,28 +140,9 @@
         // --- Fim da Adição à Role ---
 
 
-        // Gerar token de confirmação de email e enviar email
-        var userId = await UserManager.GetUserIdAsync(user);
-        var code = await UserManager.GenerateEmailConfirmationTokenAsync(user);
-        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        var callbackUrl = NavigationManager.GetUriWithQueryParameters(
-            NavigationManager.ToAbsoluteUri("Account/ConfirmEmail").AbsoluteUri,
-            new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
-
-        await EmailSender.SendConfirmationLinkAsync(user, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
-
-        // Redirecionar ou fazer login
-        if (UserManager.Options.SignIn.RequireConfirmedAccount)
-        {
-            RedirectManager.RedirectTo(
-                "Account/RegisterConfirmation",
-                new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
-        }
-        else // Se não precisar de confirmação, faz login direto
-        {
-            await SignInManager.SignInAsync(user, isPersistent: false);
-            RedirectManager.RedirectTo(ReturnUrl);
-        }
+        // Since email is automatically confirmed, sign in the user directly
+        await SignInManager.SignInAsync(user, isPersistent: false);
+        RedirectManager.RedirectTo(ReturnUrl);
     }
 
     private ApplicationUser CreateUser()

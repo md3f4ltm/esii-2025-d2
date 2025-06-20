@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
 using esii_2025_d2.Data;
 using esii_2025_d2.Models;
 using esii_2025_d2.DTOs;
@@ -7,28 +9,45 @@ namespace esii_2025_d2.Services
 {
     public interface ITalentSkillService
     {
-        Task<List<TalentSkillDto>> GetTalentSkillsAsync(int talentId, string userId);
-        Task<TalentSkillDto> CreateTalentSkillAsync(TalentSkillDto talentSkill, string userId);
-        Task<TalentSkillDto> UpdateTalentSkillAsync(TalentSkillDto talentSkill, string userId);
-        Task DeleteTalentSkillAsync(int talentId, int skillId, string userId);
+        Task<List<TalentSkillDto>> GetTalentSkillsAsync(int talentId);
+        Task<TalentSkillDto> CreateTalentSkillAsync(TalentSkillDto talentSkill);
+        Task<TalentSkillDto> UpdateTalentSkillAsync(TalentSkillDto talentSkill);
+        Task DeleteTalentSkillAsync(int talentId, int skillId);
     }
 
     public class TalentSkillService : ITalentSkillService
     {
         private readonly ApplicationDbContext _context;
+        private readonly AuthenticationStateProvider _authStateProvider;
 
-        public TalentSkillService(ApplicationDbContext context)
+        public TalentSkillService(ApplicationDbContext context, AuthenticationStateProvider authStateProvider)
         {
             _context = context;
+            _authStateProvider = authStateProvider;
         }
 
-        public async Task<List<TalentSkillDto>> GetTalentSkillsAsync(int talentId, string userId)
+        private async Task<string> GetCurrentUserIdAsync()
         {
+            var authState = await _authStateProvider.GetAuthenticationStateAsync();
+            var userId = authState.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                throw new UnauthorizedAccessException("User not authenticated or user ID not found.");
+            }
+
+            return userId;
+        }
+
+        public async Task<List<TalentSkillDto>> GetTalentSkillsAsync(int talentId)
+        {
+            var userId = await GetCurrentUserIdAsync();
+
             // Check if talent exists and belongs to the current user
             var talent = await _context.Talents.FirstOrDefaultAsync(t => t.Id == talentId && t.UserId == userId);
             if (talent == null)
             {
-                throw new UnauthorizedAccessException($"Talent with ID {talentId} not found or does not belong to the current user.");
+                throw new UnauthorizedAccessException("Talent not found or access denied.");
             }
 
             // Get all skills for this talent
@@ -47,8 +66,10 @@ namespace esii_2025_d2.Services
             return talentSkills;
         }
 
-        public async Task<TalentSkillDto> CreateTalentSkillAsync(TalentSkillDto talentSkill, string userId)
+        public async Task<TalentSkillDto> CreateTalentSkillAsync(TalentSkillDto talentSkill)
         {
+            var userId = await GetCurrentUserIdAsync();
+
             // Check if talent exists and belongs to the current user
             var talent = await _context.Talents.FirstOrDefaultAsync(t => t.Id == talentSkill.TalentId && t.UserId == userId);
             if (talent == null)
@@ -85,8 +106,10 @@ namespace esii_2025_d2.Services
             return talentSkill;
         }
 
-        public async Task<TalentSkillDto> UpdateTalentSkillAsync(TalentSkillDto talentSkill, string userId)
+        public async Task<TalentSkillDto> UpdateTalentSkillAsync(TalentSkillDto talentSkill)
         {
+            var userId = await GetCurrentUserIdAsync();
+
             // Check if talent exists and belongs to the current user
             var talent = await _context.Talents.FirstOrDefaultAsync(t => t.Id == talentSkill.TalentId && t.UserId == userId);
             if (talent == null)
@@ -110,13 +133,15 @@ namespace esii_2025_d2.Services
             return talentSkill;
         }
 
-        public async Task DeleteTalentSkillAsync(int talentId, int skillId, string userId)
+        public async Task DeleteTalentSkillAsync(int talentId, int skillId)
         {
+            var userId = await GetCurrentUserIdAsync();
+
             // Check if talent exists and belongs to the current user
             var talent = await _context.Talents.FirstOrDefaultAsync(t => t.Id == talentId && t.UserId == userId);
             if (talent == null)
             {
-                throw new UnauthorizedAccessException($"Talent with ID {talentId} not found or does not belong to the current user.");
+                throw new UnauthorizedAccessException("Talent not found or access denied.");
             }
 
             var talentSkill = await _context.TalentSkills.FindAsync(talentId, skillId);
@@ -129,4 +154,4 @@ namespace esii_2025_d2.Services
             await _context.SaveChangesAsync();
         }
     }
-} 
+}

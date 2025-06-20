@@ -50,6 +50,38 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 
 
 
+
+// --->>> ADD ROLE SERVICES <<<---
+
+// Certifique-se de adicionar suporte a Roles ao Identity Core
+
+builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+
+  .AddRoles<IdentityRole>() // <--- ADICIONE ISTO PARA SUPORTE A ROLES
+
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+
+  .AddSignInManager()
+
+  .AddDefaultTokenProviders();
+
+
+
+builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+// Register application services
+builder.Services.AddScoped<esii_2025_d2.Services.ICustomerService, esii_2025_d2.Services.CustomerService>();
+builder.Services.AddScoped<esii_2025_d2.Services.ITalentService, esii_2025_d2.Services.TalentService>();
+builder.Services.AddScoped<esii_2025_d2.Services.IExperienceService, esii_2025_d2.Services.ExperienceService>();
+builder.Services.AddScoped<esii_2025_d2.Services.IJobProposalService, esii_2025_d2.Services.JobProposalService>();
+builder.Services.AddScoped<esii_2025_d2.Services.IReportsService, esii_2025_d2.Services.ReportsService>();
+builder.Services.AddScoped<esii_2025_d2.Services.ISkillService, esii_2025_d2.Services.SkillService>();
+builder.Services.AddScoped<esii_2025_d2.Services.ITalentCategoryService, esii_2025_d2.Services.TalentCategoryService>();
+builder.Services.AddScoped<esii_2025_d2.Services.ITalentSkillService, esii_2025_d2.Services.TalentSkillService>();
+builder.Services.AddScoped<esii_2025_d2.Services.ICurrentUserTalentService, esii_2025_d2.Services.CurrentUserTalentService>();
+
+
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<CookieHandler>();
 
